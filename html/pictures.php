@@ -64,6 +64,7 @@ function picture_insert($input)
 			$message = '文件添加成功';
 			$url .= '?image_id='.$id;
 		}
+		rename($file, '/mnt/hgfs/Debin/'.$path);
 	}
 	$smarty->assign('message', $message);
 	$smarty->assign('url', $url);

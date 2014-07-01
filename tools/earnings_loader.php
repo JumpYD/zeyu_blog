@@ -2,25 +2,27 @@
 require_once (dirname(__FILE__).'/../'.'library/zeyublog.php');
 LogOpt::init ('earnings_loader', true);
 
-$options = getopt('m:p:i:e:');
+$options = getopt('m:a:i:e:');
 
-if (!isset($options['m']) || !isset($options['p']) || !isset($options['i']) || !isset($options['e']))
+if (!isset($options['m']) || !isset($options['a']) || !isset($options['i']) || !isset($options['e']))
 {
-	echo "useage: php earnings_loader.php -m month -p imagepath -i income -e expend".PHP_EOL;
+	echo "useage: php earnings_loader.php -m month -a image_id -i income -e expend".PHP_EOL;
 	return; 
 }
 
 $month = $options['m'];
-$imagepath = $options['p'];
 $income = (float)$options['i'];
 $expend = (float)$options['e'];
+$image_id = (int)$options['a'];
 
-if (($image_id = ZeyuBlogOpt::load_image($imagepath, 'earnings')) === false)
+$sql = 'select path from images where image_id = '.$image_id;
+$path = MySqlOpt::select_query($sql);
+if (!isset($path[0]['path']))
 {
-	LogOpt::set('exception', 'earning image add error');
-	return;
+	LogOpt::set('exception', 'image_not_exists', MySqlOpt::errno(), MySqlOpt::error());
+	return false;
 }
-LogOpt::set('info', 'add image success', 'image_id', $image_id);
+
 $article_info = array();
 $article_info['title'] = $month.'财报';
 $article_info['updatetime'] = 'now()';
@@ -74,40 +76,4 @@ else
 {
 	LogOpt::set('info', 'new_earnings_insert_into_booknote_success', 'earnings_id', $earnings_id);
 }
-
-$query = 'select month,income,expend from earnings';
-$infos = MySqlOpt::select_query($query);
-if ($infos == null)
-{
-	LogOpt::set('exception', 'select infos error', MySqlOpt::errno(), MySqlOpt::error());
-	return;
-}
-$income_points = array();
-$expend_points = array();
-$sub_points = array();
-$month = array();
-foreach ($infos as $info)
-{
-	$income_points[] = intval($info['income']);
-	$expend_points[] = intval($info['expend']);
-	$sub_points[] = intval($info['income']) - intval($info['expend']);
-	$month[] = $info['month'];
-}
-
-$points = array();
-$points[] = array('points'=>$income_points, 'label'=>'income');
-$points[] = array('points'=>$sub_points, 'label'=>'subtraction');
-$points[] = array('points'=>$expend_points, 'label'=>'expend');
-$average = 0;
-foreach ($sub_points as $sub)
-	$average += $sub;
-$average = intval($average/count($sub_points));
-$ave_points = array();
-foreach ($sub_points as $sub)
-	$ave_points[] = $average;
-$points[] = array('points'=>$ave_points, 'label'=>'average');
-
-$axis = array('axis_points'=>$month, 'label'=>'month');
-unlink($base_dir.'html/images/earning.png');
-ZeyuBlogOpt::draw_line_chart($points, 'Income And Expend', $axis, $base_dir.'html/images/earning.png');
 ?>

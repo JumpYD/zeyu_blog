@@ -163,7 +163,7 @@ function display_result($input)
 					continue;
 				}
 				$ret = $ret[0];
-				$ret['contents'] = ZeyuBlogOpt::pre_treat_article($ret['contents']);
+				$ret['contents'] = ZeyuBlogOpt::pre_treat_article($ret['draft']);
 				$contents = $ret[$input['opt_type']];
 				if (!isset($input['search']) || $input['search']=='' || mb_strpos(strtolower($contents), strtolower($input['search']))!==false)
 				{
@@ -183,6 +183,7 @@ function display_result($input)
 			{
 				foreach ($rets as $ret)
 				{
+					$ret['contents'] = ZeyuBlogOpt::pre_treat_article($ret['draft']);
 					$contents = $ret[$input['opt_type']];
 					if (!isset($input['search']) || $input['search']=='' || mb_strpos(strtolower($contents), strtolower($input['search']))!==false)
 					{

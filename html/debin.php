@@ -163,6 +163,7 @@ function display_result($input)
 					continue;
 				}
 				$ret = $ret[0];
+				$ret['contents'] = ZeyuBlogOpt::pre_treat_article($ret['contents']);
 				$contents = $ret[$input['opt_type']];
 				if (!isset($input['search']) || $input['search']=='' || mb_strpos(strtolower($contents), strtolower($input['search']))!==false)
 				{

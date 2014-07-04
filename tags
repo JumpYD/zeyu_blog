@@ -23,7 +23,6 @@ article_array	tools/note_loader.php	/^$article_array = json_decode($articles, tr
 article_count	html/search.php	/^		$article_count = MySqlOpt::select_query($query);$/;"	v
 article_count	html/search.php	/^		$article_count = intval($article_count[0]['count(*)']);$/;"	v
 article_id	html/article.php	/^$article_id = $_GET['id'];$/;"	v
-article_id	html/debin.php	/^		$article_id = $articles_id[($page-1)*10+$i];$/;"	v
 article_id	tools/article_creater.php	/^	$article_id = $options['i'];$/;"	v
 article_id	tools/article_creater.php	/^	$article_id = MySqlOpt::insert('article', $infos, true);$/;"	v
 article_id	tools/diary_loader.php	/^$article_id = MySqlOpt::insert('article', $infos, true);$/;"	v
@@ -40,6 +39,7 @@ article_info	library/zeyublog.php	/^		$article_info = MySqlOpt::select_query($ar
 article_info	tools/earnings_loader.php	/^$article_info = array();$/;"	v
 article_info	tools/note_loader.php	/^$article_info = array();$/;"	v
 article_infos	html/debin.php	/^			$article_infos = array_reverse($article_infos);$/;"	v
+article_infos	html/debin.php	/^	$article_infos = MySqlOpt::select_query($sql);$/;"	v
 article_infos	html/debin.php	/^	$article_infos = array();$/;"	v
 article_query	html/article.php	/^$article_query = 'select * from article where article_id='.$article_id;$/;"	v
 article_query	library/zeyublog.php	/^		$article_query = 'select tags from article where article_id='.$article_id;$/;"	v
@@ -57,8 +57,7 @@ articles	tools/note_loader.php	/^$articles = MySqlOpt::select_query($select_quer
 articles	tools/note_loader.php	/^$articles = json_encode($article_array);$/;"	v
 articles_category	tools/article_creater.php	/^	$articles_category = array();$/;"	v
 articles_category	tools/article_creater.php	/^$articles_category = json_decode($category_info[0]['article_id'], true);$/;"	v
-articles_id	html/debin.php	/^	$articles_id = json_decode($articles_json, true);$/;"	v
-articles_json	html/debin.php	/^	$articles_json = $category_info[0]['article_id'];$/;"	v
+articles_id	html/debin.php	/^	$articles_id = array();$/;"	v
 average	html/earnings.php	/^$average = round((array_sum($income)-array_sum($expend))\/count($month), 2);$/;"	v
 backgrounds	html/head.php	/^$backgrounds = MySqlOpt::select_query($query);$/;"	v
 base_dir	html/head.php	/^$base_dir = dirname(__FILE__).'\/..\/';$/;"	v
@@ -72,6 +71,7 @@ category	html/pictures.php	/^	$category = $params['category'];$/;"	v
 category_id	html/debin.php	/^	$category_id = intval($category_id);$/;"	v
 category_id	html/debin.php	/^$category_id = $_GET['category'];$/;"	v
 category_info	html/debin.php	/^	$category_info = MySqlOpt::select_query($query);$/;"	v
+category_info	html/debin.php	/^	$category_info = MySqlOpt::select_query($sql);$/;"	v
 category_info	tools/article_creater.php	/^$category_info = MySqlOpt::select_query($query);$/;"	v
 category_infos	html/pictures.php	/^	$category_infos = MySqlOpt::select_query($sql);$/;"	v
 category_list	html/pictures.php	/^	$category_list = array('all');$/;"	v
@@ -93,6 +93,7 @@ contents	tools/contents_loader.php	/^$contents = ZeyuBlogOpt::pre_treat_article 
 contents	tools/diary_loader.php	/^$contents = ZeyuBlogOpt::pre_treat_article ($infos['draft']);$/;"	v
 contents	tools/mood_loader.php	/^		$contents = fgets(STDIN);$/;"	v
 contents	tools/mood_loader.php	/^		$contents = trim($contents);$/;"	v
+count	html/debin.php	/^	$count = $category_info[0]['article_count'];$/;"	v
 count	html/pictures.php	/^	$count = $count[0]['count'];$/;"	v
 count	html/pictures.php	/^	$count = MySqlOpt::select_query($sql);$/;"	v
 current_path	library/zeyublog.php	/^			$current_path = substr($file_path, 0, $current_pos);$/;"	v
@@ -191,9 +192,7 @@ indexs	tools/article_creater.php	/^$indexs = json_encode(ZeyuBlogOpt::get_index(
 indexs	tools/contents_loader.php	/^$indexs = json_encode(ZeyuBlogOpt::get_index($contents));$/;"	v
 info	html/debin.php	/^				$info = $article_infos[($page-1)*10+$i];$/;"	v
 info	html/debin.php	/^			$info = $article_infos[($page-1)*10+$i];$/;"	v
-info	html/debin.php	/^		$info = $info[0];$/;"	v
 info	html/debin.php	/^		$info = $mood_infos[($page-1)*10+$i];$/;"	v
-info	html/debin.php	/^		$info = MySqlOpt::select_query ($query);$/;"	v
 info	html/pictures.php	/^		$info = MySqlOpt::select_query($sql);$/;"	v
 info	html/search.php	/^		$info = array();$/;"	v
 info	library/logopt.php	/^		$info = '';$/;"	v
@@ -230,6 +229,7 @@ last_pos	library/zeyublog.php	/^			$last_pos = strrpos($current_path, '\/');$/;"
 lasttab	library/stringopt.php	/^			$lasttab = $tab;$/;"	v
 lasttab	library/stringopt.php	/^		$lasttab = '';$/;"	v
 lengend_info	library/pchartopt.php	/^	private static $lengend_info = array('coordinate'=>array(610, 18), 'info'=>array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_VERTICAL));$/;"	v
+limit	html/debin.php	/^	$limit = 10;$/;"	v
 limit	html/pictures.php	/^	$limit = 10;$/;"	v
 line	library/zeyublog.php	/^						$line = '<strong>图片ID不存在<\/strong>';$/;"	v
 line	library/zeyublog.php	/^						$line = str_replace('id="'.$id.'"', 'src="'.$path.'"', $line);$/;"	v
@@ -313,11 +313,9 @@ query	html/debin.php	/^				$query = 'select * from article where 1'.$date_info.'
 query	html/debin.php	/^				$query = 'select * from article where article_id='.$article_id.$date_info;$/;"	v
 query	html/debin.php	/^				$query = 'select * from article where category_id!=5'.$date_info.' order by inserttime desc';$/;"	v
 query	html/debin.php	/^				$query = 'select article_id from tags where tag_id='.$tag_id.$date_info;$/;"	v
-query	html/debin.php	/^		$query = 'select * from article where article_id='.$article_id.' order by inserttime desc';$/;"	v
 query	html/debin.php	/^		$query = 'select * from mood where true'.$date_info.' order by inserttime desc';$/;"	v
 query	html/debin.php	/^	$query = 'select * from article order by inserttime desc';$/;"	v
 query	html/debin.php	/^	$query = 'select * from mood order by inserttime desc';$/;"	v
-query	html/debin.php	/^	$query = 'select article_id,category from category where category_id='.$category_id;$/;"	v
 query	html/earnings.php	/^$query = 'select * from earnings order by month desc';$/;"	v
 query	html/head.php	/^$query = 'select image_id,path from images where category="background" and path!="images\/background.jpg"';$/;"	v
 query	html/note.php	/^$query = 'select * from booknote order by idx';$/;"	v
@@ -377,6 +375,8 @@ set_rectangle	library/pchartopt.php	/^	public static function set_rectangle($inf
 set_sp	library/pchartopt.php	/^	public static function set_sp ($draw_sp)$/;"	f
 smarty	html/head.php	/^$smarty = new Smarty;$/;"	v
 spider_string	library/stringopt.php	/^	public static function spider_string ($string, $begtab, $endtab, &$remain_str=null)$/;"	f
+sql	html/debin.php	/^	$sql = 'select * from article where category_id='.$category_id.' order by inserttime desc limit '.(($page-1)*$limit).','.$limit;$/;"	v
+sql	html/debin.php	/^	$sql = 'select category,article_count from category where category_id='.$category_id;$/;"	v
 sql	html/pictures.php	/^		$sql = 'select path from images where image_id='.mysql_escape_string($params['id']);$/;"	v
 sql	html/pictures.php	/^	$sql = 'select * from images where 1';$/;"	v
 sql	html/pictures.php	/^	$sql = 'select category from images group by category';$/;"	v

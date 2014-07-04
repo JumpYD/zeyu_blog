@@ -74,45 +74,32 @@ function display_debin()
 {
 	global $category_id;
 	global $page;
+	$limit = 10;
 	$category_id = intval($category_id);
 	if ($category_id == null)
 	{
 		ZeyuBlogOpt::warning_opt('请填写category参数', '/html');
 		return;
 	}
-	$query = 'select article_id,category from category where category_id='.$category_id;
-	$category_info = MySqlOpt::select_query($query);
+
+	$sql = 'select category,article_count from category where category_id='.$category_id;
+	$category_info = MySqlOpt::select_query($sql);
 	if ($category_info == null)
 	{
 		ZeyuBlogOpt::warning_opt('页面不存在', '/html');
 		return;
 	}
-	$articles_json = $category_info[0]['article_id'];
-	$articles_id = json_decode($articles_json, true);
 	$category = $category_info[0]['category'];
-	rsort($articles_id);
+	$count = $category_info[0]['article_count'];
 
+	$sql = 'select * from article where category_id='.$category_id.' order by inserttime desc limit '.(($page-1)*$limit).','.$limit;
+	$article_infos = MySqlOpt::select_query($sql);
+	$articles_id = array();
 	$infos = array();
-	for ($i=0; $i<10; ++$i)
-	{
-		if (!isset ($articles_id[($page-1)*10+$i]))
-			break;
-		$article_id = $articles_id[($page-1)*10+$i];
-		if (intval($article_id) == null)
-			continue;
-		$query = 'select * from article where article_id='.$article_id.' order by inserttime desc';
-		$info = MySqlOpt::select_query ($query);
-		if ($info == null)
-		{
-			LogOpt::set('exception', 'info get error', 'article_id', $article_id, MySqlOpt::errno(), MySqlOpt::error());
-			return false;
-		}
-		$info = $info[0];
+	foreach ($article_infos as $info)
 		if (($info = select_article('article', $info)) !== false)
 			$infos[] = $info;
-		else
-			--$i;
-	}
+
 	display($category, $category, count($articles_id), $page, $infos);
 }
 

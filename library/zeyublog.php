@@ -207,33 +207,25 @@ class ZeyuBlogOpt
 
 	public static function get_tags ($article_id)
 	{
-		$article_query = 'select tags from article where article_id='.$article_id;
-		$article_info = MySqlOpt::select_query($article_query);
-		if ($article_info == null)
+		$sql = 'select * from article_tag_relation where article_id='.$article_id;
+		$infos = MySqlOpt::select_query($sql);
+		if ($infos == null)
+			return $infos;
+		$tags = array();
+		foreach ($infos as $info)
 		{
-			LogOpt::set ('exception', 'cannot find this article_id', 'article_id', $article_id, MySqlOpt::errno(), MySqlOpt::error());
-			return false;
-		}
-		$article_info = $article_info[0];
-		$tag_ids = json_decode($article_info['tags']);
-		if ($tag_ids != null)
-		{
-			$tags = array();
-			foreach ($tag_ids as $tag_id)
+			$tag_id = $info['tag_id'];
+			$sql = 'select tag_name from tags where tag_id='.$tag_id;
+			$tag_name = MySqlOpt::select_query($sql);
+			if ($tag_name == null)
 			{
-				$query = 'select tag_name from tags where tag_id='.$tag_id;
-				$tag_name = MySqlOpt::select_query($query);
-				if ($tag_name == null)
-				{
-					LogOpt::set ('exception', 'get tag error', 'tag_id', $tag_id, MySqlOpt::errno(), MySqlOpt::error());
-					return false;
-				}
-				$tag_name = $tag_name[0]['tag_name'];
-				$tags[] = $tag_name;
+				LogOpt::set ('exception', 'get tag error', 'tag_id', $tag_id, MySqlOpt::errno(), MySqlOpt::error());
+				return false;
 			}
-			return $tags;
+			$tag_name = $tag_name[0]['tag_name'];
+			$tags[] = $tag_name;
 		}
-		return null;
+		return $tags;
 	}
 
 	public static function draw_line_chart ($points, $title, $axis ,$outfile)

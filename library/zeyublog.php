@@ -17,7 +17,7 @@ class ZeyuBlogOpt
 			$line = $lines[$index];
 			$line = trim($line);
 			if (empty($line))
-				$contents .= '<p>&nbsp;</p>';
+				$contents .= '<p>&nbsp;&nbsp;</p>';
 			else if ($line == '<div>')
 			{
 				while (1)
@@ -65,7 +65,7 @@ class ZeyuBlogOpt
 					else
 						$line = '<strong>图片ID不存在</strong>';
 				}
-				$contents .= '<p style="text-indent:0em;">'.$line.'</p><p>&nbsp;</p>';
+				$contents .= '<p style="text-indent:0em;">'.$line.'</p><p>&nbsp;&nbsp;</p>';
 			}
 			else if (substr($line, 0, 5) == '<code')
 			{
@@ -84,11 +84,11 @@ class ZeyuBlogOpt
 					$line = $lines[$index];
 					if (trim($line) === '</code>')
 						break;
-					$code .= self::str_trans($line).PHP_EOL;
+					$code .= self::str_trans($line, false).PHP_EOL;
 					$code_line++;
 				}
 				$line_sum = $line_sum > $code_line ? $line_sum : $code_line;
-				$contents .= '<div id="editor_'.$i.'" style="position: relative; width: 765px; height: '.($line_sum*19+10).'px;">'.trim($code).'</div><p>&nbsp;</p>';
+				$contents .= '<div id="editor_'.$i.'" style="position: relative; width: 765px; height: '.($line_sum*19+10).'px;">'.trim($code).'</div><p>&nbsp;&nbsp;</p>';
 				$codes[] = array('id'=>'editor_'.$i++, 'mode'=>$mode);
 				continue;
 			}
@@ -115,13 +115,14 @@ class ZeyuBlogOpt
 		return $contents;
 	}
 
-	private function str_trans($str)
+	private function str_trans($str, $nbsp = true)
 	{
 		$str = str_replace('&', '&amp;', $str);
 		$str = str_replace('"', '&quot;', $str);
 		$str = str_replace('<', '&lt;', $str);
 		$str = str_replace('>', '&gt;', $str);
-		$str = str_replace(' ', '&nbsp;', $str);
+		if ($nbsp)
+			$str = str_replace(' ', '&nbsp;&nbsp;', $str);
 		return $str;
 	}
 

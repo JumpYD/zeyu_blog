@@ -10,11 +10,11 @@ class LogOpt
 	}
 	public static function set_log ($label, $info)
 	{
-		file_put_contents('/home/zeyu/Workspace/log/zeyu_bloglog_'.date('Ymd'), self::$condition."\t".date('Y-m-d H:i:s')."\t".$label.":\t".$info."\n", FILE_APPEND);
-		if (self::$echo)
-		{
+		#file_put_contents('/home/zeyu/Workspace/log/zeyu_bloglog_'.date('Ymd'), self::$condition."\t".date('Y-m-d H:i:s')."\t".$label.":\t".$info."\n", FILE_APPEND);
+		#if (self::$echo)
+		#{
 			echo $label.":\t".$info.PHP_EOL;
-		}
+		#}
 	}
 	public static function set ()
 	{
@@ -33,13 +33,13 @@ class LogOpt
 			}
 			$info .= "\t".'['.$arg_list[$i].':'.$arg_list[$i+1].']';
 		}
-		$logfile = '/home/zeyu/Workspace/log/zeyu_bloglog_'.date('Ymd');
-		file_put_contents($logfile, self::$condition."\t".date('Y-m-d H:i:s').$info."\n", FILE_APPEND);
-		chmod($logfile, 0777);
-		if (self::$echo)
-		{
+		#$logfile = '/home/zeyu/Workspace/log/zeyu_bloglog_'.date('Ymd');
+		#file_put_contents($logfile, self::$condition."\t".date('Y-m-d H:i:s').$info."\n", FILE_APPEND);
+		#chmod($logfile, 0777);
+		#if (self::$echo)
+		#{
 			echo self::$condition."\t".$info.PHP_EOL;
-		}
+		#}
 	}
 }
 ?>

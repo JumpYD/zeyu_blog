@@ -82,7 +82,7 @@ function display_debin()
 		return;
 	}
 
-	$sql = 'select category,article_count from category where category_id='.$category_id;
+	$sql = 'select category from category where category_id='.$category_id;
 	$category_info = MySqlOpt::select_query($sql);
 	if ($category_info == null)
 	{
@@ -90,7 +90,9 @@ function display_debin()
 		return;
 	}
 	$category = $category_info[0]['category'];
-	$count = $category_info[0]['article_count'];
+	$sql = 'select count(*) as article_count from article where category_id='.$category_id;
+	$ret = MySqlOpt::select_query($sql);
+	$count = $ret[0]['article_count'];
 
 	$sql = 'select * from article where category_id='.$category_id.' order by inserttime desc limit '.(($page-1)*$limit).','.$limit;
 	$article_infos = MySqlOpt::select_query($sql);
@@ -140,8 +142,8 @@ function display_result($input)
 			foreach ($tags as $tag_id)
 			{
 				$tag_id = intval($tag_id);
-				$query = 'select article_id from tags where tag_id='.$tag_id.$date_info;
-				$ret = MySqlOpt::select_query ($query);
+				$sql = 'select article_id from tags where tag_id='.$tag_id.$date_info;
+				$ret = MySqlOpt::select_query ($sql);
 				if ($ret == null || !isset($ret[0]['article_id']))
 				{
 					LogOpt::set('exception', 'select by tag error', 'tag_id', $tag_id, 'date_info', $date_info, MySqlOpt::errno(), MySqlOpt::error());

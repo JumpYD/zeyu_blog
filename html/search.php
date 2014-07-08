@@ -18,12 +18,15 @@ case 'icon':
 function search_show_opt($input)
 {
 	global $smarty;
-	$query = 'select tag_id,tag_name,article_count from tags order by article_count desc';
-	$tag_infos = MySqlOpt::select_query($query);
-	if ($tag_infos == null)
+	$sql = 'select tag_id,count(*) as article_count from article_tag_relation group by tag_id order by article_count desc';
+	$infos = MySqlOpt::select_query($sql);
+	$tag_infos = array();
+	foreach ($infos as $info)
 	{
-		LogOpt::set('exception', 'tag_info get error', MySqlOpt::errno(), MySqlOpt::error());
-		return;
+		$sql = 'select tag_name from tags where tag_id='.$info['tag_id'];
+		$ret = MySqlOpt::select_query($sql);
+		$info['tag_name'] = $ret[0]['tag_name'];
+		$tag_infos[] = $info;
 	}
 
 	//$first_date = '2013-12-15';

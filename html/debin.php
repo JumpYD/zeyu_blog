@@ -142,15 +142,18 @@ function display_result($input)
 			foreach ($tags as $tag_id)
 			{
 				$tag_id = intval($tag_id);
-				$sql = 'select article_id from tags where tag_id='.$tag_id.$date_info;
+				$sql = 'select article_id from article_tag_relation where tag_id='.$tag_id;
 				$ret = MySqlOpt::select_query ($sql);
 				if ($ret == null || !isset($ret[0]['article_id']))
 				{
 					LogOpt::set('exception', 'select by tag error', 'tag_id', $tag_id, 'date_info', $date_info, MySqlOpt::errno(), MySqlOpt::error());
 					continue;
 				}
-				$article_ids = json_decode($ret[0]['article_id'], true);
-				$articles[] = $article_ids;
+				var_dump($ret);
+				exit;
+
+				#$article_ids = $ret[0]['article_id'];
+				#$articles[] = $article_ids;
 			}
 			$selected = $articles[0];
 			for ($i=1; $i<count($articles); ++$i)

@@ -59,7 +59,7 @@ while (1)
 $infos['images'] = json_encode($image_ids);
 
 // 获取 category_id
-$query = 'select category_id,article_id from category where category="'.$options['c'].'"';
+$query = 'select category_id from category where category="'.$options['c'].'"';
 $category_info = MySqlOpt::select_query($query);
 if ($category_info == null)
 {
@@ -67,36 +67,6 @@ if ($category_info == null)
 	return;
 }
 $infos['category_id'] = $category_info[0]['category_id'];
-
-// 获取 tags 
-$tags = explode(',', $options['g']);
-if ($tags == null)
-{
-	echo 'tags 参数有误'."\t".$tags.PHP_EOL;
-	return;
-}
-$tag_ids = array();
-foreach ($tags as $tag)
-{
-	$tag = trim($tag);
-	if ($tag == '')
-		continue;
-	$query = 'select tag_id from tags where tag_name="'.$tag.'"';
-	$tag_infos = MySqlOpt::select_query($query);
-	if ($tag_infos == null)
-	{
-		$tag_id = MySqlOpt::insert('tags', array('tag_name'=>$tag), true);
-		if ($tag_id == false)
-		{
-			LogOpt::set ('exception', 'tag 添加失败', MySqlOpt::errno(), MySqlOpt::error());
-			return;
-		}
-	}
-	else
-		$tag_id = $tag_infos[0]['tag_id'];
-	$tag_ids[] = $tag_id;
-}
-$infos['tags'] = json_encode($tag_ids);
 
 // 获取 index
 $indexs = json_encode(ZeyuBlogOpt::get_index($temp_contents));
@@ -139,53 +109,40 @@ LogOpt::set ('info', '日志插入成功', 'article_id', $article_id, 'title', $
 unlink($draft_file);
 
 // 添加 article 并获取新加 article_id 后需要更新为 tags 表对应项
-foreach ($tag_ids as $tag_id)
+$tags = explode(',', $options['g']);
+if ($tags == null)
 {
-	$query = 'select article_id,tag_name from tags where tag_id="'.$tag_id.'"';
-	$article_id_ret = MySqlOpt::select_query($query);
-	if ($article_id_ret == null)
+	echo 'tags 参数有误'."\t".$tags.PHP_EOL;
+	return;
+}
+foreach ($tags as $tag)
+{
+	$tag = trim($tag);
+	if ($tag == '')
+		continue;
+	$query = 'select tag_id from tags where tag_name="'.$tag.'"';
+	$tag_infos = MySqlOpt::select_query($query);
+	if ($tag_infos == null)
 	{
-		LogOpt::set ('exception', 'tags 查询失败', 'tag_id', $tag_id);
-		return;
-	}
-	$article_ids = json_decode($article_id_ret[0]['article_id'], true);
-	$tag_name = $article_id_ret[0]['tag_name'];
-	if ($article_ids == null)
-		$article_ids = array();
-	if (!in_array($article_id, $article_ids))
-	{
-		$infos = array();
-		$article_ids[] = $article_id;
-		$infos['article_id'] = json_encode($article_ids);
-		$infos['article_count'] = count($article_ids);
-		$ret = MySqlOpt::update('tags', $infos, array('tag_id'=>$tag_id));
-		if ($ret == null)
+		$tag_id = MySqlOpt::insert('tags', array('tag_name'=>$tag), true);
+		if ($tag_id == false)
 		{
-			LogOpt::set ('exception', 'tags 更新失败', 'tag_id', $tag_id, 'tag_name', $tag_name, 'article_ids', json_encode($article_ids), 'article_count', count($article_ids));
+			LogOpt::set ('exception', 'tag 添加失败', MySqlOpt::errno(), MySqlOpt::error());
 			return;
 		}
-		LogOpt::set ('info', 'tags.article_id 更新成功', 'tag_id', $tag_id, 'tag_name', $tag_name, 'article_ids', json_encode($article_ids), 'article_count', count($article_ids));
 	}
 	else
-		LogOpt::set ('info', 'tags.article_id 已存在', 'article_id', $article_id, 'tag_id', $tag_id, 'tag_name', $tag_name, 'article_ids', json_encode($article_ids), 'article_count', count($article_ids));
-}
+		$tag_id = $tag_infos[0]['tag_id'];
 
-// 添加 article 并获取新加 article_id 后需要更新为 category 表对应项
-$articles_category = json_decode($category_info[0]['article_id'], true);
-if ($articles_category == null || !is_array($articles_category))
-	$articles_category = array();
-if (!in_array($article_id, $articles_category))
-{
-	$articles_category[] = $article_id;
-	$articles = json_encode($articles_category);
-	$ret = MySqlOpt::update('category', array('article_id'=>$articles, 'article_count'=>count($articles_category), 'updatetime'=>'now()'), array('category_id'=>$category_info[0]['category_id']));
-	if ($ret == null)
+	$params = array();
+	$params['article_id'] = $article_id;
+	$params['tag_id'] = $tag_id;
+	$relation_id = MySqlOpt::insert('article_tag_relation', $params, true);
+	if ($relation_id == false)
 	{
-		LogOpt::set ('exception', 'category 更新失败', 'category_id', $category_info[0]['category_id'], 'article_ids', $articles, MySqlOpt::errno(), MySqlOpt::error());
+		LogOpt::set('exception', 'article_tag_relation 更新失败', 'article_id', $article_id, 'tag_id', $tag_id, MySqlOpt::errno(), MySqlOpt::error());
 		return;
 	}
-	LogOpt::set ('info', 'category.article_id 更新成功', 'categroy_id', $category_info[0]['category_id'], 'article_ids', $articles, 'article_count', count($articles));
+	LogOpt::set ('info', 'article_tag_relation 更新成功', 'relation_id', $relation_id);
 }
-else
-	LogOpt::set ('info', 'category.article_id 已存在 ', 'article_id', $article_id);
 ?>

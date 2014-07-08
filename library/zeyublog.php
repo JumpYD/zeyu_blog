@@ -207,7 +207,7 @@ class ZeyuBlogOpt
 
 	public static function get_tags ($article_id)
 	{
-		$sql = 'select * from article_tag_relation where article_id='.$article_id,' order by inserttime desc';
+		$sql = 'select * from article_tag_relation where article_id='.$article_id.' order by inserttime desc';
 		$infos = MySqlOpt::select_query($sql);
 		if ($infos == null)
 			return $infos;

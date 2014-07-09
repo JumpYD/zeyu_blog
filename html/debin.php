@@ -149,33 +149,29 @@ function display_result($input)
 					LogOpt::set('exception', 'select by tag error', 'tag_id', $tag_id, 'date_info', $date_info, MySqlOpt::errno(), MySqlOpt::error());
 					continue;
 				}
-				var_dump($ret);
-				exit;
+				$article_ids = array();
+				foreach ($ret as $article_id)
+					$article_ids[] = $article_id['article_id'];
 
-				#$article_ids = $ret[0]['article_id'];
-				#$articles[] = $article_ids;
+				$articles[] = $article_ids;
 			}
 			$selected = $articles[0];
 			for ($i=1; $i<count($articles); ++$i)
 				$selected = array_intersect($selected, $articles[$i]);
-			foreach ($selected as $article_id)
+			$query = 'select * from article where article_id in ('.implode(',', $selected).') '.$date_info.' order by inserttime desc';
+			$rets = MySqlOpt::select_query ($query);
+			if ($rets == null)
 			{
-				$query = 'select * from article where article_id='.$article_id.$date_info;
-				$ret = MySqlOpt::select_query ($query);
-				if ($ret == null)
-				{
-					LogOpt::set('exception', 'select article error', 'article_id', $article_id, MySqlOpt::errno(), MySqlOpt::error());
-					continue;
-				}
-				$ret = $ret[0];
+				LogOpt::set('exception', 'select article error', MySqlOpt::errno(), MySqlOpt::error());
+				exit;
+			}
+			foreach ($rets as $ret)
+			{
 				$ret['contents'] = ZeyuBlogOpt::pre_treat_article($ret['draft']);
 				$contents = $ret[$input['opt_type']];
 				if (!isset($input['search']) || $input['search']=='' || mb_strpos(strtolower($contents), strtolower($input['search']))!==false)
-				{
 					$article_infos[] = $ret;
-				}
 			}
-			$article_infos = array_reverse($article_infos);
 		}
 		else
 		{

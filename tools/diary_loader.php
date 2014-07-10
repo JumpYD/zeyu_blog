@@ -56,4 +56,5 @@ if ($article_id == null)
 	LogOpt::set('exception', 'article insert error');
 	return;
 }
+unlink($draft_file);
 ?>

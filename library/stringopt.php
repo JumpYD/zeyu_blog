@@ -3,6 +3,16 @@ class StringOpt
 {
 	public static function spider_string ($string, $begtab, $endtab, &$remain_str=null)
 	{
+		if ($begtab == '')
+		{
+			$string = '<[-INF]>'.$string;
+			$begtab = '<[-INF]>';
+		}
+		if ($endtab == '')
+		{
+			$string .= '<[+INF]>';
+			$endtab = '<[+INF]>';
+		}
 		$tabs = explode('<![||]>', $begtab);
 		$ret = self::orstropt($string, $tabs, $string);
 		if ($ret === false || $ret === null)

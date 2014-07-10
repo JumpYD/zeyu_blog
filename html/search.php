@@ -18,7 +18,7 @@ case 'icon':
 function search_show_opt($input)
 {
 	global $smarty;
-	$sql = 'select tag_id,count(*) as article_count from article_tag_relation group by tag_id order by article_count desc';
+	$sql = 'select tag_id,count(*) as article_count from article_tag_relation group by tag_id order by article_count desc, inserttime desc';
 	$infos = MySqlOpt::select_query($sql);
 	$tag_infos = array();
 	foreach ($infos as $info)

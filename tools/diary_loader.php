@@ -56,26 +56,4 @@ if ($article_id == null)
 	LogOpt::set('exception', 'article insert error');
 	return;
 }
-$query = 'select article_id,article_count from category where category_id=5';
-$articles = MySqlOpt::select_query($query);
-if ($articles == null)
-{
-	LogOpt::set('info', 'category 中暂无文章', 'category_id', 5);
-	$articles = array();
-}
-else
-	$articles = json_decode($articles[0]['article_id'], true);
-$articles[] = $article_id;
-$infos = array();
-$infos['article_id'] = json_encode($articles);
-$infos['updatetime'] = 'now()';
-$infos['article_count'] = count($articles);
-$ret = MySqlOpt::update('category', $infos, array('category_id'=>5));
-if ($ret == false)
-{
-	LogOpt::set('exception', 'article insert into category failed', 'article_id', $article_id);
-	return;
-}
-LogOpt::set ('info', 'category update success', 'article_id', $article_id);
-unlink($draft_file);
 ?>

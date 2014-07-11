@@ -56,5 +56,6 @@ if ($article_id == null)
 	LogOpt::set('exception', 'article insert error');
 	return;
 }
+LogOpt::set('info', '添加日志成功', 'article_id', $article_id, 'title', $infos['title']);
 unlink($draft_file);
 ?>

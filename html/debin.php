@@ -96,13 +96,16 @@ function display_debin()
 
 	$sql = 'select * from article where category_id='.$category_id.' order by inserttime desc limit '.(($page-1)*$limit).','.$limit;
 	$article_infos = MySqlOpt::select_query($sql);
-	$articles_id = array();
 	$infos = array();
 	foreach ($article_infos as $info)
 		if (($info = select_article('article', $info)) !== false)
 			$infos[] = $info;
 
-	display($category, $category, count($articles_id), $page, $infos);
+	$sql = 'select count(*) as count from article where category_id ='.$category_id;
+	$article_count = MySqlOpt::select_query($sql);
+	$article_count = $article_count[0]['count'];
+
+	display($category, $category, $article_count, $page, $infos);
 }
 
 function display_result($input)

@@ -39,11 +39,7 @@ while (1)
 		LogOpt::set('info', '添加图片到数据库成功', 'image_id', $image_id, 'image_path', $image_path);
 		$image_ids[] = $image_id;
 	}
-	else 
-		$image_id = $image_id[0]['image_id'];
-	$image_ids[] = $image_id;
 }
-$infos['images'] = json_encode($image_ids);
 if (isset($options['t']))
 	$infos['title'] = $options['t'].' -- '.date('Y-m-d');
 else
@@ -53,7 +49,7 @@ $infos['updatetime'] = 'now()';
 $article_id = MySqlOpt::insert('article', $infos, true);
 if ($article_id == null)
 {
-	LogOpt::set('exception', 'article insert error');
+	LogOpt::set('exception', 'article insert error', MySqlOpt::errno(), MySqlOpt::error());
 	return;
 }
 LogOpt::set('info', '添加日志成功', 'article_id', $article_id, 'title', $infos['title']);

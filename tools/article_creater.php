@@ -54,9 +54,7 @@ while (1)
 		LogOpt::set('info', '添加图片到数据库成功', 'image_id', $image_id, 'image_path', $image_path);
 		$image_ids[] = $image_id;
 	}
-	$image_ids[] = $image_id[0]['image_id'];
 }
-$infos['images'] = json_encode($image_ids);
 
 // 获取 category_id
 $query = 'select category_id from category where category="'.$options['c'].'"';

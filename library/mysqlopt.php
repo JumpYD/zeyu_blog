@@ -8,7 +8,7 @@ class MySqlOpt
 	public static function get_db_client()
 	{
 		if (self::$db_client === null)
-			self::$db_client = new DbDriver('localhost', 'zeyu_blog', 'zeyu_blog', 'zeyu_best_blog');
+			self::$db_client = new DbDriver('localhost', 'zeyu_blog', 'root', 'zeyu2032');
 		if (self::$db_client === null)
 			return false;
 		return self::$db_client;

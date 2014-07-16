@@ -7,6 +7,7 @@ class ZeyuBlogOpt
 {
 	public static function pre_treat_article ($file)
 	{
+		$font = '';
 		$lines = explode(PHP_EOL, $file);
 		$contents = '';
 		$i = 'a';
@@ -16,7 +17,7 @@ class ZeyuBlogOpt
 			$line = $lines[$index];
 			$line = trim($line);
 			if (empty($line))
-				$contents .= '<p>&nbsp;&nbsp;</p>';
+				$contents .= '<p>&nbsp;</p>';
 			else if ($line == '<div>')
 			{
 				while (1)
@@ -45,9 +46,18 @@ class ZeyuBlogOpt
 						break;
 					}
 					else
-						$contents .= '<p><li>'.self::str_trans($line).'</li></p>';
+					{
+						$line = self::str_trans($line);
+						if ($font != '')
+							$line = '<span style="font-family:'.$font.';">'.$line.'</span>';
+						$contents .= '<p><li>'.$line.'</li></p>';
+					}
 				}
 			}
+			else if (substr($line, 0, 5) == '<font')
+				$font = StringOpt::spider_string($line, '<font ', '>');
+			else if ($line == '</font>')
+				$font = '';
 			else if (substr($line, 0, 4) == '<img')
 			{
 				$id = StringOpt::spider_string($line, 'id="', '"');
@@ -64,7 +74,7 @@ class ZeyuBlogOpt
 					else
 						$line = '<strong>图片ID不存在</strong>';
 				}
-				$contents .= '<p style="text-indent:0em;">'.$line.'</p><p>&nbsp;&nbsp;</p>';
+				$contents .= '<p style="text-indent:0em;">'.$line.'</p><p>&nbsp;</p>';
 			}
 			else if (substr($line, 0, 5) == '<code')
 			{
@@ -87,7 +97,7 @@ class ZeyuBlogOpt
 					$code_line++;
 				}
 				$line_sum = $line_sum > $code_line ? $line_sum : $code_line;
-				$contents .= '<div id="editor_'.$i.'" style="position: relative; width: 765px; height: '.($line_sum*19+10).'px;">'.trim($code).'</div><p>&nbsp;&nbsp;</p>';
+				$contents .= '<div id="editor_'.$i.'" style="position: relative; width: 765px; height: '.($line_sum*19+10).'px;">'.trim($code).'</div><p>&nbsp;</p>';
 				$codes[] = array('id'=>'editor_'.$i++, 'mode'=>$mode);
 				continue;
 			}
@@ -96,7 +106,12 @@ class ZeyuBlogOpt
 			else if (substr($line, 0, 4) === '<h3>')
 				$contents .= '<p><h3>'.self::str_trans(substr($line, 4)).'</h3></p>';
 			else
-				$contents .= '<p>'.self::str_trans($line).'</p>';
+			{
+				$line = self::str_trans($line);
+				if ($font != '')
+					$line = '<span style="font-family:'.$font.';">'.$line.'</span>';
+				$contents .= '<p>'.$line.'</p>';
+			}
 		}
 
 		if (!empty($codes))
@@ -121,7 +136,7 @@ class ZeyuBlogOpt
 		$str = str_replace('<', '&lt;', $str);
 		$str = str_replace('>', '&gt;', $str);
 		if ($nbsp)
-			$str = str_replace(' ', '&nbsp;&nbsp;', $str);
+			$str = str_replace(' ', '&nbsp;', $str);
 		return $str;
 	}
 

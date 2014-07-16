@@ -227,14 +227,5 @@ class ZeyuBlogOpt
 		}
 		return $tags;
 	}
-
-	public static function draw_line_chart ($points, $title, $axis ,$outfile)
-	{
-		PChartOpt::add_points($points);
-		PChartOpt::set_axis_infos($axis);
-		PChartOpt::set_sp(false);
-		PChartOpt::set_outfile($outfile);
-		PChartOpt::draw_line_chart(array(148, 43), $title);
-	}
 }
 ?>

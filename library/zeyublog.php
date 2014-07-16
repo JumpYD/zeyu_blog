@@ -1,7 +1,6 @@
 <?php
 require_once (dirname(__FILE__).'/'.'../library/mysqlopt.php');
 require_once (dirname(__FILE__).'/'.'../library/logopt.php');
-require_once (dirname(__FILE__).'/'.'../library/pchartopt.php');
 require_once (dirname(__FILE__).'/'.'../library/stringopt.php');
 
 class ZeyuBlogOpt

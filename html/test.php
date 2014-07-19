@@ -17,7 +17,6 @@ if (count($index) > 0)
 	$smarty->assign('index', $index);
 $smarty->assign('title', '测试页面');
 $smarty->assign('title_desc', '仅供测试');
-$smarty->assign('updatetime', date('Y-m-d H:i:s'));
 $smarty->assign('contents', $contents);
 $smarty->display('article.tpl');
 ?>

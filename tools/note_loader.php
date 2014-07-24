@@ -1,5 +1,5 @@
 <?php
-//调用方式：php load_new_note.php bookname imagepath
+//调用方式: php note_loader.php -b bookname -i bookimageid [-d desc]
 require_once (dirname(__FILE__).'/../'.'library/zeyublog.php');
 LogOpt::init ('note_loader', true);
 
@@ -74,9 +74,4 @@ else
 {
 	LogOpt::set('info', 'new_note_insert_into_booknote_success', 'note_id', $note_id);
 }
-return $note_id;
-if (($book_id = ZeyuBlogOpt::new_book ($argv[1], $argv[2], $argv[3])) !== false)
-	LogOpt::set ('info', '添加成功', 'book_id', $book_id);
-else
-	LogOpt::set ('exception', '添加失败');
 ?>

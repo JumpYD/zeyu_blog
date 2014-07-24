@@ -85,7 +85,7 @@ p
 	</div>
 </div>
 
-<{if $title="测试页面"}>
+<{if $title=="测试页面"}>
 <script language="JavaScript">
 function myrefresh()
 {

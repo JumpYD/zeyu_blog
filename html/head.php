@@ -1,4 +1,5 @@
 <?php
+ini_set('date.timezone','Asia/Shanghai');
 $base_dir = dirname(__FILE__).'/../';
 
 require_once ($base_dir.'resource/smarty/libs/Smarty.class.php');

@@ -43,6 +43,15 @@ function picture_insert($input)
 				MySqlOpt::update ('images', array('md5'=>md5_file($blog_image)), array('image_id'=>$params['id']));
 				$message = '文件替换成功';
 				$url .= '?image_id='.$params['id'];
+
+				if (!is_dir('/mnt/hgfs/Debin/images'))
+				{
+					$ret = mkdir('/mnt/hgfs/Debin/images');
+					if (!$ret)
+						$message .= '目录创建失败，请查看权限';
+					else
+						rename($file, '/mnt/hgfs/Debin/'.$path);
+				}
 			}
 		}
 		else
@@ -64,8 +73,16 @@ function picture_insert($input)
 			$message = '文件添加成功';
 			$url .= '?image_id='.$id;
 		}
-		rename($file, '/mnt/hgfs/Debin/'.$path);
+		if (!is_dir('/mnt/hgfs/Debin/images'))
+		{
+			$ret = mkdir('/mnt/hgfs/Debin/images');
+			if (!$ret)
+				$message .= '目录创建失败，请查看权限';
+			else
+				rename($file, '/mnt/hgfs/Debin/'.$path);
+		}
 	}
+
 	$smarty->assign('message', $message);
 	$smarty->assign('url', $url);
 	$smarty->display('warning.tpl');

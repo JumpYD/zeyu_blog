@@ -37,29 +37,6 @@ else
 {
 	LogOpt::set('info', 'new_note_insert_into_article_success', 'article_id', $article_id);
 }
-$select_query = 'select article_id from category where category_id=6';
-$articles = MySqlOpt::select_query($select_query);
-if ($articles == false)
-{
-	LogOpt::set('exception', 'new_earnings_select_article_from_category_error', MySqlOpt::errno(), MySqlOpt::error());
-	return false;
-}
-$infos = array();
-$articles = $articles[0]['article_id'];
-$article_array = json_decode($articles, true);
-if ($article_array == null)
-	$article_array = array();
-$article_array[] = $article_id;
-$infos['article_count'] = count($article_array);
-$articles = json_encode($article_array);
-$infos['article_id'] = $articles;
-$infos['updatetime'] = 'now()';
-$ret = MySqlOpt::update ('category', $infos, array('category_id'=>6));
-if ($ret == false)
-{
-	LogOpt::set('exception', 'new_note_update_category_error', MySqlOpt::errno(), MySqlOpt::error());
-	return;
-}
 $infos = array();
 $infos['article_id'] = $article_id;
 $infos['image_id'] = $image_id;

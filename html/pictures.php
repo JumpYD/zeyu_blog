@@ -20,67 +20,32 @@ function picture_insert($input)
 	global $smarty;
 	$params_key = array('id', 'name', 'category');
 	$params = getParams($input, $params_key);
-	$file = trim('/mnt/hgfs/Debin/'.$params['name']);
-	$url = '/html/pictures.php';
-	if (!file_exists($file))
-	{
-		$message = '指定文件：'.$file.' 不存在';
-	}
-	else if (isset($params['id']))
-	{
-		$sql = 'select path from images where image_id='.mysql_escape_string($params['id']);
-		$info = MySqlOpt::select_query($sql);
-		if (isset($info[0]['path']))
-		{
-			$path = $info[0]['path'];
-			$blog_image = dirname(__FILE__).'/../html/'.$path;
-			unlink($blog_image);
-			$ret = copy($file, $blog_image);
-			if ($ret == false)
-				$message = '文件替换失败，请查看权限';
-			else
-			{
-				MySqlOpt::update ('images', array('md5'=>md5_file($blog_image)), array('image_id'=>$params['id']));
-				$message = '文件替换成功';
-				$url .= '?image_id='.$params['id'];
+	if (!isset($params['id']))
+		$params['id'] = null;
 
-				if (!is_dir('/mnt/hgfs/Debin/images'))
-				{
-					$ret = mkdir('/mnt/hgfs/Debin/images');
-					if (!$ret)
-						$message .= '目录创建失败，请查看权限';
-					else
-						rename($file, '/mnt/hgfs/Debin/'.$path);
-				}
-			}
-		}
-		else
-			$message = '指定被替换文件 ID 不存在';
-	}
-	else
+	$ret = ZeyuBlogOpt::picture_insert($params['name'], $params['category'], $params['id']);
+	$url = '/html/pictures.php';
+
+	switch ($ret)
 	{
-		$format = strrpos($file, '.');
-		$format = substr($file, $format);
-		$md5 = md5_file($file);
-		$path = 'images/'.$md5.$format;
-		$blog_image = dirname(__FILE__).'/../html/'.$path;
-		$ret = copy($file, $blog_image);
-		if ($ret == false)
-			$message = '文件添加失败，请查看权限';
-		else
-		{
-			$id = MySqlOpt::insert ('images', array('md5'=>md5_file($blog_image), 'inserttime'=>'now()', 'path'=>$path, 'category'=>$params['category']), true);
-			$message = '文件添加成功';
-			$url .= '?image_id='.$id;
-		}
-		if (!is_dir('/mnt/hgfs/Debin/images'))
-		{
-			$ret = mkdir('/mnt/hgfs/Debin/images');
-			if (!$ret)
-				$message .= '目录创建失败，请查看权限';
-			else
-				rename($file, '/mnt/hgfs/Debin/'.$path);
-		}
+	case -1:
+		$message = '源文件不存在';
+		break;
+	case -2:
+		$message = '文件替换失败，请查看权限';
+		break;
+	case -3:
+		$message = '目录创建失败，请查看权限';
+		break;
+	case -4:
+		$message = '指定被替换文件 ID 不存在';
+		break;
+	case -5:
+		$message = '文件添加失败，请查看权限';
+		break;
+	default:
+		$message = '文件添加成功';
+		$url .= '?image_id='.$id;
 	}
 
 	$smarty->assign('message', $message);

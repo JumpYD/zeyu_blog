@@ -159,6 +159,60 @@ class ZeyuBlogOpt
 		return $file_path;
 	}
 
+	/**
+	 * return:
+	 * 		0 : success
+	 * 		-1: source file not exist
+	 * 		-2: exchange error
+	 * 		-3: mkdir /mnt/hgfs/Debin/images error
+	 * 		-4: id not exist
+	 * 		-5: insert file error
+	 */
+	public static function picture_insert($name, $category, $id=null)
+	{
+		$file = trim('/mnt/hgfs/Debin/'.$name);
+		if (!file_exists($file))
+			return -1;
+		if (!empty($id))
+		{
+			$sql = 'select path from images where image_id='.$id;
+			$info = MySqlOpt::select_query($sql);
+			if (isset($info[0]['path']))
+			{
+				$path = $info[0]['path'];
+				$blog_image = dirname(__FILE__).'/../html/'.$path;
+				unlink($blog_image);
+				$ret = copy($file, $blog_image);
+				if ($ret == false)
+					return -2;
+				MySqlOpt::update ('images', array('md5'=>md5_file($blog_image), 'category'=>$category), array('image_id'=>$id));
+			}
+			else
+				return -4;
+		}
+		else
+		{
+			$format = strrpos($file, '.');
+			$format = substr($file, $format);
+			$md5 = md5_file($file);
+			$path = 'images/'.$md5.$format;
+			$blog_image = dirname(__FILE__).'/../html/'.$path;
+			$ret = copy($file, $blog_image);
+			if ($ret == false)
+				return -5;
+			$id = MySqlOpt::insert ('images', array('md5'=>md5_file($blog_image), 'inserttime'=>'now()', 'path'=>$path, 'category'=>$category), true);
+		}
+		if (!is_dir('/mnt/hgfs/Debin/images'))
+		{
+			$ret = mkdir('/mnt/hgfs/Debin/images');
+			if (!$ret)
+				return -3;
+			else
+				rename($file, '/mnt/hgfs/Debin/'.$path);
+		}
+		return $id;
+	}
+
 	public static function load_image ($path, $category='')
 	{
 		$file_path = self::getfilepath($path);

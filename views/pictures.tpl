@@ -42,6 +42,11 @@
 				<p><button class="btn btn-primary btn-lg" type="submit" role="button">检&nbsp;&nbsp;索</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">添&nbsp;&nbsp;加</button></p>
 			</form>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
 			<center>
 				<p><h1 style="color:#0047DD;margin-top:120px">图片列表</h1></p>
 			</center>

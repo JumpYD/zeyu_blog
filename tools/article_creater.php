@@ -126,7 +126,7 @@ foreach ($tags as $tag)
 		if ($tag_id == false)
 		{
 			LogOpt::set ('exception', 'tag 添加失败', MySqlOpt::errno(), MySqlOpt::error());
-			return;
+			continue;
 		}
 	}
 	else
@@ -139,7 +139,7 @@ foreach ($tags as $tag)
 	if ($relation_id == false)
 	{
 		LogOpt::set('exception', 'article_tag_relation 更新失败', 'article_id', $article_id, 'tag_id', $tag_id, MySqlOpt::errno(), MySqlOpt::error());
-		return;
+		continue;
 	}
 	LogOpt::set ('info', 'article_tag_relation 更新成功', 'relation_id', $relation_id);
 }

@@ -41,5 +41,10 @@ default:
 if ($ret < 0)
 	LogOpt::set('exception', $message, 'name', $options['n'], 'id', $options['i']);
 else
-	LogOpt::set('info', $message, 'image_id', $ret);
+{
+	$sql = 'select * from images where image_id='.$ret;
+	$infos = MySqlOpt::select_query($sql);
+	$infos = $infos[0];
+	LogOpt::set('info', $message, 'image_id', $ret, 'md5', $infos['md5'], 'path', $infos['path']);
+}
 ?>

@@ -207,9 +207,8 @@ class ZeyuBlogOpt
 			$ret = mkdir('/mnt/hgfs/Debin/images');
 			if (!$ret)
 				return -3;
-			else
-				rename($file, '/mnt/hgfs/Debin/'.$path);
 		}
+		rename($file, '/mnt/hgfs/Debin/'.$path);
 		return $id;
 	}
 

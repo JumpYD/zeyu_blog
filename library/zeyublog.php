@@ -71,7 +71,7 @@ class ZeyuBlogOpt
 						$path = $path[0]['path'];
 						if (StringOpt::spider_string($line, 'width="', '"') == null)
 						{
-							$image_info = GetImageSize($path);
+							$image_info = GetImageSize(dirname(__FILE__).'/../html/'.$path);
 							$image_info = $image_info['3'];
 							$width = StringOpt::spider_string($image_info, 'width="', '"');
 							$width = intval(trim($width));

@@ -7,6 +7,8 @@ $draft_dir = dirname(__FILE__).'/../'.'draft/';
 $draft_files = scandir($draft_dir);
 foreach ($draft_files as $draft)
 {
+	if ($draft[0] == '.')
+		continue;
 	$article_id = StringOpt::spider_string($draft, 'draft', '.tpl');
 	if (empty($article_id))
 		continue;

@@ -76,7 +76,9 @@ class ZeyuBlogOpt
 							$width = StringOpt::spider_string($image_info, 'width="', '"');
 							$width = intval(trim($width));
 							if ($width > '765')
-							$line = str_replace('id="'.$id.'"', 'src="'.$path.'" width="765px;"', $line);
+								$line = str_replace('id="'.$id.'"', 'src="'.$path.'" width="765px;"', $line);
+							else
+								$line = str_replace('id="'.$id.'"', 'src="'.$path.'"', $line);
 						}
 						else
 							$line = str_replace('id="'.$id.'"', 'src="'.$path.'"', $line);

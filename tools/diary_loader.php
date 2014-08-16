@@ -45,6 +45,11 @@ $infos['title'] = date('Y-m-d H:i:s');
 if (isset($options['t']))
 	$infos['title'] = $options['t'].' -- '.date('Y-m-d');
 $infos['category_id'] = '5';
+// 获取 index
+$indexs = json_encode(ZeyuBlogOpt::get_index($contents));
+if ($indexs != null)
+	$infos['indexs'] = $indexs;
+
 $infos['updatetime'] = 'now()';
 $article_id = MySqlOpt::insert('article', $infos, true);
 if ($article_id == null)

@@ -31,6 +31,38 @@ class ZeyuBlogOpt
 					$contents .= $line.PHP_EOL;
 				}
 			}
+			else if ($line == '<table>')
+			{
+				$contents .= '<table class="table table-hover table-condensed" border="4" style="font-size:18;">';
+				while (1)
+				{
+					$index++;
+					if ($index >= count($lines))
+						break;
+					$line = trim($lines[$index]);
+					if ($line == '</table>')
+					{
+						$contents .= $line;
+						break;
+					}
+					else if (substr($line, 0, 9) == '<caption>')
+					{
+						$caption = substr($line, 9);
+						$contents .= '<caption style="background-color:#C0C0C0; font-weight:bold">'.$caption.'</caption>';
+					}
+					else
+					{
+						$tds = explode("\t", $line);
+						if (substr($line, 0, 4) == '<tr>')
+						{
+							$tds[0] = substr($tds[0], 4);
+							$contents .= '<tr style="background-color:#C5C5C5;"><td>'.implode('</td><td>', $tds).'</td></tr>';
+						}
+						else
+							$contents .= '<tr><td>'.implode('</td><td>', $tds).'</td></tr>';
+					}
+				}
+			}
 			else if ($line == '<ol>' || $line == '<ul>')
 			{
 				$contents .= $line;

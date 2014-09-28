@@ -28,7 +28,7 @@ p
 			<style>
 				.isStuck
 				{
-					width:56%;
+					width:75%;
 				}
 			</style>
 			<div class="navbar-wrapper">
@@ -85,6 +85,7 @@ p
 	</div>
 </div>
 
+<!--
 <{if $title=="测试页面"}>
 <script language="JavaScript">
 function myrefresh()
@@ -94,5 +95,6 @@ function myrefresh()
 setTimeout('myrefresh()',5000); //指定1秒刷新一次
 </script>
 <{/if}>
+-->
 
 <{include 'footer.tpl'}>

@@ -45,7 +45,7 @@ function picture_insert($input)
 		break;
 	default:
 		$message = '文件添加成功';
-		$url .= '?image_id='.$id;
+		$url .= '?image_id='.$ret;
 	}
 
 	$smarty->assign('message', $message);

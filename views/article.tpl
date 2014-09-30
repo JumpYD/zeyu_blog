@@ -26,10 +26,10 @@ p
 			<{if $index!=''}>
 			<script src="../resource/stickUp-master/stickUp.min.js"></script>
 			<style>
-				.isStuck
-				{
-					width:75%;
-				}
+			.isStuck
+			{
+				width:75%;
+			}
 			</style>
 			<div class="navbar-wrapper">
 				<div class="col-md-3">

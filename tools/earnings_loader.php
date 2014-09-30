@@ -6,7 +6,7 @@ $options = getopt('m:a:i:e:');
 
 if (!isset($options['m']) || !isset($options['a']) || !isset($options['i']) || !isset($options['e']))
 {
-	echo "useage: php earnings_loader.php -m month -a image_id -i income -e expend".PHP_EOL;
+	echo "useage: php earnings_loader.php -m month -a image_id -i income -e expend (图片大小：400*345)".PHP_EOL;
 	return; 
 }
 
@@ -26,6 +26,7 @@ if (!isset($path[0]['path']))
 $article_info = array();
 $article_info['title'] = $month.'财报';
 $article_info['updatetime'] = 'now()';
+$article_info['draft'] = '<div>'.PHP_EOL.'<!-- 图片大小：700*467 -->'.PHP_EOL.'</div>';
 $article_info['category_id'] = 6;
 $article_id = MySqlOpt::insert('article', $article_info, true);
 if ($article_id == false)

@@ -33,7 +33,7 @@ function drw_earnings()
 		<{/if}>
 	*}>
 		<{if $category_id==1}>
-			<canvas id="myChart" width="980px" height="253px" class="span12"></canvas>
+			<canvas id="myChart" width="980px" height="300px" class="span12"></canvas>
 			<div class='span12'><br /></div>
 			<div class='span2'>
 				<input type="text" id="beg_month" class="form-control" placeholder="BEG_MONTH" value="<{$beg_month}>"/>

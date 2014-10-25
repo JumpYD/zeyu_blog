@@ -41,8 +41,8 @@ foreach ($earnings as $earning)
 	if ($earning['month'] >= $drw_beg and $earning['month'] <= $drw_end)
 	{
 		$month[] = $earning['month'];
-		$income[] = $earning['income'];
-		$expend[] = $earning['expend'];
+		$income[] = $earning['income']/10;
+		$expend[] = $earning['expend']/10;
 	}
 }
 $average = round((array_sum($income)-array_sum($expend))/count($month), 2);

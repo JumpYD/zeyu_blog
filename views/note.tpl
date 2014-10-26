@@ -48,7 +48,7 @@ function drw_earnings()
 			<div class='span2'>
 			</div>
 			<div class='span2'>
-				<input type="text" class="form-control" placeholder="Text input" readonly='readonly' value='平均月结余：<{$average}>'\>
+				<input type="text" class="form-control" placeholder="Text input" readonly='readonly' value='平均月结余：<{$average}>K'\>
 			</div>
 			<div class='span12'>
 				<br /><br />

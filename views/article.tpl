@@ -28,7 +28,7 @@ p
 			<style>
 			.isStuck
 			{
-				width:56%;
+				width:57%;
 			}
 			</style>
 			<div class="navbar-wrapper">

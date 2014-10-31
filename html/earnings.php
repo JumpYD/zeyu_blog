@@ -41,11 +41,11 @@ foreach ($earnings as $earning)
 	if ($earning['month'] >= $drw_beg and $earning['month'] <= $drw_end)
 	{
 		$month[] = $earning['month'];
-		$income[] = $earning['income']/1000;
-		$expend[] = $earning['expend']/1000;
+		$income[] = $earning['income'];
+		$expend[] = $earning['expend'];
 	}
 }
-$average = round((array_sum($income)-array_sum($expend))/count($month), 3);
+$average = round((array_sum($income)-array_sum($expend))/count($month), 2);
 
 $smarty->assign('det_beg_month', $det_beg);
 $smarty->assign('det_end_month', $det_end);

@@ -48,7 +48,7 @@ function drw_earnings()
 			<div class='span2'>
 			</div>
 			<div class='span2'>
-				<input type="text" class="form-control" placeholder="Text input" readonly='readonly' value='平均月结余：<{$average}>K'\>
+				<input type="text" class="form-control" placeholder="Text input" readonly='readonly' value='平均月结余：<{$average}>'\>
 			</div>
 			<div class='span12'>
 				<br /><br />
@@ -68,7 +68,7 @@ function drw_earnings()
 		<{/foreach}>
 	</div>
 </div>
-<script src="../resource/Chart.js-master/Chart.js"></script>
+<script src="../resource/Chart.js-master/Chart.min.js"></script>
 <script type="text/javascript" language="javascript">
 var data =
 {

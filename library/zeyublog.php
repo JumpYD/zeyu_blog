@@ -148,6 +148,7 @@ class ZeyuBlogOpt
 					else
 						$line_sum = $code_line;
 				}
+
 				$contents .= '<div id="editor_'.$i.'" style="position: relative; width: 765px; height: '.($line_sum*19+10).'px;">'.trim($code).'</div><p>&nbsp;</p>';
 				$codes[] = array('id'=>'editor_'.$i++, 'mode'=>$mode);
 				continue;

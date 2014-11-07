@@ -5,16 +5,24 @@
 function js_label(label_id, label_opt)
 {
 	var label_json = $('#'+label_opt+'_json').html();
-	$.post(
+	$.post
+	(
 		'search.php',
-		{label_json:label_json, opt_type:'change', label_id:label_id},
-		function(data) { $('#'+label_opt+'_json').html(data); }
+		{ label_json:label_json, opt_type:'change', label_id:label_id },
+		function(data)
+		{
+			$('#'+label_opt+'_json').html(data);
+		}
 	);
 	var label_icon = $('#label_icon_'+label_id).html();
-	$.post(
-	'search.php',
-	{label_icon:label_icon, opt_type:'icon'},
-	function (data) { $('#label_icon_'+label_id).html(data); }
+	$.post
+	(
+		'search.php',
+		{ label_icon:label_icon, opt_type:'icon' },
+		function (data)
+		{
+			$('#label_icon_'+label_id).html(data);
+		}
 	);
 }
 

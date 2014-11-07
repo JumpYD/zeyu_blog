@@ -140,7 +140,14 @@ class ZeyuBlogOpt
 					$code .= self::str_trans($line, false).PHP_EOL;
 					$code_line++;
 				}
-				$line_sum = $line_sum > $code_line ? $line_sum : $code_line;
+				#$line_sum = $line_sum > $code_line ? $line_sum : $code_line;
+				if ($line_sum == 0)
+				{
+					if ($code_line > 30)
+						$line_sum = 30;
+					else
+						$line_sum = $code_line;
+				}
 				$contents .= '<div id="editor_'.$i.'" style="position: relative; width: 765px; height: '.($line_sum*19+10).'px;">'.trim($code).'</div><p>&nbsp;</p>';
 				$codes[] = array('id'=>'editor_'.$i++, 'mode'=>$mode);
 				continue;

@@ -2,15 +2,15 @@
 require_once(dirname(__FILE__).'/'.'head.php');
 LogOpt::init('display_debin');
 
-$page = isset($_GET['page'])?intval($_GET['page']):1;
+$page = isset($_REQUEST['page'])?intval($_REQUEST['page']):1;
 if ($page<1)
 	$page = 1;
-$category_id = $_GET['category'];
+$category_id = $_REQUEST['category'];
 switch($category_id)
 {
 case 'search':
 case 'searchall':
-	display_result($_GET);
+	display_result($_REQUEST);
 	break;
 case 'mood':
 	display_mood();
@@ -110,6 +110,8 @@ function display_debin()
 
 function display_result($input)
 {
+	var_dump($input['tags']);
+	exit;
 	global $page;
 	global $category_id;
 	$article_infos = array();
@@ -242,8 +244,8 @@ function display($category, $title, $category_count, $page, $infos, $ismood=fals
 {
 	global $smarty;
 	global $category_id;
-	global $_GET;
-	$input = $_GET;
+	global $_REQUEST;
+	$input = $_REQUEST;
 	if (isset($input['page']))
 		unset($input['page']);
 	if (isset($input['tags']))

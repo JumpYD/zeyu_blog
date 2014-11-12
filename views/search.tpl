@@ -2,38 +2,88 @@
 <link href="../resource/bootstrap/css/site.css" rel="stylesheet">
 <script src="../resource/bootstrap/js/jquery.js"></script>
 <script language="javascript">
-function js_label(label_id, label_opt)
+function js_label(label_id)
 {
-	var label_json = $('#'+label_opt+'_json').html();
-	$.post
-	(
-		'search.php',
-		{ label_json:label_json, opt_type:'change', label_id:label_id },
-		function(data)
-		{
-			$('#'+label_opt+'_json').html(data);
-		}
-	);
-	var label_icon = $('#label_icon_'+label_id).html();
-	$.post
-	(
-		'search.php',
-		{ label_icon:label_icon, opt_type:'icon' },
-		function (data)
-		{
-			$('#label_icon_'+label_id).html(data);
-		}
-	);
+	var item = $('#icon_'+label_id);
+	if (item.hasClass('glyphicon-bookmark'))
+	{
+		item.removeClass('glyphicon-bookmark');
+		item.addClass('glyphicon-ok');
+	}
+	else
+	{
+		item.removeClass('glyphicon-ok');
+		item.addClass('glyphicon-bookmark');
+	}
 }
 
 function js_commit(opt_type)
 {
-	var search_text = document.getElementById('search').value;
-	var tags_json = $('#tags_json').html();
-	var dates_json = $('#dates_json').html();
-	location = '/html/debin.php?category=search&dates='+dates_json+'&tags='+tags_json+'&search='+search_text+'&opt_type='+opt_type;
+	var form = document.createElement("form");
+	form.setAttribute("method", 'post');
+	form.setAttribute("action", 'debin.php');
+
+	var hiddenField = document.createElement("input");
+	hiddenField.setAttribute("type", "hidden");
+	hiddenField.setAttribute("name", 'category');
+	hiddenField.setAttribute("value", 'search');
+	form.appendChild(hiddenField);
+
+	hiddenField = document.createElement("input");
+	hiddenField.setAttribute("type", "hidden");
+	hiddenField.setAttribute("name", 'opt_type');
+	hiddenField.setAttribute("value", opt_type);
+	form.appendChild(hiddenField);
+
+	hiddenField = document.createElement("input");
+	hiddenField.setAttribute("type", "hidden");
+	hiddenField.setAttribute("name", 'search');
+	hiddenField.setAttribute("value", $('#search').val());
+	form.appendChild(hiddenField);
+
+	var tags = Array();
+
+	var items = $('.tag_icon');
+	for (var i=0; i<items.length; ++i)
+	{
+		var item = items.eq(i);
+		if (item.hasClass('glyphicon-ok'))
+		{
+			tags.push(item.attr('id'));
+		}
+	}
+	
+	var items = $('.date_icon');
+	for (var i=0; i<items.length; ++i)
+	{
+		var item = items.eq(i);
+		if (item.hasClass('glyphicon-ok'))
+		{
+			tags.push(item.attr('id'));
+		}
+	}
+
+	hiddenField = document.createElement("input");
+	hiddenField.setAttribute("type", "hidden");
+	hiddenField.setAttribute("name", 'tags');
+	hiddenField.setAttribute("value", tags);
+	form.appendChild(hiddenField);
+
+	document.body.appendChild(form);
+	form.submit();
+	
+	//var search_text = document.getElementById('search').value;
+	//var tags_json = $('#tags_json').html();
+	//var dates_json = $('#dates_json').html();
+	//location = '/html/debin.php?category=search&dates='+dates_json+'&tags='+tags_json+'&search='+search_text+'&opt_type='+opt_type;
 }
 </script>
+<style>
+.chosen_label
+{
+	cursor: pointer;
+}
+</style>
 
 <div id="myCarousel" class="carousel slide">
 	<div class="carousel-inner">
@@ -73,12 +123,10 @@ function js_commit(opt_type)
 						<{/if}>
 							<td>
 								<div id="label_icon_<{$info.tag_id}>">
-									<a href="javascript:void(0);" onclick='js_label(<{$info.tag_id}>, "tags")'>
-										<span class="label" id="<{$info.tag_id}>" style="height:40px">
-											<i class="glyphicon glyphicon-bookmark"></i>
+									<span class="label chosen_label" id="<{$info.tag_id}>" onclick="js_label('tag_<{$info.tag_id}>')" style="height:40px">
+										<i class="glyphicon glyphicon-bookmark tag_icon" id="icon_tag_<{$info.tag_id}>"></i>
 										&nbsp;&nbsp;<{$info.tag_name}>
-										</span>
-									</a>
+									</span>
 								</div>
 							</td>
 							<td><{$info.article_count}></td>
@@ -105,12 +153,10 @@ function js_commit(opt_type)
 						<tr>
 							<td>
 								<div id="label_icon_<{$info.id}>">
-									<a href="javascript:void(0);" onclick='js_label(<{$info.id}>, "dates")'>
-										<span class="label" id="<{$info.id}>" style="height:40px">
-											<i class="glyphicon glyphicon-bookmark"></i>
+									<span class="label chosen_label" id="<{$info.id}>" onclick="js_label('date_<{$info.id}>')" style="height:40px">
+										<i class="glyphicon glyphicon-bookmark date_icon" id="icon_date_<{$info.id}>"></i>
 										&nbsp;&nbsp;<{$info.month}>
-										</span>
-									</a>
+									</span>
 								</div>
 							</td>
 							<td><{$info.article}></td>

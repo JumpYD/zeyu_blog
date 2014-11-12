@@ -9,7 +9,7 @@ p
 <div class="bs-header" id="content" style="FILTER: progid:DXImageTransform.Microsoft.Gradient (GradientType=1, StartColorStr=#d9e45d EndColorStr=darkolivegreen .opacity{ opacity:0.3; filter: alpha(opacity=30); background-color:#000; }" >
 	<div class="header container">
 		<br />
-		<h1><{$title}></h1>
+		<h1 style='font-family:"PT Serif","Georgia","Helvetica Neue",Arial,sans-serif'><{$title}></h1>
 		<p style="text-indent:0em;"><{$title_desc}></p>
 		<p style="text-indent:5em;" class="bs-header-small"><{$inserttime}></p>
 	</div>

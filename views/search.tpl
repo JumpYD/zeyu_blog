@@ -71,11 +71,6 @@ function js_commit(opt_type)
 
 	document.body.appendChild(form);
 	form.submit();
-	
-	//var search_text = document.getElementById('search').value;
-	//var tags_json = $('#tags_json').html();
-	//var dates_json = $('#dates_json').html();
-	//location = '/html/debin.php?category=search&dates='+dates_json+'&tags='+tags_json+'&search='+search_text+'&opt_type='+opt_type;
 }
 </script>
 <style>

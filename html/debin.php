@@ -11,6 +11,7 @@ if ($limit < 1)
 	$limit = 1;
 
 $category_id = $_REQUEST['category'];
+
 switch($category_id)
 {
 case 'search':
@@ -118,6 +119,8 @@ function display_result($input)
 	global $page;
 	global $limit;
 	$start = ($page-1)*$limit;
+	if (intval($input['category']) == 0)
+		$category = $input['category'];
 
 	$count_sql = 'select count(*) as count from article as A, article_tag_relation as B where A.article_id = B.article_id';
 	$sql = 'select A.* from article as A, article_tag_relation as B where A.article_id = B.article_id';

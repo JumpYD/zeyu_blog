@@ -256,7 +256,7 @@
 			</script>
 			<script>document.write(unescape("%3Cscript src='http://hm.baidu.com/h.js%3F8c869b543955d43e496c2efee5b55823' type='text/javascript'%3E%3C/script%3E"));qext.stat.ns('m_20120713_qing_pv');</script>
 		</div>
-<form action="debin.php" method="post" name="params_form">
+<form action="/html/debin.php" method="post" name="params_form" id="params_form">
 	<input type="text" id='page' name='page' value="<{$post_infos['page']}>"/>
 	<input type="text" id='limit' name='limit' value="<{$post_infos['limit']}>"/>
 	<input type="text" id='tags' name='tags' value="<{$post_infos['tags']}>"/>
@@ -272,6 +272,6 @@
 	function js_submit(pagenum)
 	{
 		$('#page').val(pagenum);
-		$('#params_form').submit();
+		$('#params_form')[0].submit();
 	}
 </script>

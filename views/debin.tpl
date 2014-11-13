@@ -30,7 +30,69 @@
 	<!-->
 	<link rel=stylesheet href="../resource/hibaidu/css/e05e57b1.css">
 	<!--<![endif]-->
-	<style type="text/css">#customDoc{background:url(<{$background}>) fixed no-repeat;background-size:cover;}#customDoc .mod-cs-contentblock{background-color:rgba(255,255,255,.4);-moz-border-radius: 15px;-webkit-border-radius: 15px;border-radius:15px;position:relative;_overflow:hidden}#customDoc .mod-cs-contentblock .cs-contentblock-bg{display:block;position:absolute;bottom:0;top:0;left:0;right:0;z-index:-1;_height:2000px;_width:100%;_zoom:1;background-color:rgb(255,252,252);-moz-opacity: 0;-webkit-opacity:0;opacity: 0;filter:alpha(opacity=0);}#customDoc .mod-cs-header{margin-top:17px}#customDoc .mod-cs-header .cs-header-spacename,#customDoc .mod-cs-header .cs-header-spacesummary{color:rgb(15,15,15)}#customDoc .mod-cs-sidebar .cs-sidebar-link,#customDoc .mod-cs-sidebar .cs-sidebar-link span,#customDoc .mod-cs-sidebar a.cs-sidebar-hoverlink:hover,#customDoc .mod-cs-contentblock .cs-contentblock-detailcontent a,#customDoc .mod-cs-contentblock .cs-contentblock-detailcontenthover a:hover,#customDoc .mod-cs-contentblock .cs-contentblock-link,#customDoc .mod-cs-contentblock a.cs-contentblock-hoverlink:hover,#customDoc .mod-cs-footer a,#customDoc .mod-cs-footer span{color:rgb(84,156,245)}#customDoc .mod-cs-sidebar span.cs-sidebar-follow{border-color:rgb(84,156,245)}#customDoc .mod-cs-pagebar a:hover,#customDoc .mod-cs-pagebar span,#customDoc .mod-cs-sidebar a.cs-sidebar-hoverbglink:hover,#customDoc .mod-cs-contentblock a.cs-contentblock-hoverbglink:hover{background:rgb(84,156,245)}#qBack2topBtn .back2top-ani-icon .back2top-icon-real{background:url(images/default.png) left top no-repeat;background:url(images/default.gif) left top no-repeat\9}#qBack2topBtn .back2top-ani-icon .back2top-icon-bg{background-color:rgb(84,156,245)}</style>
+	<style type="text/css">
+		#customDoc
+		{
+			background:url(<{$background}>) fixed no-repeat;
+			background-size:cover;
+		}
+		#customDoc .mod-cs-contentblock
+		{
+			background-color:rgba(255,255,255,.4);
+			-moz-border-radius: 15px;
+			-webkit-border-radius: 15px;
+			border-radius:15px;
+			position:relative;
+			_overflow:hidden
+		}
+		#customDoc .mod-cs-contentblock .cs-contentblock-bg
+		{
+			display:block;
+			position:absolute;
+			bottom:0;
+			top:0;
+			left:0;
+			right:0;
+			z-index:-1;
+			_height:2000px;
+			_width:100%;
+			_zoom:1;
+			background-color:rgb(255,252,252);
+			-moz-opacity: 0;
+			-webkit-opacity:0;
+			opacity: 0;
+			filter:alpha(opacity=0);
+		}
+		#customDoc .mod-cs-header
+		{
+			margin-top:17px
+		}
+		#customDoc .mod-cs-header .cs-header-spacename,#customDoc .mod-cs-header .cs-header-spacesummary
+		{
+			color:rgb(15,15,15)
+		}
+		#customDoc .mod-cs-sidebar .cs-sidebar-link,#customDoc .mod-cs-sidebar .cs-sidebar-link span,#customDoc .mod-cs-sidebar a.cs-sidebar-hoverlink:hover,#customDoc .mod-cs-contentblock .cs-contentblock-detailcontent a,#customDoc .mod-cs-contentblock .cs-contentblock-detailcontenthover a:hover,#customDoc .mod-cs-contentblock .cs-contentblock-link,#customDoc .mod-cs-contentblock a.cs-contentblock-hoverlink:hover,#customDoc .mod-cs-footer a,#customDoc .mod-cs-footer span
+		{
+			color:rgb(84,156,245)
+		}
+		#customDoc .mod-cs-sidebar span.cs-sidebar-follow
+		{
+			border-color:rgb(84,156,245)
+		}
+		#customDoc .mod-cs-pagebar a:hover,#customDoc .mod-cs-pagebar span,#customDoc .mod-cs-sidebar a.cs-sidebar-hoverbglink:hover,#customDoc .mod-cs-contentblock a.cs-contentblock-hoverbglink:hover
+		{
+			background:rgb(84,156,245)
+		}
+		#qBack2topBtn .back2top-ani-icon .back2top-icon-real
+		{
+			background:url(images/default.png) left top no-repeat;
+			background:url(images/default.gif) left top no-repeat\9
+		}
+		#qBack2topBtn .back2top-ani-icon .back2top-icon-bg
+		{
+			background-color:rgb(84,156,245)
+		}
+	</style>
 	<script src="../resource/hibaidu/js/4d5f41d2.js">
 	</script>
 	<script>wpo.head=new Date*1;</script>
@@ -75,9 +137,9 @@
 					<a href="article.php?id=<{$article_info['article_id']}>" class="a-incontent a-title cs-contentblock-hoverlink" target=_blank>
 						<{else}>
 						<div class="a-incontent a-title cs-contentblock-hoverlink">
-							<{/if}>
-							<{$article_info['title']}>
-							<{if $ismood!=true}>
+						<{/if}>
+						<{$article_info['title']}>
+						<{if $ismood!=true}>
 						</a>
 						<{else}>
 					</div>
@@ -107,19 +169,19 @@
 			<section id=pagerBar class="mod-blog-pagerbar mod-cs-pagebar" style="display: block;font-size:62.5%">
 			<div class="mod-pagerbar">
 				<{if $first != ''}>
-				<a href="?page=<{$first}>&<{$param}>" class="first">首页</a>
-				<a href="?page=<{$pre}>&<{$param}>">&lt;&lt;上一页</a>
+				<a href="javascript:void(0)" onclick="js_submit('<{$first}>')" class="first">首页</a>
+				<a href="javascript:void(0)" onclick="js_submit('<{$pre}>')">&lt;&lt;上一页</a>
 				<{/if}>
 				<{foreach item=pagenum from=$list}>
 				<{if $page==$pagenum}>
 				<span><{$pagenum}></span>
 				<{else}>
-				<a href="?page=<{$pagenum}>&<{$param}>" hidefocus=""><{$pagenum}></a>
+				<a href="javascript:void(0)" onclick="js_submit('<{$pagenum}>')" hidefocus=""><{$pagenum}></a>
 				<{/if}>
 				<{/foreach}>
 				<{if $end != ''}>
-				<a href="?page=<{$last}>&<{$param}>" class="next">下一页&gt;&gt;</a>
-				<a href="?page=<{$end}>&<{$param}>" class="last">尾页</a>
+				<a href="javascript:void(0)" onclick="js_submit('<{$last}>')" class="next">下一页&gt;&gt;</a>
+				<a href="javascript:void(0)" onclick="js_submit('<{$end}>')" class="last">尾页</a>
 				<{/if}>
 			</div>
 			</section>
@@ -172,14 +234,6 @@
 			</section>
 			<script src="http://hi.bdimg.com/static/qbase/js/mod/mod_foot.js?v=382c615f.js">
 			</script>
-			<script>
-				qing.dom.ready(function(){
-				if (qVisitorInfo.loginStatus == 'activated'){
-				qext.stat.ns('m_20121012_loga_num');
-				qext.fn.setStoken();
-				}
-				});
-			</script>
 			<script>qext.stat.ns('m_20120425_20001');</script>
 			<script src="http://hi.bdimg.com/static/qhome/js/home/20000/home.js?v=3b12f8e5.js">
 			</script>
@@ -202,3 +256,22 @@
 			</script>
 			<script>document.write(unescape("%3Cscript src='http://hm.baidu.com/h.js%3F8c869b543955d43e496c2efee5b55823' type='text/javascript'%3E%3C/script%3E"));qext.stat.ns('m_20120713_qing_pv');</script>
 		</div>
+<form action="debin.php" method="post" name="params_form">
+	<input type="text" id='page' name='page' value="<{$post_infos['page']}>"/>
+	<input type="text" id='limit' name='limit' value="<{$post_infos['limit']}>"/>
+	<input type="text" id='tags' name='tags' value="<{$post_infos['tags']}>"/>
+	<input type="text" id='category' name='category' value="<{$post_infos['category']}>"/>
+</form>
+<script>
+	qing.dom.ready(function(){
+		if (qVisitorInfo.loginStatus == 'activated'){
+			qext.stat.ns('m_20121012_loga_num');
+			qext.fn.setStoken();
+		}
+	});
+	function js_submit(pagenum)
+	{
+		$('#page').val(pagenum);
+		$('#params_form').submit();
+	}
+</script>

@@ -1,19 +1,6 @@
 <?php
 require_once (dirname(__FILE__).'/'.'head.php');
-$opt_type = isset($_REQUEST['opt_type'])?strtolower($_REQUEST['opt_type']): 'show';
 LogOpt::init('article_searcher_'.$opt_type, true);
-switch ($opt_type)
-{
-case 'show':
-	search_show_opt($_REQUEST);
-	break;
-case 'change':
-	search_change_opt($_REQUEST);
-	break;
-case 'icon':
-	search_icon_opt($_REQUEST);
-	break;
-}
 
 function search_show_opt($input)
 {
@@ -64,33 +51,5 @@ function search_show_opt($input)
 	$smarty->assign('title', '检索一下');
 	$smarty->assign('category_id', 1);
 	$smarty->display('search.tpl');
-}
-
-function search_change_opt($input)
-{
-	$label_json = $input['label_json'];
-	$input_json = StringOpt::spider_string($label_json, '$[$', '$]$');
-	$labels = json_decode($input_json, true);
-	if (in_array($input['label_id'], $labels))
-	{
-		$idx = array_search($input['label_id'], $labels);
-		unset($labels[$idx]);
-		$labesls = array_values($labels);
-	}
-	else
-	{
-		$labels[] = $input['label_id'];
-	}
-	$label_json = json_encode($labels);
-	echo str_replace('$[$'.$input_json.'$]$', '$[$'.$label_json.'$]$', $input['label_json']);
-}
-
-function search_icon_opt($input)
-{
-	$label_icon = $input['label_icon'];
-	if (strpos($label_icon, 'glyphicon-bookmark') === false)
-		echo str_replace('glyphicon-ok', 'glyphicon-bookmark', $label_icon);
-	else
-		echo str_replace('glyphicon-bookmark', 'glyphicon-ok', $label_icon);
 }
 ?>

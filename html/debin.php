@@ -17,10 +17,54 @@ $sphinx = get_sphinx();
 switch($query_info['category'])
 {
 case 'mood':
-	display_mood($query_info);
+	display_mood();
 	break;
 default:
-	display_article($query_info);
+	display_article();
+}
+
+function display_article()
+{
+	global $category_map, $sphinx, $query_info;
+
+	$category = $query_info['category'];
+
+	$count_sql = 'select count(distinct(A.article_id)) as count from article as A, article_tag_relation as B where 1';
+	$sql = 'select A.* from article as A, article_tag_relation as B where 1';
+
+	$tags = explode(',', $query_info['tags']);
+	$where_str = get_where($tags);
+
+	switch ($category)
+	{
+	case 'all':
+		break;
+	case 0:
+		$where_str .= ' and A.category_id != 5';
+		break;
+	default:
+		$where_str .= ' and A.category_id = '.intval($category);
+		break;
+	}
+
+	if (!empty($query_info['search']))
+	{
+		$where_str .= ' and A.draft like "%'.mysql_escape_string($query_info['search']).'%"';
+	}
+
+	$count_sql .= $where_str;
+	$count = MySqlOpt::select_query ($count_sql);
+	$count = intval($count[0]['count']);
+
+	$sql .= $where_str.' group by article_id order by updatetime desc limit '.$query_info['start'].','.$query_info['limit'];
+	$article_infos = MySqlOpt::select_query ($sql);
+
+	$infos = array();
+	foreach ($article_infos as $info)
+		if (($info = select_article($info)) !== false)
+			$infos[] = $info;
+
+	display($category_map[$category], $count, $infos);
 }
 
 function display_mood()
@@ -80,6 +124,7 @@ function get_query_info($input)
 
 	$query_info['category'] = isset($input['category']) ? $input['category'] : '';
 	$query_info['search'] = isset($input['search']) ? $input['search'] : '';
+	$query_info['tags'] = isset($input['tags']) ? $input['tags'] : '';
 	return $query_info;
 }
 
@@ -119,7 +164,7 @@ function get_where ($tags, $ismood = false)
 			}
 		}
 		if (!empty($tag_ids) && !$ismood)
-			$where_str .= ' and B.tag_id in ('.implode(',', $tag_ids).')';
+			$where_str .= ' and A.article_id = B.article_id and B.tag_id in ('.implode(',', $tag_ids).')';
 		if (!empty($dates))
 		{
 			foreach ($dates as $date)
@@ -149,6 +194,43 @@ function select_mood ($info)
 	}
 	$infos['date'] = $date[2];
 	$infos['month'] = $date[1].'/'.$date[0];
+	return $infos;
+}
+
+function select_article($info)
+{
+	$infos = array();
+
+	$infos['title'] = $info['title'];
+
+	$date = explode(' ', $info['inserttime']);
+	if (count($date) != 2)
+	{
+		LogOpt::set ('exception', 'inserttime get error', 'article_id', $info['article_id'], 'inserttime', $info['inserttime']);
+		return false;
+	}
+	$date = $date[0];
+	$date = explode ('-', $date);
+	if (count($date) != 3)
+	{
+		LogOpt::set ('exception', 'inserttime.date get error', 'article_id', $info['article_id'], 'inserttime', $info['inserttime']);
+		return false;
+	}
+	$infos['date'] = $date[2];
+	$infos['month'] = $date[1].'/'.$date[0];
+	$infos['tags'] = array_slice(ZeyuBlogOpt::get_tags($info['article_id']), 0, 4);
+	$contents = ZeyuBlogOpt::pre_treat_article($info['draft']);
+	$imgpath = StringOpt::spider_string($contents, 'img<![&&]>src="', '"');
+	if ($imgpath == null)
+	{
+		$infos['contents'] = strip_tags($contents);
+		$infos['contents'] = mb_substr($infos['contents'], 0, 500, 'utf-8');
+	}
+	else
+	{
+		$infos['contents'] = '<p><img class="img-thumbnail" alt="200x200" style="height: 200px;" src="'.$imgpath.'"></p><br /><p>'.mb_substr(strip_tags($contents), 0, 100, 'utf-8').'</p>';
+	}
+	$infos['article_id'] = $info['article_id'];
 	return $infos;
 }
 

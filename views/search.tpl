@@ -26,13 +26,7 @@ function js_commit(opt_type)
 	var hiddenField = document.createElement("input");
 	hiddenField.setAttribute("type", "hidden");
 	hiddenField.setAttribute("name", 'category');
-	hiddenField.setAttribute("value", 'search');
-	form.appendChild(hiddenField);
-
-	hiddenField = document.createElement("input");
-	hiddenField.setAttribute("type", "hidden");
-	hiddenField.setAttribute("name", 'opt_type');
-	hiddenField.setAttribute("value", opt_type);
+	hiddenField.setAttribute("value", '0');
 	form.appendChild(hiddenField);
 
 	hiddenField = document.createElement("input");
@@ -92,9 +86,20 @@ function js_commit(opt_type)
 						<div class="form-group">
 							<input type="text" style="width:400px;height:40px" class="form-control" id="search" placeholder="Search" value="<{$search_text}>">
 						</div>&nbsp;&nbsp;
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+						内容 <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" role="menu">
+							<li>标题</li>
+							<li>内容</li>
+							<li>内容（全部）</li>
+							<li>心情</li>
+						</ul>
 						<button type="submit" class="btn btn-default" style="height:40px" onclick="js_commit('title')">标&nbsp;&nbsp;题</button>
+						<!--
 						<button type="submit" class="btn btn-default" style="height:40px" onclick="js_commit('contents')">内&nbsp;&nbsp;容</button>
 						<button type="submit" class="btn btn-default" style="height:40px" onclick="js_commit('mood')">心&nbsp;&nbsp;情</button>
+						-->
 					</form>
 					</p>
 				</div>
@@ -105,9 +110,6 @@ function js_commit(opt_type)
 <div class="container bs-docs-container" style="background-color:rgba(0,0,0,0)">
 	<div class="row">
 		<div class="span6">
-			<div id="tags_json" name="tags_json"> 
-				<input type="hidden" value='$[$$]$'/>
-			</div>
 			<br />
 			<div class="alert">
 				<div style="scrollbar-face-color: #889b9f;  scrollbar-highlight-color: #c3d6da; overflow: auto;scrollbar-shadow-color: #3d5054; scrollbar-3dlight-color: #3d5054; scrollbar-arrow-color: #ffd6da;scrollbar-darkshadow-color: #85989c; height: 500px">
@@ -137,9 +139,6 @@ function js_commit(opt_type)
 			</div>
 		</div>
 		<div class="span4">
-			<div id="dates_json" name="dates_json"> 
-				<input type="hidden" value='$[$$]$'/>
-			</div>
 			<br />
 			<div class="alert">
 				<div style="scrollbar-face-color: #889b9f;  scrollbar-highlight-color: #c3d6da; overflow: auto;scrollbar-shadow-color: #3d5054; scrollbar-3dlight-color: #3d5054; scrollbar-arrow-color: #ffd6da;scrollbar-darkshadow-color: #85989c; height: 500px">

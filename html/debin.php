@@ -128,6 +128,7 @@ function get_query_info($input)
 
 	return $query_info;
 }
+
 function get_sphinx()
 {
 	$sphinx = new SphinxClient();
@@ -138,6 +139,7 @@ function get_sphinx()
 
 	return $sphinx;
 }
+
 function get_where ($tags, $ismood = false)
 {
 	$dates = array();
@@ -175,17 +177,20 @@ function get_where ($tags, $ismood = false)
 	}
 	return $where_str;
 }
+
 function select_mood ($info)
 {
 	$infos = array();
 	$infos['title'] = $info['contents'];
 	$infos['contents'] = $info['inserttime'];
+
 	$date = explode (' ', $info['inserttime']);
 	if (count($date) != 2)
 	{
 		LogOpt::set ('exception', 'inserttime get error', 'mood_id', $info['mood_id'], 'inserttime', $info['inserttime']);
 		return false;
 	}
+
 	$date = $date[0];
 	$date = explode ('-', $date);
 	if (count($date) != 3)
@@ -193,20 +198,25 @@ function select_mood ($info)
 		LogOpt::set ('exception', 'inserttime.date get error', 'mood_id', $info['mood_id'], 'inserttime', $info['inserttime']);
 		return false;
 	}
+
 	$infos['date'] = $date[2];
 	$infos['month'] = $date[1].'/'.$date[0];
+
 	return $infos;
 }
+
 function select_article($info)
 {
 	$infos = array();
 	$infos['title'] = $info['title'];
+
 	$date = explode(' ', $info['inserttime']);
 	if (count($date) != 2)
 	{
 		LogOpt::set ('exception', 'inserttime get error', 'article_id', $info['article_id'], 'inserttime', $info['inserttime']);
 		return false;
 	}
+
 	$date = $date[0];
 	$date = explode ('-', $date);
 	if (count($date) != 3)
@@ -214,9 +224,11 @@ function select_article($info)
 		LogOpt::set ('exception', 'inserttime.date get error', 'article_id', $info['article_id'], 'inserttime', $info['inserttime']);
 		return false;
 	}
+
 	$infos['date'] = $date[2];
 	$infos['month'] = $date[1].'/'.$date[0];
 	$infos['tags'] = array_slice(ZeyuBlogOpt::get_tags($info['article_id']), 0, 4);
+
 	$contents = ZeyuBlogOpt::pre_treat_article($info['draft']);
 	$imgpath = StringOpt::spider_string($contents, 'img<![&&]>src="', '"');
 	if ($imgpath == null)
@@ -228,14 +240,19 @@ function select_article($info)
 	{
 		$infos['contents'] = '<p><img class="img-thumbnail" alt="200x200" style="height: 200px;" src="'.$imgpath.'"></p><br /><p>'.mb_substr(strip_tags($contents), 0, 100, 'utf-8').'</p>';
 	}
+
 	$infos['article_id'] = $info['article_id'];
+
 	return $infos;
 }
+
 function display($title, $category_count, $infos, $ismood=false)
 {
 	global $smarty, $query_info;
+
 	$page = $query_info['page'];
 	$limit = $query_info['limit'];
+
 	$allcount = ($category_count-1)/$limit+1;
 	$allcount = intval($allcount);
 	if ($allcount > 1)
@@ -264,6 +281,7 @@ function display($title, $category_count, $infos, $ismood=false)
 		}
 		$smarty->assign('list', $pagelist);
 	}
+
 	$smarty->assign('category', $title.' -- '.$category_count);
 	$smarty->assign('ismood', $ismood);
 	$smarty->assign('title', $title);

@@ -23,6 +23,7 @@ for ($i=0; $i<$month_num; $i++)
 	$date = date("Y-m", mktime(0, 0, 0, date("m")-$i, date("d"), date("Y")));
 	$info['id'] = date('Y0m', mktime(0, 0, 0, date("m")-$i, date("d"), date("Y")));
 	$info['month'] = $date;
+
 	$query = 'select count(*) from article where inserttime>="'.$date.'-01 00:00:00" and inserttime<="'.$date.'-31 23:59:59"';
 	$article_count = MySqlOpt::select_query($query);
 	if ($article_count == null)
@@ -32,6 +33,7 @@ for ($i=0; $i<$month_num; $i++)
 	}
 	$article_count = intval($article_count[0]['count(*)']);
 	$info['article'] = $article_count;
+
 	$query = 'select count(*) from mood where inserttime>="'.$date.'-01 00:00:00" and inserttime<="'.$date.'-31 23:59:59"';
 	$mood_count = MySqlOpt::select_query($query);
 	if ($mood_count == null)
@@ -40,6 +42,7 @@ for ($i=0; $i<$month_num; $i++)
 		return;
 	}
 	$info['mood'] = intval($mood_count[0]['count(*)']);
+
 	$dates[] = $info;
 }
 

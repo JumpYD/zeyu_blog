@@ -17,6 +17,11 @@ function js_label(label_id)
 	}
 }
 
+function set_opt_type(opt_type)
+{
+	$("#chose_btn").html(opt_type + ' <span class="caret"></span>');
+}
+
 function js_commit(opt_type)
 {
 	var form = document.createElement("form");
@@ -26,7 +31,7 @@ function js_commit(opt_type)
 	var hiddenField = document.createElement("input");
 	hiddenField.setAttribute("type", "hidden");
 	hiddenField.setAttribute("name", 'category');
-	hiddenField.setAttribute("value", 'search');
+	hiddenField.setAttribute("value", '0');
 	form.appendChild(hiddenField);
 
 	hiddenField = document.createElement("input");
@@ -92,9 +97,21 @@ function js_commit(opt_type)
 						<div class="form-group">
 							<input type="text" style="width:400px;height:40px" class="form-control" id="search" placeholder="Search" value="<{$search_text}>">
 						</div>&nbsp;&nbsp;
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" name="chose_btn" id="chose_btn">
+						内容 <span class="caret"></span>
+						</button>
+						<ul style="position:absolute; left:822px; top:236px; text-shadow: none; height:145px; z-index:0" class="dropdown-menu" role="menu">
+							<li><a href="javascript:void(0)" onclick="set_opt_type('标题')">标题</a></li>
+							<li><a href="javascript:void(0)" onclick="set_opt_type('内容')">内容</a></li>
+							<li><a href="javascript:void(0)" onclick="set_opt_type('内容（全部）')">内容（全部）</a></li>
+							<li><a href="javascript:void(0)" onclick="set_opt_type('心情')">心情</a></li>
+						</ul>
+
+						<!--
 						<button type="submit" class="btn btn-default" style="height:40px" onclick="js_commit('title')">标&nbsp;&nbsp;题</button>
 						<button type="submit" class="btn btn-default" style="height:40px" onclick="js_commit('contents')">内&nbsp;&nbsp;容</button>
 						<button type="submit" class="btn btn-default" style="height:40px" onclick="js_commit('mood')">心&nbsp;&nbsp;情</button>
+						-->
 					</form>
 					</p>
 				</div>

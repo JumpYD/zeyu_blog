@@ -1,153 +1,149 @@
 <?php
+
 require_once(dirname(__FILE__).'/'.'head.php');
+require_once(dirname(__FILE__).'/../'.'library/SphinxClient.php');
+
 LogOpt::init('display_debin');
 
-$page = isset($_REQUEST['page']) ? intval($_REQUEST['page']) : 1;
-if ($page < 1)
-	$page = 1;
+$query_info = get_query_info($_REQUEST);
 
-$limit = isset($_REQUEST['limit']) ? intval($_REQUEST['limit']) : 10;
-if ($limit < 1)
-	$limit = 1;
-
-$category_id = $_REQUEST['category'];
-
-switch($category_id)
+$category_map = array(0=>'检索结果', 1=>'龙潭书斋', 2=>'读书笔记', 3=>'龙渊阁记', 4=>'技术分享', 5=>'龙泉日记', 6=>'龙泉财报', 'all'=>'检索结果', 'mood'=>'心情小说');
+if (!isset($category_map[$query_info['category']]))
 {
-case 'search':
-case 'searchall':
-	display_result($_REQUEST);
-	break;
+	ZeyuBlogOpt::warning_opt('请填写category参数', '/html');
+	return;
+}
+
+$sphinx = get_sphinx();
+
+switch($query_info['category'])
+{
 case 'mood':
 	display_mood();
 	break;
-case 'all':
-	display_all();
-	break;
 default:
-	display_debin();
-	break;
+	display_article();
 }
 
-function display_mood()
+function display_article()
 {
-	global $page;
-	$query = 'select * from mood order by inserttime desc';
-	$category_info = MySqlOpt::select_query($query);
-	if ($category_info == null)
-	{
-		ZeyuBlogOpt::warning_opt('页面不存在', '/html');
-		return;
-	}
-	$mood_infos = $category_info;
-	$infos = array();
-	for ($i=0; $i<10; ++$i)
-	{
-		if (!isset($mood_infos[($page-1)*10+$i]))
-			break;
-		$info = $mood_infos[($page-1)*10+$i];
-		if (($mood_info = select_article('mood', $info)) !== false)
-			$infos[] = $mood_info;
-	}
+	global $category_map, $sphinx, $query_info;
 
-	display('心情小说', '心情小说', count($category_info), $page, $infos, true);
-}
+	$category = $query_info['category'];
 
-function display_all()
-{
-	global $page;
-	$query = 'select * from article order by inserttime desc';
-	$articles = MySqlOpt::select_query($query);
-	if ($articles == null)
-	{
-		LogOpt::set('exception', 'select all articles error', MySqlOpt::errno(), MySqlOpt::error());
-		return;
-	}
-	$infos = array();
-	for ($i=0; $i<10; ++$i)
-	{
-		if (!isset($articles[($page-1)*10+$i]))
-			break;
-		if (($info = select_article('article', $articles[($page-1)*10+$i])) !== false)
-			$infos[] = $info;
-		else
-			--$i;
-	}
-	display('全部日志', '全部日志', count($articles), $page, $infos);
-}
+	$count_sql = 'select count(*) as count from article where 1';
+	$sql = 'select * from article where 1';
 
-function display_debin()
-{
-	global $category_id;
-	global $page;
-	$limit = 10;
-	$category_id = intval($category_id);
-	if ($category_id == null)
+	$tags = explode(',', $query_info['tags']);
+	$where_str = get_where($tags);
+
+	switch ($category)
 	{
-		ZeyuBlogOpt::warning_opt('请填写category参数', '/html');
-		return;
+	case 'all':
+		break;
+	case 0:
+		$where_str .= ' and category_id != 5';
+		break;
+	default:
+		$where_str .= ' and category_id = '.intval($category);
+		break;
 	}
 
-	$sql = 'select category from category where category_id='.$category_id;
-	$category_info = MySqlOpt::select_query($sql);
-	if ($category_info == null)
+	if (!empty($query_info['search']))
 	{
-		ZeyuBlogOpt::warning_opt('页面不存在', '/html');
-		return;
+		$where_str .= ' and draft like "%'.mysql_escape_string($query_info['search']).'%"';
 	}
-	$category = $category_info[0]['category'];
-	$sql = 'select count(*) as article_count from article where category_id='.$category_id;
-	$ret = MySqlOpt::select_query($sql);
-	$count = $ret[0]['article_count'];
-
-	$sql = 'select * from article where category_id='.$category_id.' order by inserttime desc limit '.(($page-1)*$limit).','.$limit;
-	$article_infos = MySqlOpt::select_query($sql);
-	$infos = array();
-	foreach ($article_infos as $info)
-		if (($info = select_article('article', $info)) !== false)
-			$infos[] = $info;
-
-	$sql = 'select count(*) as count from article where category_id ='.$category_id;
-	$article_count = MySqlOpt::select_query($sql);
-	$article_count = $article_count[0]['count'];
-
-	display($category, $category, $article_count, $page, $infos);
-}
-
-function display_result($input)
-{
-	global $page;
-	global $limit;
-	$start = ($page-1)*$limit;
-	if (intval($input['category']) == 0)
-		$category = $input['category'];
-
-	$count_sql = 'select count(*) as count from article as A, article_tag_relation as B where A.article_id = B.article_id';
-	$sql = 'select A.* from article as A, article_tag_relation as B where A.article_id = B.article_id';
-
-	$tags = explode(',', $input['tags']);
-	$where_str = get_where_str($tags);
 
 	$count_sql .= $where_str;
-	$count = MySqlOpt::select_query ($count_sql);
-	$count = $count[0]['count'];
 
-	$sql .= $where_str.' limit '.$start.','.$limit.' order by updatetime desc';
+	$count = MySqlOpt::select_query ($count_sql);
+	$count = intval($count[0]['count']);
+
+	$sql .= $where_str.' group by article_id order by updatetime desc limit '.$query_info['start'].','.$query_info['limit'];
 	$article_infos = MySqlOpt::select_query ($sql);
 
 	$infos = array();
 	foreach ($article_infos as $info)
-		if (($info = select_article('article', $info)) !== false)
+		if (($info = select_article($info)) !== false)
 			$infos[] = $info;
 
-	display('检索结果 -- '.$count, '检索结果', $count, $infos, $infos);
+	display($category_map[$category], $count, $infos);
 }
+function display_mood()
+{
+	global $category_map, $sphinx, $query_info;
 
-function get_where_str ($tags)
+	$count_sql = 'select count(*) as count from mood where 1';
+	$sql = 'select * from mood where 1';
+
+	$tags = explode(',', $query_info['tags']);
+	$where_str = get_where($tags, true);
+
+	$mood_ids = array();
+	if (!empty($query_info['search']))
+	{
+		$search = explode(' ', $query_info['search']);
+		foreach ($search as $key)
+		{
+			$key = trim($key);
+			if (empty($key))
+				continue;
+			$search_ret = $sphinx->query($key, 'mood');
+			if (empty($mood_ids))
+				$mood_ids = array_keys($search_ret['matches']);
+			else
+				$mood_ids = array_intersect($mood_ids, array_keys($search_ret['matches']));
+		}
+		$where_str .= ' and mood_id in ('.implode(',', $mood_ids).')';
+	}
+
+	$count_sql .= $where_str;
+	$count = MySqlOpt::select_query ($count_sql);
+	$count = intval($count[0]['count']);
+
+	$sql .= $where_str.' order by inserttime desc limit '.$query_info['start'].','.$query_info['limit'];
+	$mood_infos = MySqlOpt::select_query ($sql);
+
+	$infos = array();
+	foreach ($mood_infos as $info)
+		if (($info = select_mood($info)) !== false)
+			$infos[] = $info;
+
+	display($category_map[$query_info['category']], $count, $infos, true);
+}
+function get_query_info($input)
+{
+	$query_info['page'] = isset($input['page']) ? intval($input['page']) : 1;
+	if ($query_info['page'] < 1)
+		$query_info['page'] = 1;
+
+	$query_info['limit'] = isset($input['limit']) ? intval($input['limit']) : 10;
+	if ($query_info['limit'] < 1)
+		$query_info['limit'] = 1;
+
+	$query_info['start'] = ($query_info['page'] - 1) * $query_info['limit'];
+	$query_info['category'] = isset($input['category']) ? $input['category'] : '';
+	$query_info['search'] = isset($input['search']) ? $input['search'] : '';
+	$query_info['tags'] = isset($input['tags']) ? $input['tags'] : '';
+
+	return $query_info;
+}
+function get_sphinx()
+{
+	$sphinx = new SphinxClient();
+	$sphinx->setServer("localhost", 9312);
+	$sphinx->setMatchMode(SphinxClient::SPH_MATCH_PHRASE);
+	$sphinx->setLimits(0, 1000);
+	$sphinx->setMaxQueryTime(30);
+
+	return $sphinx;
+}
+function get_where ($tags, $ismood = false)
 {
 	$dates = array();
 	$tag_ids = array();
 	$where_str = '';
+
 	if (!empty($tags))
 	{
 		foreach ($tags as $tag)
@@ -158,7 +154,7 @@ function get_where_str ($tags)
 			switch ($tag_infos[1])
 			{
 			case 'tag':
-				$tag_ids[] = $tag_infos[2];
+				$tag_ids[] = mysql_escape_string($tag_infos[2]);
 				break;
 			case 'date':
 				$tag_infos[2][4] = '-';
@@ -168,52 +164,99 @@ function get_where_str ($tags)
 				break;
 			}
 		}
-		if (!empty($tag_ids))
-			$where_str .= ' and B.tag_id in ('.implode(',', $tag_ids).')';
+
+		if (!empty($tag_ids) && !$ismood)
+			$where_str .= ' and article_id in (select article_id from article_tag_relation where tag_id in ('.implode(',', $tag_ids).'))';
 		if (!empty($dates))
 		{
 			foreach ($dates as $date)
-				$where_str .= ' and A.updatetime >= "'.$date.'-01 00:00:00" and A.updatetime <= "'.$date.'-31 23:59:59"';
+				$where_str .= ' and updatetime >= "'.$date.'-01 00:00:00" and updatetime <= "'.$date.'-31 23:59:59"';
 		}
 	}
 	return $where_str;
 }
-
-function display($category, $title, $category_count, $page, $infos, $ismood=false)
+function select_mood ($info)
 {
-	global $smarty;
-	global $category_id;
-	global $_REQUEST;
-	$input = $_REQUEST;
-	if (isset($input['page']))
-		unset($input['page']);
-	$param = array();
-	foreach ($input as $key=>$value)
+	$infos = array();
+	$infos['title'] = $info['contents'];
+	$infos['contents'] = $info['inserttime'];
+	$date = explode (' ', $info['inserttime']);
+	if (count($date) != 2)
 	{
-		$param[] = trim($key).'='.trim($value);
+		LogOpt::set ('exception', 'inserttime get error', 'mood_id', $info['mood_id'], 'inserttime', $info['inserttime']);
+		return false;
 	}
-	$param = implode('&', $param);
-	$allcount = ($category_count-1)/10+1;
+	$date = $date[0];
+	$date = explode ('-', $date);
+	if (count($date) != 3)
+	{
+		LogOpt::set ('exception', 'inserttime.date get error', 'mood_id', $info['mood_id'], 'inserttime', $info['inserttime']);
+		return false;
+	}
+	$infos['date'] = $date[2];
+	$infos['month'] = $date[1].'/'.$date[0];
+	return $infos;
+}
+function select_article($info)
+{
+	$infos = array();
+	$infos['title'] = $info['title'];
+	$date = explode(' ', $info['inserttime']);
+	if (count($date) != 2)
+	{
+		LogOpt::set ('exception', 'inserttime get error', 'article_id', $info['article_id'], 'inserttime', $info['inserttime']);
+		return false;
+	}
+	$date = $date[0];
+	$date = explode ('-', $date);
+	if (count($date) != 3)
+	{
+		LogOpt::set ('exception', 'inserttime.date get error', 'article_id', $info['article_id'], 'inserttime', $info['inserttime']);
+		return false;
+	}
+	$infos['date'] = $date[2];
+	$infos['month'] = $date[1].'/'.$date[0];
+	$infos['tags'] = array_slice(ZeyuBlogOpt::get_tags($info['article_id']), 0, 4);
+	$contents = ZeyuBlogOpt::pre_treat_article($info['draft']);
+	$imgpath = StringOpt::spider_string($contents, 'img<![&&]>src="', '"');
+	if ($imgpath == null)
+	{
+		$infos['contents'] = strip_tags($contents);
+		$infos['contents'] = mb_substr($infos['contents'], 0, 500, 'utf-8');
+	}
+	else
+	{
+		$infos['contents'] = '<p><img class="img-thumbnail" alt="200x200" style="height: 200px;" src="'.$imgpath.'"></p><br /><p>'.mb_substr(strip_tags($contents), 0, 100, 'utf-8').'</p>';
+	}
+	$infos['article_id'] = $info['article_id'];
+	return $infos;
+}
+function display($title, $category_count, $infos, $ismood=false)
+{
+	global $smarty, $query_info;
+	$page = $query_info['page'];
+	$limit = $query_info['limit'];
+	$allcount = ($category_count-1)/$limit+1;
 	$allcount = intval($allcount);
 	if ($allcount > 1)
 	{
-		if ($allcount <= 10)
+		if ($allcount <= $limit)
 			$pagelist = range(1, $allcount);
-		else if ($page >= $allcount-5)
+		else if ($page >= $allcount - $limit/2)
 		{
-			$pagelist = range($allcount-9, $allcount);
+			$pagelist = range($allcount-$limit-1, $allcount);
 			$smarty->assign('first', '1');
 			$smarty->assign('pre', $page-1);
 		}
-		else if ($page <= 5)
+		else if ($page <= $limit/2)
 		{
-			$pagelist = range(1, 10);
+			$pagelist = range(1, $limit);
 			$smarty->assign('end', $allcount);
 			$smarty->assign('last', $page+1);
 		}
 		else
 		{
-			$pagelist = range($page-4, $page+5);
+			$pagelist = range($page-$limit/2-1, $page+$limit/2);
 			$smarty->assign('first', '1');
 			$smarty->assign('pre', $page-1);
 			$smarty->assign('end', $allcount);
@@ -221,74 +264,12 @@ function display($category, $title, $category_count, $page, $infos, $ismood=fals
 		}
 		$smarty->assign('list', $pagelist);
 	}
-
-	$smarty->assign('category', $category);
+	$smarty->assign('category', $title.' -- '.$category_count);
 	$smarty->assign('ismood', $ismood);
 	$smarty->assign('title', $title);
-	$smarty->assign('param', $param);
-	$smarty->assign('category_id', $category_id);
-	$smarty->assign('page', $page);
+	$smarty->assign('page', $query_info['page']);
 	$smarty->assign('infos', $infos);
+	$smarty->assign('query_info', $query_info);
 	$smarty->display('debin.tpl');
-}
-
-function select_article ($table, $info)
-{
-	$infos = array();
-	$key = $table.'_id';
-	if ($table != 'mood')
-	{
-		$infos['title'] = $info['title'];
-		$date = explode(' ', $info['inserttime']);
-		if (count($date) != 2)
-		{
-			LogOpt::set ('exception', 'inserttime get error', $key, $info['article_id'], 'inserttime', $info['inserttime']);
-			return false;
-		}
-		$date = $date[0];
-		$date = explode ('-', $date);
-		if (count($date) != 3)
-		{
-			LogOpt::set ('exception', 'inserttime.date get error', $key, $info['article_id'], 'inserttime', $info['inserttime']);
-			return false;
-		}
-		$infos['date'] = $date[2];
-		$infos['month'] = $date[1].'/'.$date[0];
-		$infos['tags'] = array_slice(ZeyuBlogOpt::get_tags($info['article_id']), 0, 4);
-		$contents = ZeyuBlogOpt::pre_treat_article($info['draft']);
-		$imgpath = StringOpt::spider_string($contents, 'img<![&&]>src="', '"');
-		if ($imgpath == null)
-		{
-			$infos['contents'] = strip_tags($contents);
-			$infos['contents'] = mb_substr($infos['contents'], 0, 500, 'utf-8');
-		}
-		else
-		{
-			$infos['contents'] = '<p><img class="img-thumbnail" alt="200x200" style="height: 200px;" src="'.$imgpath.'"></p><br /><p>'.mb_substr(strip_tags($contents), 0, 100, 'utf-8').'</p>';
-		}
-		$infos['article_id'] = $info['article_id'];
-		return $infos;
-	}
-	else
-	{
-		$infos['title'] = $info['contents'];
-		$infos['contents'] = $info['inserttime'];
-		$date = explode (' ', $info['inserttime']);
-		if (count($date) != 2)
-		{
-			LogOpt::set ('exception', 'inserttime get error', $key, $info['mood_id'], 'inserttime', $info['inserttime']);
-			return false;
-		}
-		$date = $date[0];
-		$date = explode ('-', $date);
-		if (count($date) != 3)
-		{
-			LogOpt::set ('exception', 'inserttime.date get error', $key, $info['mood_id'], 'inserttime', $info['inserttime']);
-			return false;
-		}
-		$infos['date'] = $date[2];
-		$infos['month'] = $date[1].'/'.$date[0];
-		return $infos;
-	}
 }
 ?>

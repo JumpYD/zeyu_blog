@@ -257,10 +257,10 @@
 			<script>document.write(unescape("%3Cscript src='http://hm.baidu.com/h.js%3F8c869b543955d43e496c2efee5b55823' type='text/javascript'%3E%3C/script%3E"));qext.stat.ns('m_20120713_qing_pv');</script>
 		</div>
 <form action="/html/debin.php" method="post" name="params_form" id="params_form">
-	<input type="text" id='page' name='page' value="<{$post_infos['page']}>"/>
-	<input type="text" id='limit' name='limit' value="<{$post_infos['limit']}>"/>
-	<input type="text" id='tags' name='tags' value="<{$post_infos['tags']}>"/>
-	<input type="text" id='category' name='category' value="<{$post_infos['category']}>"/>
+	<input type="hidden" id='page' name='page' value="<{$query_info['page']}>"/>
+	<input type="hidden" id='limit' name='limit' value="<{$query_info['limit']}>"/>
+	<input type="hidden" id='tags' name='tags' value="<{$query_info['tags']}>"/>
+	<input type="hidden" id='category' name='category' value="<{$query_info['category']}>"/>
 </form>
 <script>
 	qing.dom.ready(function(){

@@ -1,55 +1,52 @@
 <?php
 require_once (dirname(__FILE__).'/'.'head.php');
-LogOpt::init('article_searcher_'.$opt_type, true);
+LogOpt::init('article_searcher', true);
 
-function search_show_opt($input)
+global $smarty;
+$sql = 'select tag_id,count(*) as article_count from article_tag_relation group by tag_id order by article_count desc, inserttime desc';
+$infos = MySqlOpt::select_query($sql);
+$tag_infos = array();
+foreach ($infos as $info)
 {
-	global $smarty;
-	$sql = 'select tag_id,count(*) as article_count from article_tag_relation group by tag_id order by article_count desc, inserttime desc';
-	$infos = MySqlOpt::select_query($sql);
-	$tag_infos = array();
-	foreach ($infos as $info)
-	{
-		$sql = 'select tag_name from tags where tag_id='.$info['tag_id'];
-		$ret = MySqlOpt::select_query($sql);
-		$info['tag_name'] = $ret[0]['tag_name'];
-		$tag_infos[] = $info;
-	}
-
-	//$first_date = '2013-12-15';
-	$dates = array();
-	$month_num = (date('Y')-2013)*12 + (date('m')-12) + 1;
-	for ($i=0; $i<$month_num; $i++)
-	{
-		$info = array();
-		$date = date("Y-m", mktime(0, 0, 0, date("m")-$i, date("d"), date("Y")));
-		$info['id'] = date('Y0m', mktime(0, 0, 0, date("m")-$i, date("d"), date("Y")));
-		$info['month'] = $date;
-		$query = 'select count(*) from article where inserttime>="'.$date.'-01 00:00:00" and inserttime<="'.$date.'-31 23:59:59"';
-		$article_count = MySqlOpt::select_query($query);
-		if ($article_count == null)
-		{
-			LogOpt::set('exception', 'select article by inserttime error', 'date', $date, MySqlOpt::errno(), MySqlOpt::error());
-			return;
-		}
-		$article_count = intval($article_count[0]['count(*)']);
-		$info['article'] = $article_count;
-		$query = 'select count(*) from mood where inserttime>="'.$date.'-01 00:00:00" and inserttime<="'.$date.'-31 23:59:59"';
-		$mood_count = MySqlOpt::select_query($query);
-		if ($mood_count == null)
-		{
-			LogOpt::set('exception', 'select mood by inserttime error', 'date', $date, MySqlOpt::errno(), MySqlOpt::error());
-			return;
-		}
-		$info['mood'] = intval($mood_count[0]['count(*)']);
-		$dates[] = $info;
-	}
-
-	$smarty->assign('dates', $dates);
-	$smarty->assign('tags', $tag_infos);
-	$smarty->assign('tags_count', count($tag_infos));
-	$smarty->assign('title', '检索一下');
-	$smarty->assign('category_id', 1);
-	$smarty->display('search.tpl');
+	$sql = 'select tag_name from tags where tag_id='.$info['tag_id'];
+	$ret = MySqlOpt::select_query($sql);
+	$info['tag_name'] = $ret[0]['tag_name'];
+	$tag_infos[] = $info;
 }
+
+//$first_date = '2013-12-15';
+$dates = array();
+$month_num = (date('Y')-2013)*12 + (date('m')-12) + 1;
+for ($i=0; $i<$month_num; $i++)
+{
+	$info = array();
+	$date = date("Y-m", mktime(0, 0, 0, date("m")-$i, date("d"), date("Y")));
+	$info['id'] = date('Y0m', mktime(0, 0, 0, date("m")-$i, date("d"), date("Y")));
+	$info['month'] = $date;
+	$query = 'select count(*) from article where inserttime>="'.$date.'-01 00:00:00" and inserttime<="'.$date.'-31 23:59:59"';
+	$article_count = MySqlOpt::select_query($query);
+	if ($article_count == null)
+	{
+		LogOpt::set('exception', 'select article by inserttime error', 'date', $date, MySqlOpt::errno(), MySqlOpt::error());
+		return;
+	}
+	$article_count = intval($article_count[0]['count(*)']);
+	$info['article'] = $article_count;
+	$query = 'select count(*) from mood where inserttime>="'.$date.'-01 00:00:00" and inserttime<="'.$date.'-31 23:59:59"';
+	$mood_count = MySqlOpt::select_query($query);
+	if ($mood_count == null)
+	{
+		LogOpt::set('exception', 'select mood by inserttime error', 'date', $date, MySqlOpt::errno(), MySqlOpt::error());
+		return;
+	}
+	$info['mood'] = intval($mood_count[0]['count(*)']);
+	$dates[] = $info;
+}
+
+$smarty->assign('dates', $dates);
+$smarty->assign('tags', $tag_infos);
+$smarty->assign('tags_count', count($tag_infos));
+$smarty->assign('title', '检索一下');
+$smarty->assign('category_id', 1);
+$smarty->display('search.tpl');
 ?>

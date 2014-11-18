@@ -7,7 +7,7 @@ LogOpt::init('display_debin');
 
 $query_info = get_query_info($_REQUEST);
 
-$category_map = array(0=>'检索结果', 1=>'龙潭书斋', 2=>'读书笔记', 3=>'龙渊阁记', 4=>'技术分享', 5=>'龙泉日记', 6=>'龙泉财报', 'all'=>'检索结果', 'mood'=>'心情小说');
+$category_map = array('0'=>'检索结果', 1=>'龙潭书斋', 2=>'读书笔记', 3=>'龙渊阁记', 4=>'技术分享', 5=>'龙泉日记', 6=>'龙泉财报', 'mood'=>'心情小说');
 if (!isset($category_map[$query_info['category']]))
 {
 	ZeyuBlogOpt::warning_opt('请填写category参数', '/html');
@@ -30,6 +30,8 @@ function display_article()
 	global $category_map, $sphinx, $query_info;
 
 	$category = $query_info['category'];
+	$opt_type = $query_info['opt_type'];
+	$search = trim($query_info['search']);
 
 	$count_sql = 'select count(*) as count from article where 1';
 	$sql = 'select * from article where 1';
@@ -37,22 +39,27 @@ function display_article()
 	$tags = explode(',', $query_info['tags']);
 	$where_str = get_where($tags);
 
-	switch ($category)
-	{
-	case 'all':
-		break;
-	case 0:
-		$where_str .= ' and category_id != 5';
-		break;
-	default:
-		$where_str .= ' and category_id = '.intval($category);
-		break;
-	}
-
 	if (!empty($query_info['search']))
 	{
-		$where_str .= ' and draft like "%'.mysql_escape_string($query_info['search']).'%"';
+		$article_ids = array();
+		$searchs = explode(' ', $query_info['search']);
+		foreach ($searchs as $key)
+		{
+			$key = trim($key);
+			if (empty($key))
+				continue;
+			$search_ret = $sphinx->query($key, $opt_type);
+
+			if (empty($article_ids))
+				$article_ids = array_keys($search_ret['matches']);
+			else
+				$article_ids = array_intersect($article_ids, array_keys($search_ret['matches']));
+		}
+		if (!empty($article_ids))
+			$where_str .= ' and article_id in ('.implode(',', $article_ids).')';
 	}
+	else if ($opt_type != 'all')
+		$where_str .= ' and category_id != 5';
 
 	$count_sql .= $where_str;
 
@@ -94,7 +101,8 @@ function display_mood()
 			else
 				$mood_ids = array_intersect($mood_ids, array_keys($search_ret['matches']));
 		}
-		$where_str .= ' and mood_id in ('.implode(',', $mood_ids).')';
+		if (!empty($mood_ids))
+			$where_str .= ' and mood_id in ('.implode(',', $mood_ids).')';
 	}
 
 	$count_sql .= $where_str;
@@ -125,6 +133,7 @@ function get_query_info($input)
 	$query_info['category'] = isset($input['category']) ? $input['category'] : '';
 	$query_info['search'] = isset($input['search']) ? $input['search'] : '';
 	$query_info['tags'] = isset($input['tags']) ? $input['tags'] : '';
+	$query_info['opt_type'] = isset($input['opt_type']) ? $input['opt_type'] : 'content';
 
 	return $query_info;
 }

@@ -182,7 +182,7 @@ function get_where ($tags, $ismood = false)
 		if ($ismood)
 			$time_key = 'inserttime';
 		else
-			$time_key = 'udpatetime';
+			$time_key = 'updatetime';
 
 		if (!empty($tag_ids) && !$ismood)
 			$where_str .= ' and article_id in (select article_id from article_tag_relation where tag_id in ('.implode(',', $tag_ids).'))';

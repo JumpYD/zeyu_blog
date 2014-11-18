@@ -39,7 +39,7 @@ function display_article()
 	$tags = explode(',', $query_info['tags']);
 	$where_str = get_where($tags);
 
-	if (!empty($query_info['search']))
+	if (!empty($search))
 	{
 		$article_ids = array();
 		$searchs = explode(' ', $query_info['search']);
@@ -55,8 +55,7 @@ function display_article()
 			else
 				$article_ids = array_intersect($article_ids, array_keys($search_ret['matches']));
 		}
-		if (!empty($article_ids))
-			$where_str .= ' and article_id in ('.implode(',', $article_ids).')';
+		$where_str .= ' and article_id in ('.implode(',', $article_ids).')';
 	}
 	else if ($category == '0' && $opt_type != 'all')
 		$where_str .= ' and category_id != 5';
@@ -69,7 +68,7 @@ function display_article()
 	$count = MySqlOpt::select_query ($count_sql);
 	$count = intval($count[0]['count']);
 
-	$sql .= $where_str.' group by article_id order by updatetime desc limit '.$query_info['start'].','.$query_info['limit'];
+	$sql .= $where_str.' order by updatetime desc limit '.$query_info['start'].','.$query_info['limit'];
 	$article_infos = MySqlOpt::select_query ($sql);
 
 	$infos = array();
@@ -105,8 +104,7 @@ function display_mood()
 			else
 				$mood_ids = array_intersect($mood_ids, array_keys($search_ret['matches']));
 		}
-		if (!empty($mood_ids))
-			$where_str .= ' and mood_id in ('.implode(',', $mood_ids).')';
+		$where_str .= ' and mood_id in ('.implode(',', $mood_ids).')';
 	}
 
 	$count_sql .= $where_str;
@@ -188,6 +186,7 @@ function get_where ($tags, $ismood = false)
 
 		if (!empty($tag_ids) && !$ismood)
 			$where_str .= ' and article_id in (select article_id from article_tag_relation where tag_id in ('.implode(',', $tag_ids).'))';
+
 		if (!empty($dates))
 		{
 			foreach ($dates as $date)

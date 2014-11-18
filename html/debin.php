@@ -68,7 +68,7 @@ function display_article()
 	$count = MySqlOpt::select_query ($count_sql);
 	$count = intval($count[0]['count']);
 
-	$sql .= $where_str.' order by updatetime desc limit '.$query_info['start'].','.$query_info['limit'];
+	$sql .= $where_str.' order by inserttime desc limit '.$query_info['start'].','.$query_info['limit'];
 	$article_infos = MySqlOpt::select_query ($sql);
 
 	$infos = array();
@@ -178,11 +178,6 @@ function get_where ($tags, $ismood = false)
 				break;
 			}
 		}
-
-		if ($ismood)
-			$time_key = 'inserttime';
-		else
-			$time_key = 'updatetime';
 
 		if (!empty($tag_ids) && !$ismood)
 			$where_str .= ' and article_id in (select article_id from article_tag_relation where tag_id in ('.implode(',', $tag_ids).'))';

@@ -181,12 +181,17 @@ function get_where ($tags, $ismood = false)
 			}
 		}
 
+		if ($ismood)
+			$time_key = 'inserttime';
+		else
+			$time_key = 'udpatetime';
+
 		if (!empty($tag_ids) && !$ismood)
 			$where_str .= ' and article_id in (select article_id from article_tag_relation where tag_id in ('.implode(',', $tag_ids).'))';
 		if (!empty($dates))
 		{
 			foreach ($dates as $date)
-				$where_str .= ' and updatetime >= "'.$date.'-01 00:00:00" and updatetime <= "'.$date.'-31 23:59:59"';
+				$where_str .= ' and '.$time_key.' >= "'.$date.'-01 00:00:00" and '.$time_key.' <= "'.$date.'-31 23:59:59"';
 		}
 	}
 	return $where_str;

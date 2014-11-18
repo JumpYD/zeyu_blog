@@ -19,25 +19,31 @@ function js_label(label_id)
 
 function set_opt_type(opt_type)
 {
-	$("#chose_btn").html(opt_type + ' <span class="caret"></span>');
+	$("#chose_btn").html($('#'+opt_type).html() + ' <span class="caret"></span>');
+	$("#chose_btn").val($('#'+opt_type).attr("id"));
 }
 
-function js_commit(opt_type)
+function js_commit()
 {
 	var form = document.createElement("form");
 	form.setAttribute("method", 'post');
 	form.setAttribute("action", 'debin.php');
 
-	var hiddenField = document.createElement("input");
+	hiddenField = document.createElement("input");
 	hiddenField.setAttribute("type", "hidden");
 	hiddenField.setAttribute("name", 'category');
-	hiddenField.setAttribute("value", '0');
+
+	if ($("#chose_btn").val() != 'mood')
+		hiddenField.setAttribute("value", '0');
+	else
+		hiddenField.setAttribute("value", 'mood');
+
 	form.appendChild(hiddenField);
 
 	hiddenField = document.createElement("input");
 	hiddenField.setAttribute("type", "hidden");
 	hiddenField.setAttribute("name", 'opt_type');
-	hiddenField.setAttribute("value", opt_type);
+	hiddenField.setAttribute("value", $("#chose_btn").val());
 	form.appendChild(hiddenField);
 
 	hiddenField = document.createElement("input");
@@ -88,30 +94,24 @@ function js_commit(opt_type)
 <div id="myCarousel" class="carousel slide">
 	<div class="carousel-inner">
 		<div class="item active masthead">
-			<div class="container">
+			<div class="container" style="margin:50px">
 				<div class="carousel-caption">
-					<h1>龍潭齋</h1>
-					<br/>
+					<h1 style="margin:0 0 60px 0">龍潭齋</h1>
 					<p>
-					<form class="navbar-form bs3-link" action="javascript:void(0)"; role="search">
+					<form class="navbar-form bs3-link" style="margin:0 0 55px 0" action="javascript:void(0)"; role="search">
 						<div class="form-group">
 							<input type="text" style="width:400px;height:40px" class="form-control" id="search" placeholder="Search" value="<{$search_text}>">
 						</div>&nbsp;&nbsp;
-						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" name="chose_btn" id="chose_btn">
+						<button type="button" class="btn btn-default dropdown-toggle" value="content" style="height:40px" data-toggle="dropdown" name="chose_btn" id="chose_btn">
 						内容 <span class="caret"></span>
 						</button>
-						<ul style="position:absolute; left:822px; top:236px; text-shadow: none; height:145px; z-index:0" class="dropdown-menu" role="menu">
-							<li><a href="javascript:void(0)" onclick="set_opt_type('标题')">标题</a></li>
-							<li><a href="javascript:void(0)" onclick="set_opt_type('内容')">内容</a></li>
-							<li><a href="javascript:void(0)" onclick="set_opt_type('内容（全部）')">内容（全部）</a></li>
-							<li><a href="javascript:void(0)" onclick="set_opt_type('心情')">心情</a></li>
+						<ul style="position:absolute; left:812px; top:230px; text-shadow: none; height:116px;" class="dropdown-menu" role="menu">
+							<li><a href="javascript:void(0)" onclick="set_opt_type('title')" id="title">标题</a></li>
+							<li><a href="javascript:void(0)" onclick="set_opt_type('content')" id="content">内容</a></li>
+							<li><a href="javascript:void(0)" onclick="set_opt_type('all')" id="all">内容（全部）</a></li>
+							<li><a href="javascript:void(0)" onclick="set_opt_type('mood')" id="mood">心情</a></li>
 						</ul>
-
-						<!--
-						<button type="submit" class="btn btn-default" style="height:40px" onclick="js_commit('title')">标&nbsp;&nbsp;题</button>
-						<button type="submit" class="btn btn-default" style="height:40px" onclick="js_commit('contents')">内&nbsp;&nbsp;容</button>
-						<button type="submit" class="btn btn-default" style="height:40px" onclick="js_commit('mood')">心&nbsp;&nbsp;情</button>
-						-->
+						<button type="submit" class="btn btn-default" style="height:40px" onclick="js_commit()">检&nbsp;&nbsp;索</button>
 					</form>
 					</p>
 				</div>
@@ -121,14 +121,11 @@ function js_commit(opt_type)
 </div>
 <div class="container bs-docs-container" style="background-color:rgba(0,0,0,0)">
 	<div class="row">
-		<div class="span6">
-			<div id="tags_json" name="tags_json"> 
-				<input type="hidden" value='$[$$]$'/>
-			</div>
-			<br />
+		<div class="span7" style="margin: 75px 0 0 0">
 			<div class="alert">
 				<div style="scrollbar-face-color: #889b9f;  scrollbar-highlight-color: #c3d6da; overflow: auto;scrollbar-shadow-color: #3d5054; scrollbar-3dlight-color: #3d5054; scrollbar-arrow-color: #ffd6da;scrollbar-darkshadow-color: #85989c; height: 500px">
 					<table class="table table-hover" style="background-color:rgba(255, 255, 255, 0)" frame=void border=0 cellpadding=0 cellspacing=0 bordercolor=rgba(0,0,0,0)>
+						<tr><td style='font-family:"PT Serif","Georgia","Helvetica Neue",Arial,sans-serif'>TAGS</td><td></td><td></td><td></td><td></td><td></td></tr>
 						<{foreach item=info from=$tags name=tag}>
 						<{if $smarty.foreach.tag.index % 3 == 0}>
 						<tr>
@@ -153,14 +150,11 @@ function js_commit(opt_type)
 				</div>
 			</div>
 		</div>
-		<div class="span4">
-			<div id="dates_json" name="dates_json"> 
-				<input type="hidden" value='$[$$]$'/>
-			</div>
-			<br />
+		<div class="span4" style="margin: 75px 0 0 0">
 			<div class="alert">
 				<div style="scrollbar-face-color: #889b9f;  scrollbar-highlight-color: #c3d6da; overflow: auto;scrollbar-shadow-color: #3d5054; scrollbar-3dlight-color: #3d5054; scrollbar-arrow-color: #ffd6da;scrollbar-darkshadow-color: #85989c; height: 500px">
 					<table class="table table-hover" style="background-color:rgba(255, 255, 255, 0)" frame=void border=0 cellpadding=0 cellspacing=0 bordercolor=rgba(0,0,0,0)>
+						<tr style='font-family:"PT Serif","Georgia","Helvetica Neue",Arial,sans-serif'><td>MONTH</td><td>ARTICLE</td><td>MOOD</td></tr>
 						<{foreach item=info from=$dates}>
 						<tr>
 							<td>

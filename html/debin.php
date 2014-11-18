@@ -58,8 +58,11 @@ function display_article()
 		if (!empty($article_ids))
 			$where_str .= ' and article_id in ('.implode(',', $article_ids).')';
 	}
-	else if ($opt_type != 'all')
+	else if ($category == '0' && $opt_type != 'all')
 		$where_str .= ' and category_id != 5';
+
+	if ($category >= 1 && $category <= 6)
+		$where_str .= ' and category_id = '.$category;
 
 	$count_sql .= $where_str;
 
@@ -76,6 +79,7 @@ function display_article()
 
 	display($category_map[$category], $count, $infos);
 }
+
 function display_mood()
 {
 	global $category_map, $sphinx, $query_info;
@@ -119,6 +123,7 @@ function display_mood()
 
 	display($category_map[$query_info['category']], $count, $infos, true);
 }
+
 function get_query_info($input)
 {
 	$query_info['page'] = isset($input['page']) ? intval($input['page']) : 1;

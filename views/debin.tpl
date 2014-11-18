@@ -136,7 +136,7 @@
 					<{if $ismood!=true}>
 					<a href="article.php?id=<{$article_info['article_id']}>" class="a-incontent a-title cs-contentblock-hoverlink" target=_blank>
 						<{else}>
-						<div class="a-incontent a-title cs-contentblock-hoverlink">
+						<div class="a-incontent a-title cs-contentblock-hoverlink" style='font-family:"PT Serif","Georgia","Helvetica Neue",Arial,sans-serif' >
 						<{/if}>
 						<{$article_info['title']}>
 						<{if $ismood!=true}>

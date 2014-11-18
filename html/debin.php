@@ -189,8 +189,10 @@ function get_where ($tags, $ismood = false)
 
 		if (!empty($dates))
 		{
+			$where_arr = array();
 			foreach ($dates as $date)
-				$where_str .= ' and '.$time_key.' >= "'.$date.'-01 00:00:00" and '.$time_key.' <= "'.$date.'-31 23:59:59"';
+				$where_arr[] .= $time_key.' >= "'.$date.'-01 00:00:00" and '.$time_key.' <= "'.$date.'-31 23:59:59"';
+			$where_str = ' and ('.implode(' or ', $where_arr).')';
 		}
 	}
 	return $where_str;

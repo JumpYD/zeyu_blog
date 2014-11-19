@@ -261,6 +261,7 @@
 	<input type="hidden" id='limit' name='limit' value="<{$query_info['limit']}>"/>
 	<input type="hidden" id='tags' name='tags' value="<{$query_info['tags']}>"/>
 	<input type="hidden" id='category' name='category' value="<{$query_info['category']}>"/>
+	<input type="hidden" id='opt_type' name='opt_type' value="<{$query_info['opt_type']}>"/>
 </form>
 <script>
 	qing.dom.ready(function(){

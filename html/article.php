@@ -22,7 +22,6 @@ if ($indexs != null)
 $tags = ZeyuBlogOpt::get_tags($article_id);
 if ($tags != null)
 	$smarty->assign('tags', $tags);
-	
 $contents = ZeyuBlogOpt::pre_treat_article($article_info['draft']);
 if (StringOpt::spider_string($contents, '"page-header"', '</div>') === null)
 {

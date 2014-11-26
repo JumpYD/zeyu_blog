@@ -13,6 +13,7 @@
 	<link href="../resource/bootstrap/css/github.min.css" rel="stylesheet" type="text/css">
 	<link href="../resource/jquery/css/jquery.alerts.css" rel="stylesheet" type="text/css">
 	<link href="../resource/jquery/css/jquery.ui.css" rel="stylesheet" type="text/css">
+	<link href="../resource/zeyu_blog.css" rel="stylesheet" type="text/css">
 	<link rel="shortcut icon" href="images/icon.png">
 	<{if $category_id==2}>
 	<{if $category_id==1}>

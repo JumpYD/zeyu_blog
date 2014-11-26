@@ -52,22 +52,22 @@
 			</center>
 			<h3>图片总数: <{$count}></h3>
 			<center>
-				<table class="table table-hover table-condensed" border="4" style="font-weight:bold; word-wrap:break-word; overflow:normal;">
+				<table class="stdtable" border="1" style="font-weight:bold; word-wrap:break-word; overflow:normal;">
 					<caption style="background-color:#BFEFFF; font-weight:bold; font-size:24px">PICTURES</caption>
 					<tr style="background-color:#BFEFFF;">
-						<td width="7%" valign="middle" align="center">
+						<td width="7%" valign="middle" align="center" valign="middle">
 							ID
 						</td>
-						<td width="15%" valign="middle" align="center">
+						<td width="15%" valign="middle" align="center" valign="middle">
 							PICTURE
 						</td>
-						<td width="10%" valign="middle" align="center">
+						<td width="10%" valign="middle" align="center" valign="middle">
 							CATEGORY
 						</td>
-						<td width="30" valign="middle" align="center">
+						<td width="30" valign="middle" align="center" valign="middle">
 							PATH
 						</td>
-						<td width="20%" valign="middle" align="center">
+						<td width="20%" valign="middle" align="center" valign="middle">
 							INSERT_TIME
 						</td>
 					</tr>
@@ -78,10 +78,10 @@
 						<td valign="middle" style="padding-top:50px;"align="center">
 							<{$info.category}>
 						</td>
-						<td valign="middle" style="padding-top:50px;"align="center">
+						<td valign="middle" style="padding-top:50px;"align="center" valign="middle">
 							<{$info.path}>
 						</td>
-						<td valign="middle" style="padding-top:50px;"align="center">
+						<td valign="middle" style="padding-top:50px;"align="center" valign="middle">
 							<{$info.inserttime}>
 						</td>
 					</tr>

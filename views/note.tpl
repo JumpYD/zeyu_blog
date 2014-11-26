@@ -1,5 +1,4 @@
 <{include 'header.tpl'}>
-<script src="../resource/bootstrap/js/jquery.js"></script>
 <script language="javascript">
 function get_earnings()
 {
@@ -25,13 +24,6 @@ function drw_earnings()
 <input type="hidden" id="drw_end_month" class="form-control" value="<{$drw_end_month}>"/>
 <div class="container projects">
 	<div class="row">
-	<{*
-		<{if $category_id==1}>
-			<p><div class='span1'></div><img class='span8' src="images/earning.png"/></p>
-			<p>&nbsp;</p>
-			<div class='span12'><br /><br /><br /></div>
-		<{/if}>
-	*}>
 		<{if $category_id==1}>
 			<canvas id="myChart" width="980px" height="300px" class="span12"></canvas>
 			<div class='span12'><br /></div>

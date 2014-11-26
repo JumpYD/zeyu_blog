@@ -33,7 +33,7 @@ class ZeyuBlogOpt
 			}
 			else if ($line == '<table>')
 			{
-				$contents .= '<table class="table table-hover table-condensed" border="4" style="font-size:18;">';
+				$contents .= '<table class="stdtable" border="1" style="font-size:18;">';
 				while (1)
 				{
 					$index++;
@@ -48,7 +48,7 @@ class ZeyuBlogOpt
 					else if (substr($line, 0, 9) == '<caption>')
 					{
 						$caption = substr($line, 9);
-						$contents .= '<caption style="background-color:#C0C0C0; font-weight:bold">'.$caption.'</caption>';
+						$contents .= '<caption style="font-weight:bold; font-family:"PT Serif","Georgia","Helvetica Neue",Arial,sans-serif; background-color:#C0C0C0;">'.$caption.'</caption>';
 					}
 					else
 					{

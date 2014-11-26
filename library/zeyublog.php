@@ -56,7 +56,7 @@ class ZeyuBlogOpt
 						if (substr($line, 0, 4) == '<tr>')
 						{
 							$tds[0] = substr($tds[0], 4);
-							$contents .= '<tr style="background-color:#C5C5C5;"><td>'.implode('</td><td>', $tds).'</td></tr>';
+							$contents .= '<tr style="background-color:#C5C5C5;"><td><strong>'.implode('</strong></td><td><strong>', $tds).'</strong></td></tr>';
 						}
 						else
 							$contents .= '<tr><td>'.implode('</td><td>', $tds).'</td></tr>';

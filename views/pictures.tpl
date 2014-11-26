@@ -52,7 +52,7 @@
 			</center>
 			<h3>图片总数: <{$count}></h3>
 			<center>
-				<table class="stdtable" border="1" style="font-weight:bold; word-wrap:break-word; overflow:normal;">
+				<table class="stdtable" style="font-weight:bold; word-wrap:break-word; overflow:normal;">
 					<caption style="background-color:#BFEFFF; font-weight:bold; font-size:24px">PICTURES</caption>
 					<tr style="background-color:#BFEFFF;">
 						<td width="7%" valign="middle" align="center" valign="middle">

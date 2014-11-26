@@ -116,7 +116,9 @@ class ZeyuBlogOpt
 							$line = str_replace('id="'.$id.'"', 'src="'.$path.'"', $line);
 					}
 					else
+					{
 						$line = '<strong>图片ID不存在</strong>';
+					}
 				}
 				$contents .= '<p style="text-indent:0em;">'.$line.'</p><p>&nbsp;</p>';
 			}

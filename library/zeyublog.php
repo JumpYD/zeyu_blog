@@ -48,7 +48,7 @@ class ZeyuBlogOpt
 					else if (substr($line, 0, 9) == '<caption>')
 					{
 						$caption = substr($line, 9);
-						$contents .= '<caption style="font-weight:bold; font-family:"PT Serif","Georgia","Helvetica Neue",Arial,sans-serif; background-color:#C0C0C0;">'.$caption.'</caption>';
+						$contents .= '<caption style=\'font-weight:bold; font-family:"PT Serif","Georgia","Helvetica Neue",Arial,sans-serif; background-color:#dedede; height:30px;\'>'.$caption.'</caption>';
 					}
 					else
 					{
@@ -124,8 +124,6 @@ class ZeyuBlogOpt
 			}
 			else if (substr($line, 0, 5) == '<code')
 			{
-				$line_sum = StringOpt::spider_string($line, 'line="', '"');
-				$line_sum = intval($line_sum);
 				$mode = StringOpt::spider_string($line, 'mode="', '"');
 				if (empty($mode))
 					$mode = 'c_cpp';
@@ -137,21 +135,40 @@ class ZeyuBlogOpt
 					if ($index >= count($lines))
 						break;
 					$line = $lines[$index];
+
 					if (trim($line) === '</code>')
 						break;
+
+					$code_wrap = 0;
+					for ($i = 0; $i < strlen($line); ++$i )
+					{
+						if ($line[$i] == "\t")
+						{
+							$code_wrap += 4;
+							continue;
+						}
+						$value = ord($line[$i]);
+						if($value > 127) {
+							$code_wrap++;        
+							if ($value >= 192 && $value <= 223)
+								$i++;        
+							elseif ($value >= 224 && $value <= 239)
+								$i = $i + 2;        
+							elseif ($value >= 240 && $value <= 247)
+								$i = $i + 3;        
+						}  
+						$code_wrap++;
+					}
+
+					$code_line += floor($code_wrap / 80) + 1;
+
 					$code .= self::str_trans($line, false).PHP_EOL;
-					$code_line++;
 				}
 				
-				if ($line_sum == 0)
-				{
-					if ($code_line > 30)
-						$line_sum = 30;
-					else
-						$line_sum = $code_line;
-				}
+				if ($code_line > 30)
+					$code_line = 30;
 
-				$contents .= '<div id="editor_'.$i.'" style="position: relative; width: 765px; height: '.($line_sum*20).'px;">'.trim($code).'</div><p>&nbsp;</p>';
+				$contents .= '<div id="editor_'.$i.'" style="position: relative; width: 765px; height: '.$code_line.'px">'.trim($code).'</div><p>&nbsp;</p>';
 				$codes[] = array('id'=>'editor_'.$i++, 'mode'=>$mode);
 				continue;
 			}

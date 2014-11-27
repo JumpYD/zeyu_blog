@@ -140,23 +140,24 @@ class ZeyuBlogOpt
 						break;
 
 					$code_wrap = 0;
-					for ($i = 0; $i < strlen($line); ++$i )
+					for ($idx = 0; $idx < strlen($line); ++$idx )
 					{
-						if ($line[$i] == "\t")
+						if ($line[$idx] == "\t")
 						{
 							$code_wrap += 4;
 							continue;
 						}
-						$value = ord($line[$i]);
-						if($value > 127) {
-							$code_wrap++;        
+						$value = ord($line[$idx]);
+						if($value > 127)
+						{
+							$code_wrap++;
 							if ($value >= 192 && $value <= 223)
-								$i++;        
+								$idx++;
 							elseif ($value >= 224 && $value <= 239)
-								$i = $i + 2;        
+								$idx = $idx + 2;
 							elseif ($value >= 240 && $value <= 247)
-								$i = $i + 3;        
-						}  
+								$idx = $idx + 3;
+						}
 						$code_wrap++;
 					}
 

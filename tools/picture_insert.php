@@ -13,7 +13,7 @@ if (!isset($options['i']))
 	$options['i'] = null;
 
 if (!isset($options['c']))
-	$options['c'] = 'category';
+	$options['c'] = 'article';
 
 echo '确认插入图片 '.$options['n'].' ( CATEGORY : '.$options['c'].' )'.'吗？ y/N: ';
 $sure = fgets(STDIN);

@@ -3,13 +3,17 @@ require_once (dirname(__FILE__).'/../'.'library/zeyublog.php');
 
 LogOpt::init('picture_inserter', true);
 $options = getopt('c:n:i:');
-if (!isset($options['c']) || !isset($options['n']))
+if (!isset($options['c']))
 {
-	echo 'usage: php '.basename(__FILE__).' -n name -c category [-i id]'.PHP_EOL;
+	echo 'usage: php '.basename(__FILE__).' -n name -c category [-i id] (c: earnings article background booknote icon mood)'.PHP_EOL;
 	exit;
 }
+
 if (!isset($options['i']))
 	$options['i'] = null;
+
+if (!isset($options['c']))
+	$options['c'] = 'category';
 
 echo '确认插入图片 '.$options['n'].' ( CATEGORY : '.$options['c'].' )'.'吗？ y/N: ';
 $sure = fgets(STDIN);

@@ -3,7 +3,7 @@ require_once (dirname(__FILE__).'/../'.'library/zeyublog.php');
 
 LogOpt::init('picture_inserter', true);
 $options = getopt('c:n:i:');
-if (!isset($options['c']))
+if (!isset($options['n']))
 {
 	echo 'usage: php '.basename(__FILE__).' -n name -c category [-i id] (c: earnings article background booknote icon mood)'.PHP_EOL;
 	exit;

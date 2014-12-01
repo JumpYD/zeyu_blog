@@ -18,6 +18,9 @@ $query = 'select image_id,path from images where category="background" and path!
 $backgrounds = MySqlOpt::select_query($query);
 $idx = rand(0, count($backgrounds)-1);
 if ($_SERVER["REMOTE_ADDR"] == '192.168.72.1' || !empty($_GET['noback']))
+{
 	$backgrounds[$idx]['path'] = 'images/background.jpg';
+	$smarty->assign('is_corp', true);
+}
 $smarty->assign('background', $backgrounds[$idx]['path']);
 ?>

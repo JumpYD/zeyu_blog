@@ -43,9 +43,11 @@
 						<li>
 						<a href="/html/debin.php?category=3">龙渊阁记</a>
 						</li>
+						<{if !$is_corp}>
 						<li>
 						<a href="/html/debin.php?category=mood">心情小说</a>
 						</li>
+						<{/if}>
 						<li>
 						<a href="/html/earnings.php">龙泉财报</a>
 						</li>

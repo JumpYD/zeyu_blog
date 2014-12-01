@@ -26,11 +26,11 @@
 			<style>
 				.isStuck
 				{
-					width:57%;
+					width:250px;
 				}
 			</style>
 			<div class="navbar-wrapper">
-				<div class="col-md-3">
+				<div class="col-md-3" id="stuck_div">
 					<div class="bs-sidebar hidden-print" role="complementary">
 						<ul class="nav bs-sidenav">
 							<li>
@@ -82,15 +82,4 @@
 		</div>
 	</div>
 </div>
-<!--
-<{if $title=="测试页面"}>
-<script language="JavaScript">
-	function myrefresh()
-	{
-		window.location.reload();
-	}
-	setTimeout('myrefresh()',5000); //指定1秒刷新一次
-</script>
-<{/if}>
--->
 <{include 'footer.tpl'}>

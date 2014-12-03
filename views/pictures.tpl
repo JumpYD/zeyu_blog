@@ -2,6 +2,7 @@
 <br />
 <br />
 <div class="container_wrapper">
+	<div style="margin:50px;"></div>
 	<div class="container bs-docs-container" style="width:1320px">
 		<div class="row" style="margin-bottom:100px">
 			<div class="page-header"><h1>留住精彩瞬间 -- 龙泉相册</h1></div>
@@ -42,12 +43,7 @@
 				<p><button class="btn btn-primary btn-lg" type="submit" role="button">检&nbsp;&nbsp;索</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">添&nbsp;&nbsp;加</button></p>
 			</form>
-			<br/>
-			<br/>
-			<br/>
-			<br/>
-			<br/>
-			<center>
+			<center style="margin-top: 230px; float:none">
 				<p><h1 style="color:#0047DD;margin-top:120px">图片列表</h1></p>
 			</center>
 			<h3>图片总数: <{$count}></h3>

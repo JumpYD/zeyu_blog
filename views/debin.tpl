@@ -265,6 +265,7 @@
 	<input type="hidden" id='opt_type' name='opt_type' value="<{$query_info['opt_type']}>"/>
 	<input type="hidden" id="search" name="search" value="<{$query_info['search']}>"/>
 </form>
+<{include 'footer.tpl'}>
 <script>
 	qing.dom.ready(function(){
 		if (qVisitorInfo.loginStatus == 'activated'){

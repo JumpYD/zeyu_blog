@@ -48,7 +48,7 @@ class ZeyuBlogOpt
 					else if (substr($line, 0, 9) == '<caption>')
 					{
 						$caption = substr($line, 9);
-						$contents .= '<caption style=\'font-weight:bold; font-family:"PT Serif","Georgia","Helvetica Neue",Arial,sans-serif; background-color:#dedede; height:30px;\'>'.$caption.'</caption>';
+						$contents .= '<caption style=\'font-weight:bold; font-family:"PT Serif","Georgia","Helvetica Neue",Arial,sans-serif; background-color:#D2E1F0; height:30px;\'>'.$caption.'</caption>';
 					}
 					else
 					{

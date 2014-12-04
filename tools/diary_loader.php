@@ -1,6 +1,8 @@
 <?php
 require_once (dirname(__FILE__).'/../'.'library/zeyublog.php');
 
+ini_set('date.timezone','Asia/Shanghai');
+
 LogOpt::init('diary_loader', true);
 
 $options = getopt('t:');

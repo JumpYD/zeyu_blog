@@ -5,13 +5,13 @@ class StringOpt
 	{
 		if ($begtab == '')
 		{
-			$string = '<[-INF]>'.$string;
-			$begtab = '<[-INF]>';
+			$string = '<![-INF]>'.$string;
+			$begtab = '<![-INF]>';
 		}
 		if ($endtab == '')
 		{
-			$string .= '<[+INF]>';
-			$endtab = '<[+INF]>';
+			$string .= '<![+INF]>';
+			$endtab = '<![+INF]>';
 		}
 		$tabs = explode('<![||]>', $begtab);
 		$ret = self::orstropt($string, $tabs, $string);

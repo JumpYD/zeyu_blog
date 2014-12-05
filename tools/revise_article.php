@@ -13,11 +13,21 @@ $query = 'select draft,title from article where article_id='.$options['i'];
 $draft = MySqlOpt::select_query($query);
 if ($draft == null)
 {
-	LogOpt::set ('exception', 'cannot find the article', 'article_id', $options['i'], MySqlOpt::errno(), MySqlOpt::error());
+	LogOpt::set ('exception', 'cannot find the article',
+		'article_id', $options['i'],
+		MySqlOpt::errno(), MySqlOpt::error());
+
 	return;
 }
 $title = $draft[0]['title'];
 $draft = $draft[0]['draft'];
-file_put_contents(dirname(__FILE__).'/../'.'draft/draft'.$options['i'].'.tpl', $draft);
-LogOpt::set('info', '已将文件加载至'.dirname(__FILE__).'/../'.'draft/draft'.$options['i'].'.tpl', 'article_id', $options['i'], 'title', $title);
+
+$filename = dirname(__FILE__).'/../'.'draft/draft'.$options['i'].'.tpl';
+
+file_put_contents($filename, $draft);
+
+LogOpt::set('info', '已将文件加载至'.$filename,
+	'article_id', $options['i'],
+	'title', $title
+);
 ?>

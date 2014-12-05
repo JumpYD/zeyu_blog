@@ -23,7 +23,11 @@ function picture_insert($input)
 	if (!isset($params['id']))
 		$params['id'] = null;
 
-	$ret = ZeyuBlogOpt::picture_insert($params['name'], $params['category'], $params['id']);
+	$ret = ZeyuBlogOpt::picture_insert(
+		$params['name'],
+		$params['category'],
+		$params['id']
+	);
 	$url = '/html/pictures.php';
 
 	switch ($ret)
@@ -56,7 +60,11 @@ function picture_insert($input)
 function picture_search($input)
 {
 	global $smarty;
-	$params_key = array('image_id', 'path', 'md5', 'category', 'start_time', 'end_time');
+	$params_key = array(
+		'image_id', 'path',
+		'md5', 'category',
+		'start_time', 'end_time'
+	);
 	$params = getParams($input, $params_key);
 	$category = $params['category'];
 	if ($params['category'] == 'all')

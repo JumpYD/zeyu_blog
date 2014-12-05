@@ -7,7 +7,12 @@ LogOpt::init('display_debin');
 
 $query_info = get_query_info($_REQUEST);
 
-$category_map = array('0'=>'检索结果', 1=>'龙潭书斋', 2=>'读书笔记', 3=>'龙渊阁记', 4=>'技术分享', 5=>'龙泉日记', 6=>'龙泉财报', 'mood'=>'心情小说');
+$category_map = array(
+	0=>'检索结果', 1=>'龙潭书斋', 2=>'读书笔记',
+	3=>'龙渊阁记', 4=>'技术分享', 5=>'龙泉日记',
+	6=>'龙泉财报', 'mood'=>'心情小说'
+);
+
 if (!isset($category_map[$query_info['category']]))
 {
 	ZeyuBlogOpt::warning_opt('请填写category参数', '/html');
@@ -53,7 +58,13 @@ function display_article()
 			if (empty($article_ids))
 				$article_ids = array_keys($search_ret['matches']);
 			else
-				$article_ids = array_intersect($article_ids, array_keys($search_ret['matches']));
+			{
+				$article_ids =
+					array_intersect(
+						$article_ids,
+						array_keys($search_ret['matches'])
+					);
+			}
 		}
 		$where_str .= ' and article_id in ('.implode(',', $article_ids).')';
 	}
@@ -68,7 +79,10 @@ function display_article()
 	$count = MySqlOpt::select_query ($count_sql);
 	$count = intval($count[0]['count']);
 
-	$sql .= $where_str.' order by inserttime desc limit '.$query_info['start'].','.$query_info['limit'];
+	$sql .= $where_str
+		.' order by inserttime desc'
+		.' limit '.$query_info['start'].','.$query_info['limit'];
+
 	$article_infos = MySqlOpt::select_query ($sql);
 
 	$infos = array();
@@ -111,7 +125,10 @@ function display_mood()
 	$count = MySqlOpt::select_query ($count_sql);
 	$count = intval($count[0]['count']);
 
-	$sql .= $where_str.' order by inserttime desc limit '.$query_info['start'].','.$query_info['limit'];
+	$sql .= $where_str
+		.' order by inserttime desc'
+		.' limit '.$query_info['start'].','.$query_info['limit'];
+
 	$mood_infos = MySqlOpt::select_query ($sql);
 
 	$infos = array();
@@ -128,15 +145,22 @@ function get_query_info($input)
 	if ($query_info['page'] < 1)
 		$query_info['page'] = 1;
 
-	$query_info['limit'] = isset($input['limit']) ? intval($input['limit']) : 10;
+	$query_info['limit'] =
+		isset($input['limit']) ? intval($input['limit']) : 10;
+
 	if ($query_info['limit'] < 1)
 		$query_info['limit'] = 1;
 
-	$query_info['start'] = ($query_info['page'] - 1) * $query_info['limit'];
-	$query_info['category'] = isset($input['category']) ? $input['category'] : '';
-	$query_info['search'] = isset($input['search']) ? $input['search'] : '';
-	$query_info['tags'] = isset($input['tags']) ? $input['tags'] : '';
-	$query_info['opt_type'] = isset($input['opt_type']) ? $input['opt_type'] : 'content';
+	$query_info['tags']		=
+		isset($input['tags']) ? $input['tags'] : '';
+	$query_info['start']	=
+		($query_info['page'] - 1) * $query_info['limit'];
+	$query_info['search']	=
+		isset($input['search']) ? $input['search'] : '';
+	$query_info['category'] =
+		isset($input['category']) ? $input['category'] : '';
+	$query_info['opt_type'] =
+		isset($input['opt_type']) ? $input['opt_type'] : 'content';
 
 	return $query_info;
 }
@@ -180,13 +204,23 @@ function get_where ($tags, $ismood = false)
 		}
 
 		if (!empty($tag_ids) && !$ismood)
-			$where_str .= ' and article_id in (select article_id from article_tag_relation where tag_id in ('.implode(',', $tag_ids).'))';
+		{
+			$where_str .=
+				' and article_id in ('
+				.' select article_id from article_tag_relation'
+				.' where tag_id in ('.implode(',', $tag_ids).')'
+				.')';
+		}
 
 		if (!empty($dates))
 		{
 			$where_arr = array();
 			foreach ($dates as $date)
-				$where_arr[] .= 'inserttime >= "'.$date.'-01 00:00:00" and inserttime <= "'.$date.'-31 23:59:59"';
+			{
+				$where_arr[] .=
+					'inserttime >= "'.$date.'-01 00:00:00"'
+					.' and inserttime <= "'.$date.'-31 23:59:59"';
+			}
 			$where_str = ' and ('.implode(' or ', $where_arr).')';
 		}
 	}
@@ -202,7 +236,11 @@ function select_mood ($info)
 	$date = explode (' ', $info['inserttime']);
 	if (count($date) != 2)
 	{
-		LogOpt::set ('exception', 'inserttime get error', 'mood_id', $info['mood_id'], 'inserttime', $info['inserttime']);
+		LogOpt::set('exception', 'inserttime get error',
+			'mood_id', $info['mood_id'],
+			'inserttime', $info['inserttime']
+		);
+
 		return false;
 	}
 
@@ -210,7 +248,11 @@ function select_mood ($info)
 	$date = explode ('-', $date);
 	if (count($date) != 3)
 	{
-		LogOpt::set ('exception', 'inserttime.date get error', 'mood_id', $info['mood_id'], 'inserttime', $info['inserttime']);
+		LogOpt::set('exception', 'inserttime.date get error',
+			'mood_id', $info['mood_id'],
+			'inserttime', $info['inserttime']
+		);
+
 		return false;
 	}
 
@@ -228,7 +270,11 @@ function select_article($info)
 	$date = explode(' ', $info['inserttime']);
 	if (count($date) != 2)
 	{
-		LogOpt::set ('exception', 'inserttime get error', 'article_id', $info['article_id'], 'inserttime', $info['inserttime']);
+		LogOpt::set('exception', 'inserttime get error',
+			'article_id', $info['article_id'],
+			'inserttime', $info['inserttime']
+		);
+
 		return false;
 	}
 
@@ -236,13 +282,21 @@ function select_article($info)
 	$date = explode ('-', $date);
 	if (count($date) != 3)
 	{
-		LogOpt::set ('exception', 'inserttime.date get error', 'article_id', $info['article_id'], 'inserttime', $info['inserttime']);
+		LogOpt::set ('exception', 'inserttime.date get error',
+			'article_id', $info['article_id'],
+			'inserttime', $info['inserttime']
+		);
+
 		return false;
 	}
 
 	$infos['date'] = $date[2];
 	$infos['month'] = $date[1].'/'.$date[0];
-	$infos['tags'] = array_slice(ZeyuBlogOpt::get_tags($info['article_id']), 0, 4);
+	$infos['tags'] = array_slice(
+		ZeyuBlogOpt::get_tags($info['article_id']),
+		0,
+		4
+	);
 
 	$contents = ZeyuBlogOpt::pre_treat_article($info['draft']);
 	$imgpath = StringOpt::spider_string($contents, 'img<![&&]>src="', '"');
@@ -253,7 +307,11 @@ function select_article($info)
 	}
 	else
 	{
-		$infos['contents'] = '<p><img class="img-thumbnail" alt="200x200" style="height: 200px;" src="'.$imgpath.'"></p><br /><p>'.mb_substr(strip_tags($contents), 0, 100, 'utf-8').'</p>';
+		$infos['contents'] =
+			'<p><img class="img-thumbnail" alt="200x200" style="height: 200px;"'
+			.' src="'.$imgpath.'"></p><br /><p>'
+			.mb_substr(strip_tags($contents), 0, 100, 'utf-8')
+			.'</p>';
 	}
 
 	$infos['article_id'] = $info['article_id'];

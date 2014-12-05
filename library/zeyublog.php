@@ -33,7 +33,8 @@ class ZeyuBlogOpt
 			}
 			else if ($line == '<table>')
 			{
-				$contents .= '<table class="stdtable" border="1" style="font-size:18;">';
+				$contents .=
+					'<table class="stdtable" border="1" style="font-size:18;">';
 				while (1)
 				{
 					$index++;
@@ -48,7 +49,13 @@ class ZeyuBlogOpt
 					else if (substr($line, 0, 9) == '<caption>')
 					{
 						$caption = substr($line, 9);
-						$contents .= '<caption style=\'font-weight:bold; font-family:"PT Serif","Georgia","Helvetica Neue",Arial,sans-serif; background-color:#D2E1F0; height:30px;\'>'.$caption.'</caption>';
+						$contents .=
+							'<caption'
+							.' style=\'font-weight:bold;'
+							.' font-family:"PT Serif","Georgia","Helvetica Neue",Arial,sans-serif;'
+							.' background-color:#D2E1F0; height:30px;\'>'
+							.$caption
+							.'</caption>';
 					}
 					else
 					{
@@ -56,10 +63,18 @@ class ZeyuBlogOpt
 						if (substr($line, 0, 4) == '<tr>')
 						{
 							$tds[0] = substr($tds[0], 4);
-							$contents .= '<thead><tr style="background-color:#C5C5C5;"><td><strong>'.implode('</strong></td><td><strong>', $tds).'</strong></td></tr></thead>';
+							$contents .= '<thead>'
+								.'<tr style="background-color:#C5C5C5;">'
+								.'<td><strong>'
+								.implode('</strong></td><td><strong>', $tds)
+								.'</strong></td></tr></thead>';
 						}
 						else
-							$contents .= '<tr><td>'.implode('</td><td>', $tds).'</td></tr>';
+						{
+							$contents .= '<tr><td>'
+								.implode('</td><td>', $tds)
+								.'</td></tr>';
+						}
 					}
 				}
 			}
@@ -81,7 +96,11 @@ class ZeyuBlogOpt
 					{
 						$line = self::str_trans($line);
 						if ($font != '')
-							$line = '<span style="font-family:'.$font.';">'.$line.'</span>';
+						{
+							$line = '<span style="font-family:'.$font.';">'
+								.$line
+								.'</span>';
+						}
 						$contents .= '<p><li>'.$line.'</li></p>';
 					}
 				}
@@ -108,19 +127,41 @@ class ZeyuBlogOpt
 							$width = StringOpt::spider_string($image_info, 'width="', '"');
 							$width = intval(trim($width));
 							if ($width > '765')
-								$line = str_replace('id="'.$id.'"', 'src="'.$path.'" width="765px;"', $line);
+							{
+								$line =
+									str_replace(
+										'id="'.$id.'"',
+										'src="'.$path.'" width="765px;"',
+										$line
+									);
+							}
 							else
-								$line = str_replace('id="'.$id.'"', 'src="'.$path.'"', $line);
+							{
+								$line =
+									str_replace(
+										'id="'.$id.'"',
+										'src="'.$path.'"',
+										$line
+									);
+							}
 						}
 						else
-							$line = str_replace('id="'.$id.'"', 'src="'.$path.'"', $line);
+						{
+							$line =
+								str_replace(
+									'id="'.$id.'"',
+									'src="'.$path.'"',
+									$line
+								);
+						}
 					}
 					else
 					{
 						$line = '<strong>图片ID不存在</strong>';
 					}
 				}
-				$contents .= '<p style="text-indent:0em;">'.$line.'</p><p>&nbsp;</p>';
+				$contents .= '<p style="text-indent:0em;">'
+					.$line.'</p><p>&nbsp;</p>';
 			}
 			else if (substr($line, 0, 5) == '<code')
 			{
@@ -169,19 +210,38 @@ class ZeyuBlogOpt
 				if ($code_line > 30)
 					$code_line = 30;
 
-				$contents .= '<div id="editor_'.$i.'" style="position: relative; width: 765px; height: '.$code_line.'px">'.trim($code).'</div><p>&nbsp;</p>';
+				$contents .= '<div id="editor_'.$i.'"'
+					.' style="position: relative;'
+					.' width: 765px;'
+					.' height: '.$code_line.'px">'
+					.trim($code)
+					.'</div><p>&nbsp;</p>';
+
 				$codes[] = array('id'=>'editor_'.$i++, 'mode'=>$mode);
 				continue;
 			}
 			else if (substr($line, 0, 4) === '<h1>')
-				$contents .= '<div class="page-header"><h1 id="'.$i++.'">'.self::str_trans(substr($line, 4)).'</h1></div>';
+			{
+				$contents .= '<div class="page-header"><h1 id="'.$i++.'">'
+					.self::str_trans(substr($line, 4))
+					.'</h1></div>';
+			}
 			else if (substr($line, 0, 4) === '<h3>')
-				$contents .= '<p><h3>'.self::str_trans(substr($line, 4)).'</h3></p>';
+			{
+				$contents .= '<p><h3>'
+					.self::str_trans(substr($line, 4))
+					.'</h3></p>';
+			}
 			else
 			{
 				$line = self::str_trans($line);
 				if ($font != '')
-					$line = '<span style="font-family:'.$font.';">'.$line.'</span>';
+				{
+					$line = '<span style="font-family:'.$font.';">'
+						.$line
+						.'</span>';
+				}
+
 				$contents .= '<p>'.$line.'</p>';
 			}
 		}
@@ -254,10 +314,17 @@ class ZeyuBlogOpt
 				$path = $info[0]['path'];
 				$blog_image = dirname(__FILE__).'/../html/'.$path;
 				unlink($blog_image);
+
 				$ret = copy($file, $blog_image);
 				if ($ret == false)
 					return -2;
-				MySqlOpt::update ('images', array('md5'=>md5_file($blog_image), 'category'=>$category), array('image_id'=>$id));
+
+				MySqlOpt::update(
+					'images',
+					array('md5'=>md5_file($blog_image),
+					'category'=>$category),
+					array('image_id'=>$id)
+				);
 			}
 			else
 				return -4;
@@ -269,10 +336,17 @@ class ZeyuBlogOpt
 			$md5 = md5_file($file);
 			$path = 'images/'.$md5.$format;
 			$blog_image = dirname(__FILE__).'/../html/'.$path;
+
 			$ret = copy($file, $blog_image);
 			if ($ret == false)
 				return -5;
-			$id = MySqlOpt::insert ('images', array('md5'=>md5_file($blog_image), 'inserttime'=>'now()', 'path'=>$path, 'category'=>$category), true);
+			$id = MySqlOpt::insert('images',
+				array('md5'=>md5_file($blog_image),
+				'inserttime'=>'now()',
+				'path'=>$path,
+				'category'=>$category),
+				true
+			);
 		}
 		if (!is_dir('/mnt/hgfs/Debin/images'))
 		{
@@ -302,11 +376,17 @@ class ZeyuBlogOpt
 		$ret = MySqlOpt::insert('images', $db_parrams, true);
 		if ($ret == false)
 		{
-			LogOpt::set('exception', 'insert_into_images_error', MySqlOpt::errno(), MySqlOpt::error());
+			LogOpt::set('exception', 'insert_into_images_error',
+				MySqlOpt::errno(), MySqlOpt::error()
+			);
 		}
 		else
 		{
-			LogOpt::set('info', 'insert_into_images_success', 'image_id', $ret, 'path', $path, 'category', $category);
+			LogOpt::set('info', 'insert_into_images_success',
+				'image_id', $ret,
+				'path', $path,
+				'category', $category
+			);
 		}
 		return $ret;
 	}
@@ -326,19 +406,30 @@ class ZeyuBlogOpt
 		while (1)
 		{
 			$value = '';
-			$key = StringOpt::spider_string ($str, '<div', '</div>', $str);
+			$key = StringOpt::spider_string($str, '<div', '</div>', $str);
 			if ($key === null)
+			{
 				break;
-			if ($key === false)
+			}
+			else if ($key === false)
+			{
 				return false;
-			$key = StringOpt::spider_string ($key, 'class="page-header"<![&&]>id="', '"', $value);
+			}
+
+			$key = StringOpt::spider_string($key, 'class="page-header"<![&&]>id="', '"', $value);
 			if ($key === null)
 				continue;
-			$value = StringOpt::spider_string ($value, '>', '<');
+
+			$value = StringOpt::spider_string($value, '>', '<');
 			if ($value === null)
+			{
 				continue;
-			if ($value === false)
+			}
+			else if ($value === false)
+			{
 				return false;
+			}
+
 			$index[$key] = $value;
 		}
 		return $index;
@@ -346,10 +437,14 @@ class ZeyuBlogOpt
 
 	public static function get_tags ($article_id)
 	{
-		$sql = 'select * from article_tag_relation where article_id='.$article_id.' order by inserttime desc';
+		$sql = 'select * from article_tag_relation'
+			.' where article_id='.$article_id
+			.' order by inserttime desc';
+
 		$infos = MySqlOpt::select_query($sql);
 		if ($infos == null)
-			return $infos;
+			return null;
+
 		$tags = array();
 		foreach ($infos as $info)
 		{
@@ -358,7 +453,11 @@ class ZeyuBlogOpt
 			$tag_name = MySqlOpt::select_query($sql);
 			if ($tag_name == null)
 			{
-				LogOpt::set ('exception', 'get tag error', 'tag_id', $tag_id, MySqlOpt::errno(), MySqlOpt::error());
+				LogOpt::set('exception', 'get tag error',
+					'tag_id', $tag_id,
+					MySqlOpt::errno(), MySqlOpt::error()
+				);
+
 				return false;
 			}
 			$tag_name = $tag_name[0]['tag_name'];

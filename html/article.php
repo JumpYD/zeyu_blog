@@ -25,10 +25,16 @@ if ($tags != null)
 $contents = ZeyuBlogOpt::pre_treat_article($article_info['draft']);
 if (StringOpt::spider_string($contents, '"page-header"', '</div>') === null)
 {
-	$contents = '<div class="page-header"><h1>'.$article_info['title'].'</h1></div>'.$contents;
+	$contents = '<div class="page-header"><h1>'
+		.$article_info['title']
+		.'</h1></div>'.$contents;
 }
 
-$smarty->assign('inserttime', $article_info['inserttime'].'&nbsp;&nbsp;&nbsp;最后更新: '.$article_info['updatetime']);
+$time = $article_info['inserttime']
+	.'&nbsp;&nbsp;&nbsp;最后更新: '
+	.$article_info['updatetime'];
+
+$smarty->assign('inserttime', $time);
 $smarty->assign('title', $article_info['title']);
 $smarty->assign('title_desc', $article_info['title_desc']);
 $smarty->assign('contents', $contents);

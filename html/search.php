@@ -3,7 +3,9 @@ require_once (dirname(__FILE__).'/'.'head.php');
 LogOpt::init('article_searcher', true);
 
 global $smarty;
-$sql = 'select tag_id,count(*) as article_count from article_tag_relation group by tag_id order by article_count desc, inserttime desc';
+$sql = 'select tag_id,count(*) as article_count from article_tag_relation'
+	.' group by tag_id'
+	.' order by article_count desc, inserttime desc';
 $infos = MySqlOpt::select_query($sql);
 $tag_infos = array();
 foreach ($infos as $info)
@@ -21,24 +23,40 @@ for ($i=0; $i<$month_num; $i++)
 {
 	$info = array();
 	$date = date("Y-m", mktime(0, 0, 0, date("m")-$i, date("d"), date("Y")));
-	$info['id'] = date('Y0m', mktime(0, 0, 0, date("m")-$i, date("d"), date("Y")));
+
+	$info['id'] = date(
+		'Y0m',
+		mktime(0, 0, 0, date("m")-$i, date("d"), date("Y"))
+	);
+
 	$info['month'] = $date;
 
-	$query = 'select count(*) from article where inserttime>="'.$date.'-01 00:00:00" and inserttime<="'.$date.'-31 23:59:59"';
+	$query = 'select count(*) from article'
+		.' where inserttime>="'.$date.'-01 00:00:00"'
+		.' and inserttime<="'.$date.'-31 23:59:59"';
 	$article_count = MySqlOpt::select_query($query);
 	if ($article_count == null)
 	{
-		LogOpt::set('exception', 'select article by inserttime error', 'date', $date, MySqlOpt::errno(), MySqlOpt::error());
+		LogOpt::set('exception', 'select article by inserttime error',
+			'date', $date,
+			MySqlOpt::errno(), MySqlOpt::error()
+		);
+
 		return;
 	}
 	$article_count = intval($article_count[0]['count(*)']);
 	$info['article'] = $article_count;
 
-	$query = 'select count(*) from mood where inserttime>="'.$date.'-01 00:00:00" and inserttime<="'.$date.'-31 23:59:59"';
+	$query = 'select count(*) from mood'
+		.' where inserttime>="'.$date.'-01 00:00:00"'
+		.' and inserttime<="'.$date.'-31 23:59:59"';
 	$mood_count = MySqlOpt::select_query($query);
 	if ($mood_count == null)
 	{
-		LogOpt::set('exception', 'select mood by inserttime error', 'date', $date, MySqlOpt::errno(), MySqlOpt::error());
+		LogOpt::set('exception', 'select mood by inserttime error',
+			'date', $date,
+			MySqlOpt::errno(), MySqlOpt::error());
+
 		return;
 	}
 	$info['mood'] = intval($mood_count[0]['count(*)']);

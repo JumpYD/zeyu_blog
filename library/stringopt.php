@@ -1,7 +1,9 @@
 <?php
 class StringOpt
 {
-	public static function spider_string ($string, $begtab, $endtab, &$remain_str=null)
+	public static function spider_string (
+		$string, $begtab, $endtab, &$remain_str=null
+	)
 	{
 		if ($begtab == '')
 		{

@@ -6,7 +6,10 @@ LogOpt::init('article_creater', true);
 $options = getopt('i:t:g:c:d:a:');
 if (!isset($options['t']) || !isset($options['g']) || !isset($options['c']))
 {
-	echo 'usage: php article_creater.php [-a inserttime] [-i article_id] -t title [-d title_desc] -g tags -c category'.PHP_EOL;
+	echo 'usage: php article_creater.php'
+		.' [-a inserttime] [-i article_id] -t title'
+		.' [-d title_desc] -g tags -c category'.PHP_EOL;
+
 	return;
 }
 
@@ -31,15 +34,26 @@ $temp_contents = ZeyuBlogOpt::pre_treat_article($infos['draft']);
 $image_ids = array();
 while (1)
 {
-	$image_path = StringOpt::spider_string($temp_contents, 'img<![&&]>src="', '"', $temp_contents);
-	if ($image_path === null || $image_path === false || trim($image_path) == '')
+	$image_path = StringOpt::spider_string(
+		$temp_contents,
+		'img<![&&]>src="',
+		'"',
+		$temp_contents
+	);
+
+	if ($image_path === null
+		|| $image_path === false
+		|| trim($image_path) == ''
+	)
 		break;
+
 	$image_path = trim($image_path);
 	if (!file_exists(dirname(__FILE__).'/'.'../html/'.$image_path))
 	{
 		echo '文中目标图片不存在'."\t".$image_path.PHP_EOL;
 		return;
 	}
+
 	$query = 'select image_id from images where path="'.$image_path.'"';
 	$image_id = MySqlOpt::select_query($query);
 	if ($image_id == null)
@@ -48,10 +62,18 @@ while (1)
 		$image_id = ZeyuBlogOpt::load_image ($full_path, 'article');
 		if ($image_id == null)
 		{
-			LogOpt::set('exception', '添加图片到数据库失败', 'image_path', $image_path, MySqlOpt::errno(), MySqlOpt::error());
+			LogOpt::set('exception', '添加图片到数据库失败',
+				'image_path', $image_path,
+				MySqlOpt::errno(), MySqlOpt::error()
+			);
+
 			return;
 		}
-		LogOpt::set('info', '添加图片到数据库成功', 'image_id', $image_id, 'image_path', $image_path);
+		LogOpt::set('info', '添加图片到数据库成功',
+			'image_id', $image_id,
+			'image_path', $image_path
+		);
+
 		$image_ids[] = $image_id;
 	}
 }
@@ -86,10 +108,19 @@ if (isset($options['a']))
 // 插入日志
 if (isset($options['i']))
 {
-	$ret = MySqlOpt::update('article', $infos, array('article_id'=>$options['i']));
+	$ret = MySqlOpt::update(
+		'article',
+		$infos,
+		array('article_id'=>$options['i'])
+	);
+
 	if ($ret == null)
 	{
-		LogOpt::set ('exception', '日志更新失败', 'article_id', $options['i'], MySqlOpt::errno(), MySqlOpt::error());
+		LogOpt::set ('exception', '日志更新失败',
+			'article_id', $options['i'],
+			MySqlOpt::errno(), MySqlOpt::error()
+		);
+
 		return;
 	}
 	$article_id = $options['i'];
@@ -99,11 +130,19 @@ else
 	$article_id = MySqlOpt::insert('article', $infos, true);
 	if ($article_id == false)
 	{
-		LogOpt::set ('exception', '日志插入失败', MySqlOpt::errno().':'.MySqlOpt::error());
+		LogOpt::set ('exception', '日志插入失败',
+			MySqlOpt::errno().':'.MySqlOpt::error()
+		);
+
 		return;
 	}
 }
-LogOpt::set ('info', '日志插入成功', 'article_id', $article_id, 'title', $options['t']);
+
+LogOpt::set ('info', '日志插入成功',
+	'article_id', $article_id,
+	'title', $options['t']
+);
+
 unlink($draft_file);
 
 // 添加 article 并获取新加 article_id 后需要更新为 tags 表对应项
@@ -125,7 +164,10 @@ foreach ($tags as $tag)
 		$tag_id = MySqlOpt::insert('tags', array('tag_name'=>$tag), true);
 		if ($tag_id == false)
 		{
-			LogOpt::set ('exception', 'tag 添加失败', MySqlOpt::errno(), MySqlOpt::error());
+			LogOpt::set ('exception', 'tag 添加失败',
+				MySqlOpt::errno(), MySqlOpt::error()
+			);
+
 			continue;
 		}
 	}
@@ -138,9 +180,17 @@ foreach ($tags as $tag)
 	$relation_id = MySqlOpt::insert('article_tag_relation', $params, true);
 	if ($relation_id == false)
 	{
-		LogOpt::set('exception', 'article_tag_relation 更新失败', 'article_id', $article_id, 'tag_id', $tag_id, MySqlOpt::errno(), MySqlOpt::error());
+		LogOpt::set('exception', 'article_tag_relation 更新失败',
+			'article_id', $article_id,
+			'tag_id', $tag_id,
+			MySqlOpt::errno(), MySqlOpt::error()
+		);
+
 		continue;
 	}
-	LogOpt::set ('info', 'article_tag_relation 更新成功', 'relation_id', $relation_id);
+
+	LogOpt::set ('info', 'article_tag_relation 更新成功',
+		'relation_id', $relation_id
+	);
 }
 ?>

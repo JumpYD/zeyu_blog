@@ -25,15 +25,23 @@ $index = 0;
 foreach ($earnings as $earning)
 {
 	$infos = array();
-	if ($earning['month'] >= $det_beg and $earning['month'] <= $det_end and $index < 12)
+
+	if ($earning['month'] >= $det_beg
+		and $earning['month'] <= $det_end
+		and $index < 12
+	)
 	{
 		$infos['idx_href'] = 'article.php?id='.$earning['article_id'];
-		$image_select_query = 'select path from images where image_id='.$earning['image_id'];
+
+		$image_select_query =
+			'select path from images where image_id='.$earning['image_id'];
 		$image_ret = MySqlOpt::select_query($image_select_query);
+
 		$path = $image_ret[0]['path'];
 		$infos['image_path'] = $path;
 		$infos['title'] = $earning['month'];
-		$infos['descs'] = '结余:&nbsp;&nbsp;'.($earning['income']-$earning['expend']);
+		$infos['descs'] =
+			'结余:&nbsp;&nbsp;'.($earning['income']-$earning['expend']);
 		$earn_infos[] = $infos;
 		$index++;
 	}

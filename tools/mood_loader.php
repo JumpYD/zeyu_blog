@@ -20,7 +20,10 @@ if (isset($options['c']) && trim($options['c']) != '')
 	$mood_id = MySqlOpt::insert('mood', $infos, true);
 	if ($mood_id === false)
 	{
-		LogOpt::set('exception', 'mood add error', MySqlOpt::errno(), MySqlOpt::error());
+		LogOpt::set('exception', 'mood add error',
+			MySqlOpt::errno(), MySqlOpt::error()
+		);
+
 		continue;
 	}
 	unset($infos['contents']);
@@ -29,7 +32,9 @@ if (isset($options['c']) && trim($options['c']) != '')
 }
 else
 {
-	echo 'usage: you can also use by ---- php mood_loader -c contents [-i inserttime] [-d mood_id]'.PHP_EOL;
+	echo 'usage: you can also use by ----'
+		.' php mood_loader -c contents [-i inserttime] [-d mood_id]'.PHP_EOL;
+
 	while (1)
 	{
 		echo '> ';
@@ -43,12 +48,22 @@ else
 			$sure = fgets(STDIN);
 			if (trim($sure[0]) == 'Y' || trim($sure[0]) == 'y')
 			{
-				$mood_id = MySqlOpt::insert('mood', array('contents'=>$contents), true);
+				$mood_id = MySqlOpt::insert(
+					'mood',
+					array('contents'=>$contents),
+					true
+				);
+
 				if ($mood_id === false)
 				{
-					LogOpt::set('exception', 'mood add error', MySqlOpt::errno(), MySqlOpt::error(), 'contents', $contents);
+					LogOpt::set('exception', 'mood add error',
+						MySqlOpt::errno(), MySqlOpt::error(),
+						'contents', $contents
+					);
+
 					continue;
 				}
+
 				LogOpt::set('info', 'mood add success', 'mood_id', $mood_id);
 			}
 		}

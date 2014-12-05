@@ -19,13 +19,26 @@ $contents = ZeyuBlogOpt::pre_treat_article ($infos['draft']);
 $image_ids = array();
 while (1)
 {
-	$image_path = StringOpt::spider_string($contents, 'img<![&&]>src="', '"', $contents);
-	if ($image_path === null || $image_path === false || trim($image_path) == '')
+	$image_path = StringOpt::spider_string(
+		$contents,
+		'img<![&&]>src="',
+		'"',
+		$contents
+	);
+
+	if ($image_path === null
+		|| $image_path === false
+		|| trim($image_path) == ''
+	)
 		break;
+
 	$image_path = trim($image_path);
 	if (!file_exists(dirname(__FILE__).'/../'.'html/'.$image_path))
 	{
-		LogOpt::set('exception', 'the image does not exist', 'image_path', $image_path);
+		LogOpt::set('exception', 'the image does not exist',
+			'image_path', $image_path
+		);
+
 		return;
 	}
 	$query = 'select image_id from images where path="'.$image_path.'"';
@@ -36,9 +49,16 @@ while (1)
 		$image_id = ZeyuBlogOpt::load_image($full_path, 'article');
 		if ($image_id == false)
 		{
-			LogOpt::set('exception', '添加图片到数据库失败', 'image_path', $image_path, MySqlOpt::errno(), MySqlOpt::error());
+			LogOpt::set('exception', '添加图片到数据库失败',
+				'image_path', $image_path,
+				MySqlOpt::errno(), MySqlOpt::error()
+			);
 		}
-		LogOpt::set('info', '添加图片到数据库成功', 'image_id', $image_id, 'image_path', $image_path);
+		LogOpt::set('info', '添加图片到数据库成功',
+			'image_id', $image_id,
+			'image_path', $image_path
+		);
+
 		$image_ids[] = $image_id;
 	}
 }
@@ -47,6 +67,7 @@ $infos['title'] = date('Y-m-d H:i:s');
 if (isset($options['t']))
 	$infos['title'] = $options['t'].' -- '.date('Y-m-d');
 $infos['category_id'] = '5';
+
 // 获取 index
 $indexs = json_encode(ZeyuBlogOpt::get_index($contents));
 if ($indexs != null)
@@ -54,11 +75,19 @@ if ($indexs != null)
 
 $infos['updatetime'] = 'now()';
 $article_id = MySqlOpt::insert('article', $infos, true);
+
 if ($article_id == null)
 {
-	LogOpt::set('exception', 'article insert error', MySqlOpt::errno(), MySqlOpt::error());
+	LogOpt::set('exception', 'article insert error',
+		MySqlOpt::errno(), MySqlOpt::error()
+	);
 	return;
 }
-LogOpt::set('info', '添加日志成功', 'article_id', $article_id, 'title', $infos['title']);
+
+LogOpt::set('info', '添加日志成功',
+	'article_id', $article_id,
+	'title', $infos['title']
+);
+
 unlink($draft_file);
 ?>

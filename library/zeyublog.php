@@ -261,7 +261,7 @@ class ZeyuBlogOpt
 		return $contents;
 	}
 
-	private function str_trans($str, $nbsp = true)
+	private static function str_trans($str, $nbsp = true)
 	{
 		$str = str_replace('&', '&amp;', $str);
 		$str = str_replace('"', '&quot;', $str);

@@ -1,4 +1,6 @@
 <?php
+ini_set('date.timezone','Asia/Shanghai');
+
 class LogOpt
 {
 	private static $condition = null;

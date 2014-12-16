@@ -4,7 +4,7 @@ global $smarty;
 LogOpt::init('display_article');
 
 $article_id = $_GET['id'];
-$article_query = 'select * from article where article_id='.$article_id;
+$article_query = 'select * from article where article_id='.$article_id.' and category_id!=5';
 $article_info = MySqlOpt::select_query($article_query);
 
 if ($article_info == false)

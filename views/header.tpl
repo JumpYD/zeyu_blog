@@ -43,16 +43,17 @@
 						<li>
 						<a href="/html/debin.php?category=3">龙渊阁记</a>
 						</li>
-						<{if !$is_corp}>
+						<{if $is_root}>
 						<li>
 						<a href="/html/debin.php?category=mood">心情小说</a>
 						</li>
-						<{/if}>
 						<li>
 						<a href="/html/earnings.php">龙泉财报</a>
 						</li>
+						<{/if}>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
+					<{if $is_root}>
 						<li>
 						<a href="/html/search.php">检索</a>
 						</li>
@@ -62,6 +63,11 @@
 						<li>
 						<a href="/html/pictures.php">相册</a>
 						</li>
+					<{else}>
+						<li>
+						<a href="javascript:void(0)" onclick="login()">登录</a>
+						</li>
+					<{/if}>
 					</ul>
 				</nav>
 			</div>

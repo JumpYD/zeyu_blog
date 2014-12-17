@@ -33,5 +33,9 @@ if ($is_root)
 	$backgrounds[$idx]['path'] = 'images/background.jpg';
 	$smarty->assign('is_corp', true);
 }
+else
+{
+	$backgrounds[$idx]['path'] = 'images/d8b6da32f844f3d07af619b26fad1e91.jpg';
+}
 $smarty->assign('background', $backgrounds[$idx]['path']);
 ?>

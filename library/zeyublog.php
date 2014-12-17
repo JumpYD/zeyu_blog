@@ -296,13 +296,13 @@ class ZeyuBlogOpt
 	 * 		0 : success
 	 * 		-1: source file not exist
 	 * 		-2: exchange error
-	 * 		-3: mkdir /mnt/hgfs/Debin/images error
+	 * 		-3: mkdir /home/zeyu/Documents/images error
 	 * 		-4: id not exist
 	 * 		-5: insert file error
 	 */
 	public static function picture_insert($name, $category, $id=null)
 	{
-		$file = trim('/mnt/hgfs/Debin/'.$name);
+		$file = trim('/home/zeyu/Documents/images/'.$name);
 		if (!file_exists($file))
 			return -1;
 		if (!empty($id))
@@ -348,13 +348,13 @@ class ZeyuBlogOpt
 				true
 			);
 		}
-		if (!is_dir('/mnt/hgfs/Debin/images'))
+		if (!is_dir('/home/zeyu/Documents/images'))
 		{
-			$ret = mkdir('/mnt/hgfs/Debin/images');
+			$ret = mkdir('/home/zeyu/Documents/images');
 			if (!$ret)
 				return -3;
 		}
-		rename($file, '/mnt/hgfs/Debin/'.$path);
+		rename($file, '/home/zeyu/Documents/'.$path);
 		return $id;
 	}
 

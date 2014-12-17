@@ -4,7 +4,6 @@
 <br />
 <br />
 <div id="customDoc">
-	<!--STATUS OK-->
 	<script>window.wpo={start:new Date*1,pid:109,page:'qingBlog2x'}</script>
 	<!--[if IE]>
 	<script type="text/javascript">(function(){var e="abbr,article,aside,audio,canvas,datalist,details,dialog,eventsource,figure,footer,header,hgroup,mark,menu,meter,nav,output,progress,section,time,video".split(","),t=e.length;while(t--)document.createElement(e[t])})();</script>

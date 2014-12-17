@@ -13,7 +13,7 @@
 	<link href="../resource/bootstrap/css/github.min.css" rel="stylesheet" type="text/css">
 	<link href="../resource/jquery/css/jquery.alerts.css" rel="stylesheet" type="text/css">
 	<link href="../resource/jquery/css/jquery.ui.css" rel="stylesheet" type="text/css">
-	<link href="../resource/zeyu_blog.css" rel="stylesheet" type="text/css">
+	<link href="../resource/zeyu_blog/css/zeyu_blog.css" rel="stylesheet" type="text/css">
 	<link rel="shortcut icon" href="images/icon.png">
 	<{if $category_id==2}>
 		<{if $category_id==1}>
@@ -61,15 +61,15 @@
 					<ul class="nav navbar-nav navbar-right">
 					<{if $is_root}>
 						<li>
-						<a href="/html/search.php">检索</a>
-						</li>
-						<li>
 						<a href="/html/test.php">草稿</a>
 						</li>
 						<li>
 						<a href="/html/pictures.php">相册</a>
 						</li>
 					<{else}>
+						<li>
+						<a href="/html/search.php">检索</a>
+						</li>
 						<li>
 						<a href="javascript:void(0)" data-toggle="modal" data-target="#login_modal">登录</a>
 						</li>

@@ -1,89 +1,7 @@
 <{include 'header.tpl'}>
 <link href="../resource/bootstrap/css/site.css" rel="stylesheet">
 <script src="../resource/bootstrap/js/jquery.js"></script>
-<script language="javascript">
-function js_label(label_id)
-{
-	var item = $('#icon_'+label_id);
-	if (item.hasClass('glyphicon-bookmark'))
-	{
-		item.removeClass('glyphicon-bookmark');
-		item.addClass('glyphicon-ok');
-	}
-	else
-	{
-		item.removeClass('glyphicon-ok');
-		item.addClass('glyphicon-bookmark');
-	}
-}
-
-function set_opt_type(opt_type)
-{
-	$("#chose_btn").html($('#'+opt_type).html() + ' <span class="caret"></span>');
-	$("#chose_btn").val($('#'+opt_type).attr("id"));
-}
-
-function js_commit()
-{
-	var form = document.createElement("form");
-	form.setAttribute("method", 'post');
-	form.setAttribute("action", 'debin.php');
-
-	hiddenField = document.createElement("input");
-	hiddenField.setAttribute("type", "hidden");
-	hiddenField.setAttribute("name", 'category');
-
-	if ($("#chose_btn").val() != 'mood')
-		hiddenField.setAttribute("value", '0');
-	else
-		hiddenField.setAttribute("value", 'mood');
-
-	form.appendChild(hiddenField);
-
-	hiddenField = document.createElement("input");
-	hiddenField.setAttribute("type", "hidden");
-	hiddenField.setAttribute("name", 'opt_type');
-	hiddenField.setAttribute("value", $("#chose_btn").val());
-	form.appendChild(hiddenField);
-
-	hiddenField = document.createElement("input");
-	hiddenField.setAttribute("type", "hidden");
-	hiddenField.setAttribute("name", 'search');
-	hiddenField.setAttribute("value", $('#search').val());
-	form.appendChild(hiddenField);
-
-	var tags = Array();
-
-	var items = $('.tag_icon');
-	for (var i=0; i<items.length; ++i)
-	{
-		var item = items.eq(i);
-		if (item.hasClass('glyphicon-ok'))
-		{
-			tags.push(item.attr('id'));
-		}
-	}
-	
-	var items = $('.date_icon');
-	for (var i=0; i<items.length; ++i)
-	{
-		var item = items.eq(i);
-		if (item.hasClass('glyphicon-ok'))
-		{
-			tags.push(item.attr('id'));
-		}
-	}
-
-	hiddenField = document.createElement("input");
-	hiddenField.setAttribute("type", "hidden");
-	hiddenField.setAttribute("name", 'tags');
-	hiddenField.setAttribute("value", tags);
-	form.appendChild(hiddenField);
-
-	document.body.appendChild(form);
-	form.submit();
-}
-</script>
+<script src="../resource/zeyu_blog/js/search.js"></script>
 <style>
 .chosen_label
 {
@@ -125,7 +43,7 @@ function js_commit()
 			<div class="alert">
 				<div style="scrollbar-face-color: #889b9f;  scrollbar-highlight-color: #c3d6da; overflow: auto;scrollbar-shadow-color: #3d5054; scrollbar-3dlight-color: #3d5054; scrollbar-arrow-color: #ffd6da;scrollbar-darkshadow-color: #85989c; height: 500px">
 					<table class="table table-hover" style="background-color:rgba(255, 255, 255, 0)" frame=void border=0 cellpadding=0 cellspacing=0 bordercolor=rgba(0,0,0,0)>
-						<tr><td style='font-family:"PT Serif","Georgia","Helvetica Neue",Arial,sans-serif'>TAGS</td><td></td><td></td><td></td><td></td><td></td></tr>
+						<tr><td style='color:#fff; font-family:"PT Serif","Georgia","Helvetica Neue",Arial,sans-serif'>TAGS</td><td></td><td></td><td></td><td></td><td></td></tr>
 						<{foreach item=info from=$tags name=tag}>
 						<{if $smarty.foreach.tag.index % 3 == 0}>
 						<tr>
@@ -138,7 +56,7 @@ function js_commit()
 									</span>
 								</div>
 							</td>
-							<td><{$info.article_count}></td>
+							<td style="color:#fff"><{$info.article_count}></td>
 						<{if $smarty.foreach.tag.index % 3 == 2}>
 						</tr>
 						<{/if}>
@@ -154,7 +72,7 @@ function js_commit()
 			<div class="alert">
 				<div style="scrollbar-face-color: #889b9f;  scrollbar-highlight-color: #c3d6da; overflow: auto;scrollbar-shadow-color: #3d5054; scrollbar-3dlight-color: #3d5054; scrollbar-arrow-color: #ffd6da;scrollbar-darkshadow-color: #85989c; height: 500px">
 					<table class="table table-hover" style="background-color:rgba(255, 255, 255, 0)" frame=void border=0 cellpadding=0 cellspacing=0 bordercolor=rgba(0,0,0,0)>
-						<tr style='font-family:"PT Serif","Georgia","Helvetica Neue",Arial,sans-serif'><td>MONTH</td><td>ARTICLE</td><td>MOOD</td></tr>
+						<tr style='font-family:"PT Serif","Georgia","Helvetica Neue",Arial,sans-serif'><td style="color:#fff">MONTH</td><td style="color:#fff">ARTICLE</td><td style="color:#fff">MOOD</td></tr>
 						<{foreach item=info from=$dates}>
 						<tr>
 							<td>
@@ -165,8 +83,8 @@ function js_commit()
 									</span>
 								</div>
 							</td>
-							<td><{$info.article}></td>
-							<td><{$info.mood}></td>
+							<td style="color:#fff"><{$info.article}></td>
+							<td style="color:#fff"><{$info.mood}></td>
 						</tr>
 						<{/foreach}>
 					</table>

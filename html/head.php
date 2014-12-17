@@ -31,7 +31,7 @@ if (isset($_COOKIE["LogInfo"])
 #$idx = rand(0, count($backgrounds)-1);
 if ($is_root)
 {
-	$background = 'images/background.jpg';
+	$background = 'images/17183518883b16614c2fe8.jpg';
 }
 else
 {

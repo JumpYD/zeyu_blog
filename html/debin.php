@@ -20,6 +20,13 @@ if (!isset($category_map[$query_info['category']]))
 }
 
 $sphinx = get_sphinx();
+$category = $query_info['category'];
+
+if (intval($category) < 0 || intval($category) > 4)
+{
+	ZeyuBlogOpt::warning_opt('category参数错误', '/html');
+	return;
+}
 
 switch($query_info['category'])
 {

@@ -23,7 +23,7 @@ function login_action ($input)
 	{
 		$result['code'] = 0;
 		$result['msg'] = '登录成功';
-		setcookie('LogInfo', 'admin519ca7b3591e6844af3c875cb61d0d64', time()+3600);
+		setcookie('LogInfo', 'admin519ca7b3591e6844af3c875cb61d0d64', time()+1800);
 	}
 
 	echo json_encode($result);

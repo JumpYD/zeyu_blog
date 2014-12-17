@@ -19,6 +19,7 @@ if (isset($_COOKIE["LogInfo"])
 	&& $_COOKIE["LogInfo"] == 'admin519ca7b3591e6844af3c875cb61d0d64'
 )
 {
+	setcookie('LogInfo', 'admin519ca7b3591e6844af3c875cb61d0d64', time()+1800);
 	$smarty->assign('is_root', true);
 	$is_root = true;
 }

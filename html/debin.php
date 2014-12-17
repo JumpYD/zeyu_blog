@@ -54,7 +54,7 @@ function display_article()
 
 	if (!$is_root)
 	{
-		$where_str = ' and category_id<5'.$where_str;
+		$where_str = ' and category_id < 5'.$where_str;
 	}
 
 	if (!empty($search))
@@ -310,11 +310,16 @@ function select_article($info)
 
 	$infos['date'] = $date[2];
 	$infos['month'] = $date[1].'/'.$date[0];
-	$infos['tags'] = array_slice(
-		ZeyuBlogOpt::get_tags($info['article_id']),
-		0,
-		4
-	);
+
+	$tags = ZeyuBlogOpt::get_tags($info['article_id']);
+	if (is_array($tags) && count($tags) > 4)
+	{
+		$infos['tags'] = array_slice(
+			ZeyuBlogOpt::get_tags($info['article_id']),
+			0,
+			4
+		);
+	}
 
 	$contents = ZeyuBlogOpt::pre_treat_article($info['draft']);
 	$imgpath = StringOpt::spider_string($contents, 'img<![&&]>src="', '"');

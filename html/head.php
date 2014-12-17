@@ -14,6 +14,15 @@ $smarty->template_dir		=	$base_dir.'views';
 $smarty->left_delimiter		=	"<{"; 
 $smarty->right_delimiter	=	"}>";
 
+$is_root = false;
+if (isset($_COOKIE["LogInfo"])
+	&& $_COOKIE["LogInfo"] == 'admin519ca7b3591e6844af3c875cb61d0d64'
+)
+{
+	$smarty->assign('is_root', true);
+	$is_root = true;
+}
+
 $query =
 	'select image_id,path from images'
 	.' where category="background" and path!="images/background.jpg"';

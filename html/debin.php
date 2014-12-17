@@ -22,7 +22,8 @@ if (!isset($category_map[$query_info['category']]))
 $sphinx = get_sphinx();
 $category = $query_info['category'];
 
-if (intval($category) < 0 || intval($category) > 4)
+if (!$is_root
+	&& (intval($category) < 0 || intval($category) > 4))
 {
 	ZeyuBlogOpt::warning_opt('category参数错误', '/html');
 	return;
@@ -39,7 +40,7 @@ default:
 
 function display_article()
 {
-	global $category_map, $sphinx, $query_info;
+	global $category_map, $sphinx, $query_info, $is_root;
 
 	$category = $query_info['category'];
 	$opt_type = $query_info['opt_type'];
@@ -50,6 +51,11 @@ function display_article()
 
 	$tags = explode(',', $query_info['tags']);
 	$where_str = get_where($tags);
+
+	if (!$is_root)
+	{
+		$where_str = ' and category_id<5'.$where_str;
+	}
 
 	if (!empty($search))
 	{
@@ -76,7 +82,7 @@ function display_article()
 		$where_str .= ' and article_id in ('.implode(',', $article_ids).')';
 	}
 	else if ($category == '0' && $opt_type != 'all')
-		$where_str .= ' and category_id != 5';
+		$where_str .= ' and category_id < 5';
 
 	if ($category >= 1 && $category <= 6)
 		$where_str .= ' and category_id = '.$category;
@@ -102,7 +108,12 @@ function display_article()
 
 function display_mood()
 {
-	global $category_map, $sphinx, $query_info;
+	global $category_map, $sphinx, $query_info, $is_root;
+	if (!$is_root)
+	{
+		ZeyuBlogOpt::warning_opt('亲，没权限呢', '/html');
+		return;
+	}
 
 	$count_sql = 'select count(*) as count from mood where 1';
 	$sql = 'select * from mood where 1';

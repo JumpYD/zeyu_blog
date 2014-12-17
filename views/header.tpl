@@ -48,6 +48,9 @@
 						</li>
 						<{if $is_root}>
 						<li>
+						<a href="/html/debin.php?category=5">龙泉日记</a>
+						</li>
+						<li>
 						<a href="/html/debin.php?category=mood">心情小说</a>
 						</li>
 						<li>

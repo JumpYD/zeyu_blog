@@ -38,6 +38,9 @@
 						<a href="/html/note.php">读书笔记</a>
 						</li>
 						<li>
+						<a href="/html/debin.php?category=1">龙潭书斋</a>
+						</li>
+						<li>
 						<a href="/html/debin.php?category=4">技术分享</a>
 						</li>
 						<li>

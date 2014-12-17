@@ -23,19 +23,18 @@ if (isset($_COOKIE["LogInfo"])
 	$is_root = true;
 }
 
-$query =
-	'select image_id,path from images'
-	.' where category="background" and path!="images/background.jpg"';
-$backgrounds = MySqlOpt::select_query($query);
-$idx = rand(0, count($backgrounds)-1);
+#$query =
+#	'select image_id,path from images'
+#	.' where category="background" and path!="images/background.jpg"';
+#$backgrounds = MySqlOpt::select_query($query);
+#$idx = rand(0, count($backgrounds)-1);
 if ($is_root)
 {
-	$backgrounds[$idx]['path'] = 'images/background.jpg';
-	$smarty->assign('is_corp', true);
+	$background = 'images/background.jpg';
 }
 else
 {
-	$backgrounds[$idx]['path'] = 'images/d8b6da32f844f3d07af619b26fad1e91.jpg';
+	$background = 'images/d8b6da32f844f3d07af619b26fad1e91.jpg';
 }
-$smarty->assign('background', $backgrounds[$idx]['path']);
+$smarty->assign('background', $background);
 ?>

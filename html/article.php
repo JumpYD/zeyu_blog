@@ -4,13 +4,15 @@ global $smarty;
 LogOpt::init('display_article');
 
 $article_id = $_GET['id'];
-$article_query = 'select * from article where article_id='.$article_id.' and category_id < 5';
+
+$article_query = 'select * from article where article_id='.$article_id;
+if (!$is_root)
+	$article_query .= ' and category_id < 5';
+
 $article_info = MySqlOpt::select_query($article_query);
 
 if ($article_info == false)
-{
 	ZeyuBlogOpt::warning_opt('访问的页面不存在', 'index.php');
-}
 
 $article_info = $article_info[0];
 $indexs = json_decode($article_info['indexs']);

@@ -68,7 +68,7 @@
 						</li>
 					<{else}>
 						<li>
-						<a href="javascript:void(0)" onclick="login()">登录</a>
+						<a href="javascript:void(0)" data-toggle="modal" data-target="#login_modal">登录</a>
 						</li>
 					<{/if}>
 					</ul>
@@ -78,3 +78,4 @@
 	</div>
 	<body style="background: url(<{$background}>) fixed no-repeat; background-size: cover;">
 	<link href='../resource/bootstrap/css/nav.css'  rel="stylesheet">
+	<{include 'modal.tpl'}>

@@ -4,6 +4,12 @@ require_once (dirname(__FILE__).'/'.'head.php');
 global $smarty;
 LogOpt::init('display_earnings', true);
 
+if (!$is_root)
+{
+	ZeyuBlogOpt::warning_opt('亲，没权限呢', '/html');
+	return;
+}
+
 $det_beg = empty($_GET['beg']) ? date('Y-m', time()) : $_GET['beg'];
 $det_end = empty($_GET['end']) ? '2013-09' : $_GET['end'];
 if ($det_beg > $det_end)

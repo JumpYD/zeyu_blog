@@ -25,6 +25,15 @@ if (isset($_COOKIE["LogInfo"])
 	$is_root = true;
 }
 
+if (!isset($_COOKIE['HISTORY']))
+{
+	setcookie('HISTORY', md5('ZEYUBLOG').time(), time()+180);
+
+	$sql = 'update flowcount set count=count+1'
+		.' where date="'.date('Y-m-d', time()).'"';
+	MySqlOpt::update_query($sql);
+}
+
 #$query =
 #	'select image_id,path from images'
 #	.' where category="background" and path!="images/background.jpg"';

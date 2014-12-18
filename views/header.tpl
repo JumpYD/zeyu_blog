@@ -61,6 +61,9 @@
 					<ul class="nav navbar-nav navbar-right">
 					<{if $is_root}>
 						<li>
+						<a href="/stats/?">站长工具</a>
+						</li>
+						<li>
 						<a href="/html/test.php">草稿</a>
 						</li>
 						<li>

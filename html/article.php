@@ -32,9 +32,14 @@ if (StringOpt::spider_string($contents, '"page-header"', '</div>') === null)
 		.'</h1></div>'.$contents;
 }
 
+$sql = 'update article set access_count=access_count+1 where article_id = "'.$article_id.'"';
+MySqlOpt::update_query($sql);
+
 $time = $article_info['inserttime']
 	.'&nbsp;&nbsp;&nbsp;最后更新: '
-	.$article_info['updatetime'];
+	.$article_info['updatetime']
+	.'&nbsp;&nbsp;&nbsp;访问数量：'
+	.($article_info['access_count']+1);
 
 $smarty->assign('inserttime', $time);
 $smarty->assign('title', $article_info['title']);

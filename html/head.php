@@ -4,6 +4,7 @@ $base_dir = dirname(__FILE__).'/../';
 
 require_once ($base_dir.'resource/smarty/libs/Smarty.class.php');
 require_once ($base_dir.'library/zeyublog.php');
+require_once ($base_dir.'stats/stats.php');
 
 $smarty = new Smarty;
 

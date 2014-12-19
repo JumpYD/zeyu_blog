@@ -30,6 +30,11 @@ $infos = array();
 $infos['draft'] = file_get_contents($draft_file);
 $temp_contents = ZeyuBlogOpt::pre_treat_article($infos['draft']);
 
+// 获取 index
+$indexs = json_encode(ZeyuBlogOpt::get_index($temp_contents));
+if ($indexs != null)
+	$infos['indexs'] = $indexs;
+
 // 获取 images
 $image_ids = array();
 while (1)
@@ -87,11 +92,6 @@ if ($category_info == null)
 	return;
 }
 $infos['category_id'] = $category_info[0]['category_id'];
-
-// 获取 index
-$indexs = json_encode(ZeyuBlogOpt::get_index($temp_contents));
-if ($indexs != null)
-	$infos['indexs'] = $indexs;
 
 // 获取 title、title_desc、updatetime
 $infos['title'] = $options['t'];

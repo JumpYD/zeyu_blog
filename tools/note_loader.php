@@ -42,38 +42,6 @@ else
 	LogOpt::set('info', 'new_note_insert_into_article_success',
 		'article_id', $article_id);
 }
-$select_query = 'select article_id from category where category_id=2 limit 1';
-$articles = MySqlOpt::select_query($select_query);
-if ($articles == false)
-{
-	LogOpt::set('exception', 'new_note_select_article_from_category_error',
-		MySqlOpt::errno(), MySqlOpt::error()
-	);
-
-	return false;
-}
-
-$articles = $articles[0]['article_id'];
-$article_array = json_decode($articles, true);
-if ($article_array == null)
-	$article_array = array();
-
-$article_array[] = $article_id;
-$articles = json_encode($article_array);
-
-$infos = array();
-$infos['article_id'] = $articles;
-$infos['updatetime'] = 'now()';
-
-$ret = MySqlOpt::update ('category', $infos, array('category_id'=>2));
-if ($ret == false)
-{
-	LogOpt::set('exception', 'new_note_update_category_error',
-		MySqlOpt::errno(), MySqlOpt::error()
-	);
-
-	return;
-}
 
 $infos = array();
 $infos['index_article_id'] = $article_id;

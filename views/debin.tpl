@@ -68,7 +68,7 @@
 		}
 		#customDoc .mod-cs-header .cs-header-spacename,#customDoc .mod-cs-header .cs-header-spacesummary
 		{
-			color:rgb(15,15,15)
+			color:rgba(0, 124, 215, 0.63)
 		}
 		#customDoc .mod-cs-sidebar .cs-sidebar-link,#customDoc .mod-cs-sidebar .cs-sidebar-link span,#customDoc .mod-cs-sidebar a.cs-sidebar-hoverlink:hover,#customDoc .mod-cs-contentblock .cs-contentblock-detailcontent a,#customDoc .mod-cs-contentblock .cs-contentblock-detailcontenthover a:hover,#customDoc .mod-cs-contentblock .cs-contentblock-link,#customDoc .mod-cs-contentblock a.cs-contentblock-hoverlink:hover,#customDoc .mod-cs-footer a,#customDoc .mod-cs-footer span
 		{

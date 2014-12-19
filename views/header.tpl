@@ -69,6 +69,9 @@
 						<li>
 						<a href="/html/pictures.php">相册</a>
 						</li>
+						<li>
+						<a href="/html/search.php">检索</a>
+						</li>
 					<{else}>
 						<li>
 						<a href="/html/search.php">检索</a>

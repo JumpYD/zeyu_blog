@@ -2,7 +2,9 @@
 require_once (dirname(__FILE__).'/'.'head.php');
 global $smarty;
 
-$query = 'select * from booknote order by idx';
+$query = 'select booknote.* from booknote, article'
+	.' where booknote.index_article_id = article.article_id'
+	.' order by article.access_count desc';
 $notes = MySqlOpt::select_query($query);
 $booknotes = array();
 foreach ($notes as $note)

@@ -71,8 +71,14 @@ class ZeyuBlogOpt
 						}
 						else
 						{
+							$tmp_tds = array();
+							foreach ($tds as $td)
+							{
+								if (!empty($td))
+									$tmp_tds[] = $td;
+							}
 							$contents .= '<tr><td>'
-								.implode('</td><td>', $tds)
+								.implode('</td><td>', $tmp_tds)
 								.'</td></tr>';
 						}
 					}

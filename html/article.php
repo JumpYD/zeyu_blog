@@ -14,10 +14,6 @@ $article_info = MySqlOpt::select_query($article_query);
 if ($article_info == false)
 	ZeyuBlogOpt::warning_opt('访问的页面不存在', 'index.php');
 
-$sql = 'select count(*) as comment_count from comment where article_id='.$article_id;
-$comment_count = MySqlOpt::select_query($sql);
-$comment_count = $comment_count[0]['comment_count'];
-
 $article_info = $article_info[0];
 $indexs = json_decode($article_info['indexs']);
 if ($indexs != null)
@@ -46,7 +42,6 @@ $time = $article_info['inserttime']
 	.($article_info['access_count']+1);
 
 $smarty->assign('inserttime', $time);
-$smarty->assign('comment_count', $comment_count);
 $smarty->assign('title', $article_info['title']);
 $smarty->assign('title_desc', $article_info['title_desc']);
 $smarty->assign('contents', $contents);

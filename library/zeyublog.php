@@ -74,7 +74,7 @@ class ZeyuBlogOpt
 							$tmp_tds = array();
 							foreach ($tds as $td)
 							{
-								if (!empty($td))
+								if ($td !== '')
 									$tmp_tds[] = $td;
 							}
 							$contents .= '<tr><td>'

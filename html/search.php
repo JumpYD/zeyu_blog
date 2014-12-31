@@ -3,6 +3,9 @@ require_once (dirname(__FILE__).'/'.'head.php');
 LogOpt::init('article_searcher', true);
 
 global $smarty;
+
+$date_num = array(31, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30);
+
 $sql = 'select tag_id,count(*) as article_count from article_tag_relation'
 	.' group by tag_id'
 	.' order by article_count desc, inserttime desc';
@@ -18,16 +21,28 @@ foreach ($infos as $info)
 
 //$first_date = '2013-12-15';
 $dates = array();
-$month_num = (date('Y')-2013)*12 + (date('m')-12) + 1;
-for ($i=0; $i<$month_num; $i++)
+$timestamp = time();
+$month_num = (date('Y', $timestamp)-2013)*12 + (date('m', $timestamp)-12) + 1;
+for ($i=0; $i<=$month_num; $i++)
 {
 	$info = array();
-	$date = date("Y-m", mktime(0, 0, 0, date("m")-$i, date("d"), date("Y")));
+	$y = date('Y', $timestamp);
+	$m = date('m', $timestamp);
 
-	$info['id'] = date(
-		'Y0m',
-		mktime(0, 0, 0, date("m")-$i, date("d"), date("Y"))
-	);
+	$timestamp -= 3600*24*$date_num[$m-1];
+	if (!$i)
+		continue;
+
+	$date = $y.'-'.$m;
+	if ($m == 3
+		&& (
+			( $y % 100 == 0 && $y % 400 == 0 )
+			|| ($y % 100 != 0 && $y % 4 == 0 )
+		)
+	)
+		$timestamp -= 3600;
+
+	$info['id'] = $y.'0'.$m;
 
 	$info['month'] = $date;
 

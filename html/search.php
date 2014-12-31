@@ -30,10 +30,6 @@ for ($i=0; $i<=$month_num; $i++)
 	$m = date('m', $timestamp);
 
 	$timestamp -= 3600*24*$date_num[$m-1];
-	if (!$i)
-		continue;
-
-	$date = $y.'-'.$m;
 	if ($m == 3
 		&& (
 			( $y % 100 == 0 && $y % 400 == 0 )
@@ -42,8 +38,11 @@ for ($i=0; $i<=$month_num; $i++)
 	)
 		$timestamp -= 3600;
 
-	$info['id'] = $y.'0'.$m;
+	if (!$i)
+		continue;
 
+	$date = $y.'-'.$m;
+	$info['id'] = $y.'0'.$m;
 	$info['month'] = $date;
 
 	$query = 'select count(*) from article'
@@ -59,6 +58,7 @@ for ($i=0; $i<=$month_num; $i++)
 
 		return;
 	}
+
 	$article_count = intval($article_count[0]['count(*)']);
 	$info['article'] = $article_count;
 
@@ -74,6 +74,7 @@ for ($i=0; $i<=$month_num; $i++)
 
 		return;
 	}
+
 	$info['mood'] = intval($mood_count[0]['count(*)']);
 
 	$dates[] = $info;

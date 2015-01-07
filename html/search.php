@@ -21,7 +21,7 @@ foreach ($infos as $info)
 
 //$first_date = '2013-12-15';
 $dates = array();
-$timestamp = time();
+$timestamp = time()-3600;
 $month_num = (date('Y', $timestamp)-2013)*12 + (date('m', $timestamp)-12) + 1;
 for ($i=0; $i<=$month_num; $i++)
 {
@@ -37,9 +37,6 @@ for ($i=0; $i<=$month_num; $i++)
 		)
 	)
 		$timestamp -= 3600;
-
-	if (!$i)
-		continue;
 
 	$date = $y.'-'.$m;
 	$info['id'] = $y.'0'.$m;

@@ -3,6 +3,12 @@ require_once (dirname(__FILE__).'/'.'head.php');
 global $smarty;
 LogOpt::init('pictures');
 
+if (!$is_root)
+{
+	ZeyuBlogOpt::warning_opt('访问的页面不存在', 'index.php');
+	return;
+}
+
 $opt_type = isset($_GET['opt_type']) ? $_GET['opt_type'] : 'search';
 unset($_GET['opt_type']);
 switch ($opt_type)

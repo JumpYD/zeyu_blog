@@ -2,6 +2,12 @@
 require_once (dirname(__FILE__).'/'.'head.php');
 global $smarty;
 
+if (!$is_root)
+{
+	ZeyuBlogOpt::warning_opt('访问的页面不存在', 'index.php');
+	return;
+}
+
 $draft_id = $_GET['id'];
 
 $contents = ZeyuBlogOpt::pre_treat_article(

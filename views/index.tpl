@@ -18,6 +18,7 @@
 <br />
 <br />
 <br />
+<a href="http://webscan.360.cn/index/checkwebsite/url/112.126.74.142"><img border="0" src="http://img.webscan.360.cn/status/pai/hash/935a223f8ecab9853fe4357744f1ffc4"/></a>
 <br />
 <br />
 <br />

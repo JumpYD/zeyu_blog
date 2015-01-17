@@ -64,10 +64,27 @@ class ZeyuBlogOpt
 						{
 							$tds[0] = substr($tds[0], 4);
 							$contents .= '<thead>'
-								.'<tr style="background-color:#C5C5C5;">'
-								.'<td><strong>'
-								.implode('</strong></td><td><strong>', $tds)
-								.'</strong></td></tr></thead>';
+								.'<tr style="background-color:#C5C5C5;">';
+							if ($tds[0][0] == '[' && $tds[0][strlen($tds[0])-1] == ']')
+							{
+								$widths = substr($tds[0], 1, strlen($tds[0])-2);
+								$widths = explode(":", $widths);
+								for ($i=1; $i<count($tds); ++$i)
+								{
+									if (isset($widths[$i-1]))
+										$contents .= '<td width="'.$widths[$i-1].'%"><strong>'
+											.$tds[$i].'</strong></td>';
+									else
+										$contents .= '<td><strong>'.$tds[$i].'</strong></td>';
+								}
+							}
+							else
+							{
+								$contents .= '<td><strong>'
+									.implode('</strong></td><td><strong>', $tds)
+									.'</strong></td>';
+							}
+							$contents .= '</tr></thead>';
 						}
 						else
 						{

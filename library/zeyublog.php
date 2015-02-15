@@ -184,7 +184,8 @@ class ZeyuBlogOpt
 					}
 				}
 				$contents .= '<p style="text-indent:0em;">'
-					.$line.'</p><p>&nbsp;</p>';
+					.'<a target="_blank" href="'.$path.'">'
+					.$line.'</a></p><p>&nbsp;</p>';
 			}
 			else if (substr($line, 0, 5) == '<code')
 			{

@@ -104,44 +104,53 @@
 		</div>
 	</div>
 </div>
+
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog" style="margin:300px auto;">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title" id="myModalLabel"><strong>图片添加或替换</strong></h4>
-			</div>
-			<div class="modal-body">
-				<div class="input-group" style="margin-top:10px;margin-bottom:10px;">
-					<span class="input-group-addon" style="width:10px;">图片ID</span>
-					<input type="text" class="form-control" name="insert_id" id="insert_id" placeholder="Picture-ID" style="width:300px;"/>&nbsp;&nbsp;
+		<form id="pic_form" action="/html/pictures.php" method="post" enctype="multipart/form-data">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel"><strong>图片添加或替换</strong></h4>
 				</div>
-				<div class="input-group" style="margin-top:10px;margin-bottom:10px;">
-					<span class="input-group-addon" style="width:10px;">文件名</span>
-					<input type="text" class="form-control" name="image_name" id="image_name" placeholder="Picture-Name" style="width:300px;"/>
+				<div class="modal-body">
+					<div class="input-group" style="margin-top:10px;margin-bottom:10px;">
+						<span class="input-group-addon" style="width:10px;">图片ID</span>
+						<input type="text" class="form-control" name="insert_id" id="insert_id" placeholder="Picture-ID" style="width:300px;"/>&nbsp;&nbsp;
+					</div>
+					<div class="input-group" style="margin-top:10px;margin-bottom:10px;">
+						<span class="input-group-addon" style="width:10px;">文件名</span>
+						<input type="file" id="file" name="file" onchange="if ($('#file').val() != '') {$('#file_input').val($('#file').val());}" value="" style="display:none"/>
+						<input type="text" id="opt_type" name="opt_type" value="insert" style="display:none"/>
+						<input type="text" id="file_input" class="form-control" style="width:200px;" readonly="readonly" value=""/>
+						<button type="button" class="btn btn-primary" onclick="$('#file').click()" style="float:right; margin-left:10px">浏览</button>
+					</div>
+					<div class="input-group" style="margin-top:10px;margin-bottom:10px;">
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+							Category <span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" role="menu">
+								<{foreach item=cat from=$category_list}>
+								<{if $cat!='all'}>
+								<li><a href="javascript:void(0)" onclick="change_category('<{$cat}>', 'insert_category')"><{$cat}></a></li>
+								<{/if}>
+								<{/foreach}>
+							</ul>
+						<input value="article" type="text" class="form-control" id="insert_category" name="insert_category" style="width:200px;" readonly="readonly"/>
+					</div>
 				</div>
-				<div class="input-group" style="margin-top:10px;margin-bottom:10px;">
-						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-						Category <span class="caret"></span>
-						</button>
-						<ul class="dropdown-menu" role="menu">
-							<{foreach item=cat from=$category_list}>
-							<{if $cat!='all'}>
-							<li><a href="javascript:void(0)" onclick="change_category('<{$cat}>', 'insert_category')"><{$cat}></a></li>
-							<{/if}>
-							<{/foreach}>
-						</ul>
-					<input value="article" type="text" class="form-control" id="insert_category" name="insert_category" style="width:200px;" readonly="readonly"/>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" onclick="insert_image()">添加或替换</button>
 				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary" onclick="insert_image()">添加或替换</button>
-			</div>
-		</div><!-- /.modal-content -->
+			</div><!-- /.modal-content -->
+		</form>
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+<!--
+<script src="../resource/bootstrap/js/ajaxfileupload.js" type="text/javascript" charset="utf-8"></script>
+-->
 <script type="text/javascript">
 if (document.getElementById('end_time').value == '')
 {
@@ -166,43 +175,57 @@ if (document.getElementById('end_time').value == '')
 	document.getElementById('end_time').value = time_str;
 }
 
-$(".form_datetime").datetimepicker({
-	format: "yyyy-mm-dd hh:ii:ss",
-	todayHighlight: true,
-	initialDate: new Date(),
-	autoclose: true,
-	todayBtn: true,
-	pickerPosition: "bottom-left"
-});
+$(".form_datetime").datetimepicker
+(
+	{
+		format: "yyyy-mm-dd hh:ii:ss",
+		todayHighlight: true,
+		initialDate: new Date(),
+		autoclose: true,
+		todayBtn: true,
+		pickerPosition: "bottom-left"
+	}
+);
 
 function change_category (category, id)
 {
 	document.getElementById(id).value = category;
 	return false;
 }
+
 function insert_image()
 {
-	if (document.getElementById('image_name').value == '')
-	{
-		jAlert
-		(
-			'请输入 /mnt/fghs/Debin/ 目录下已有文件名',
-			'提示'
-		);
-		return false;
-	}
-	var image_id = encodeURIComponent(document.getElementById('insert_id').value);
-	var image_name = encodeURIComponent(document.getElementById('image_name').value);
-	var image_category = encodeURIComponent(document.getElementById('insert_category').value);
-	jConfirm
-	(
-		'确定添加或替换文件：'+image_name+'吗？',
-		'提示',
-		function(r)
-		{
-			window.location.href='/html/pictures.php?opt_type=insert&id='+image_id+'&name='+image_name+'&category='+image_category;
-		}
-	);
+	$('#pic_form').submit();
+	//if ($('#file').val() == '')
+	//{
+	//	jAlert('请选择要上传的文件', '提示');
+	//	return false;
+	//}
+	//var params = {};
+	//if ($('#insert_id').val() != '')
+	//	params['image_id'] = $('#insert_id').val();
+	//params['image_category'] = $('#insert_category').val();
+	//params['opt_type'] = 'insert';
+	//jAlert(params);
+	//$.ajaxFileUpload
+	//(
+	//	{
+	//		url: '/html/pictures.php',
+	//		secureuri:false,
+	//		fileElementId:'file',
+	//		dataType:"json",
+	//		data:params,
+	//		type:'post',
+	//		error: function()
+	//		{
+	//			jAlert("保存失败", "提示");
+	//		},
+	//		success: function (data)
+	//		{
+	//			jAlert(data['msg'], "提示");
+	//		}
+	//	}
+	//);
 }
 </script>
 <{include 'footer.tpl'}>

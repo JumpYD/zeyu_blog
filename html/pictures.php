@@ -9,32 +9,49 @@ if (!$is_root)
 	return;
 }
 
-$opt_type = isset($_GET['opt_type']) ? $_GET['opt_type'] : 'search';
-unset($_GET['opt_type']);
+$opt_type = isset($_REQUEST['opt_type']) ? $_REQUEST['opt_type'] : 'search';
+unset($_REQUEST['opt_type']);
 switch ($opt_type)
 {
 case 'insert':
-	picture_insert($_GET);
+	picture_insert($_REQUEST);
 	break;
 default:
-	picture_search($_GET);
+	picture_search($_REQUEST);
 	break;
 }
 
 function picture_insert($input)
 {
 	global $smarty;
-	$params_key = array('id', 'name', 'category');
+
+	$url = '/html/pictures.php';
+	if ($_FILES["file"]["error"] > 0)
+	{
+		$smarty->assign('message', 'Error: '.$_FILES["file"]["error"]);
+		$smarty->assign('url', $url);
+		$smarty->display('warning.tpl');
+	}
+
+	$params_key = array('insert_id', 'insert_category');
 	$params = getParams($input, $params_key);
-	if (!isset($params['id']))
-		$params['id'] = null;
+	if (!isset($params['insert_id']) || intval($params['insert_id']) <= 0)
+		$params['insert_id'] = null;
+	$params['name'] = trim($_FILES["file"]["name"]);
+	$file = '/home/zeyu/Documents/images/'.$params['name'];
+	$ret = copy($_FILES["file"]["tmp_name"], $file);
+	if ($ret == false)
+	{
+		$smarty->assign('message', '临时文件不存在');
+		$smarty->assign('url', $url);
+		$smarty->display('warning.tpl');
+	}
 
 	$ret = ZeyuBlogOpt::picture_insert(
 		$params['name'],
-		$params['category'],
-		$params['id']
+		$params['insert_category'],
+		$params['insert_id']
 	);
-	$url = '/html/pictures.php';
 
 	switch ($ret)
 	{

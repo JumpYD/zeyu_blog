@@ -116,6 +116,27 @@
 			</section>
 			<section class="grid-98 mod-blogpage">
 			<section class="mod-bloglist left">
+			<{if $list|@count gte 2}>
+			<section class="mod-blog-pagerbar mod-cs-pagebar" style="display: block;font-size:62.5%">
+			<div class="mod-pagerbar" id="top_bar">
+				<{if $first != ''}>
+					<a href="javascript:void(0)" onclick="js_submit('<{$first}>')" class="first">首页</a>
+					<a href="javascript:void(0)" onclick="js_submit('<{$pre}>')">&lt;&lt;上一页</a>
+				<{/if}>
+				<{foreach item=pagenum from=$list}>
+					<{if $page==$pagenum}>
+						<span><{$pagenum}></span>
+					<{else}>
+						<a href="javascript:void(0)" onclick="js_submit('<{$pagenum}>')" hidefocus=""><{$pagenum}></a>
+					<{/if}>
+				<{/foreach}>
+				<{if $end != ''}>
+					<a href="javascript:void(0)" onclick="js_submit('<{$last}>')" class="next">下一页&gt;&gt;</a>
+					<a href="javascript:void(0)" onclick="js_submit('<{$end}>')" class="last">尾页</a>
+				<{/if}>
+			</div>
+			</section>
+			<{/if}>
 			<{foreach item=article_info from=$infos}>
 			<article class="mod-blogitem mod-item-text">
 			<div class="mod-real-text">
@@ -166,21 +187,21 @@
 			<{/foreach}>
 			<{if $list|@count gte 2}>
 			<section id=pagerBar class="mod-blog-pagerbar mod-cs-pagebar" style="display: block;font-size:62.5%">
-			<div class="mod-pagerbar">
+			<div class="mod-pagerbar" style="background-color:rgba(255, 255, 255, 0.4)">
 				<{if $first != ''}>
-				<a href="javascript:void(0)" onclick="js_submit('<{$first}>')" class="first">首页</a>
-				<a href="javascript:void(0)" onclick="js_submit('<{$pre}>')">&lt;&lt;上一页</a>
+					<a href="javascript:void(0)" onclick="js_submit('<{$first}>')" class="first">首页</a>
+					<a href="javascript:void(0)" onclick="js_submit('<{$pre}>')">&lt;&lt;上一页</a>
 				<{/if}>
 				<{foreach item=pagenum from=$list}>
-				<{if $page==$pagenum}>
-				<span><{$pagenum}></span>
-				<{else}>
-				<a href="javascript:void(0)" onclick="js_submit('<{$pagenum}>')" hidefocus=""><{$pagenum}></a>
-				<{/if}>
+					<{if $page==$pagenum}>
+						<span><{$pagenum}></span>
+					<{else}>
+						<a href="javascript:void(0)" onclick="js_submit('<{$pagenum}>')" hidefocus=""><{$pagenum}></a>
+					<{/if}>
 				<{/foreach}>
 				<{if $end != ''}>
-				<a href="javascript:void(0)" onclick="js_submit('<{$last}>')" class="next">下一页&gt;&gt;</a>
-				<a href="javascript:void(0)" onclick="js_submit('<{$end}>')" class="last">尾页</a>
+					<a href="javascript:void(0)" onclick="js_submit('<{$last}>')" class="next">下一页&gt;&gt;</a>
+					<a href="javascript:void(0)" onclick="js_submit('<{$end}>')" class="last">尾页</a>
 				<{/if}>
 			</div>
 			</section>
@@ -234,7 +255,6 @@
 			<script src="http://hi.bdimg.com/static/qbase/js/mod/mod_foot.js?v=382c615f.js">
 			</script>
 			<script>qext.stat.ns('m_20120425_20001');</script>
-			<script src="http://hi.bdimg.com/static/qhome/js/home/20000/home.js?v=3b12f8e5.js">
 			</script>
 			<!--[if (lt IE 8.0)]>
 			<link rel=stylesheet type=text/css href="http://hi.bdimg.com/static/qmessage/css/qmessage_mod_msg_bubble.css?v=a727011c.css">
@@ -243,10 +263,8 @@
 			<!-->
 			<link rel=stylesheet type=text/css href="http://hi.bdimg.com/static/qmessage/css/qmessage_mod_msg_bubble_datauri.css?v=6ddd3ba9.css">
 			<!--<![endif]-->
-			<script src="http://hi.bdimg.com/static/qmessage/js/boot_qmessage_mod_bubble.js?v=56fecbc3.js">
 			</script>
 			<link href="http://hi.bdimg.com/static/qbase/css/yoyo/yoyo.css?v=4dd11df1.css" type=text/css rel=stylesheet>
-			<script src="http://hi.bdimg.com/static/qbase/js/yoyo/yoyo.js?v=4c5bc7ae.js">
 			</script>
 			<script>wpo.tti=new Date*1;</script>
 			<script src="http://hi.baidu.com/cm/static/js/allsite.js?v=75674092.js?v=201401041944">
@@ -266,12 +284,6 @@
 </form>
 <{include 'footer.tpl'}>
 <script>
-	qing.dom.ready(function(){
-		if (qVisitorInfo.loginStatus == 'activated'){
-			qext.stat.ns('m_20121012_loga_num');
-			qext.fn.setStoken();
-		}
-	});
 	function js_submit(pagenum)
 	{
 		$('#page').val(pagenum);

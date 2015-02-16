@@ -23,7 +23,7 @@
 						<button type="button" class="btn btn-default dropdown-toggle" value="content" style="height:40px" data-toggle="dropdown" name="chose_btn" id="chose_btn">
 						内容 <span class="caret"></span>
 						</button>
-						<ul style="position:absolute; left:812px; top:230px; text-shadow: none; height:116px;" class="dropdown-menu" role="menu">
+						<ul id="search_ul" name="search_ul" style="position:absolute; left:812px; top:230px; text-shadow: none; height:116px;" class="dropdown-menu" role="menu">
 							<li><a href="javascript:void(0)" onclick="set_opt_type('title')" id="title">标题</a></li>
 							<li><a href="javascript:void(0)" onclick="set_opt_type('content')" id="content">内容</a></li>
 							<li><a href="javascript:void(0)" onclick="set_opt_type('all')" id="all">内容（全部）</a></li>
@@ -93,4 +93,16 @@
 		</div>
 	</div>
 </div>
+<script language="javascript" type="text/javascript">
+$(document).ready(function()
+	{
+		var chose_btn = document.getElementById('chose_btn');
+		var oLeft = chose_btn.offsetLeft;
+		var oTop = chose_btn.offsetTop;
+
+		$('#search_ul').css('left', oLeft);
+		$('#search_ul').css('top', oTop + chose_btn.offsetHeight);
+	}
+);
+</script>
 <{include 'footer.tpl'}>

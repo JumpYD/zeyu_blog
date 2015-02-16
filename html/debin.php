@@ -331,8 +331,9 @@ function select_article($info)
 	else
 	{
 		$infos['contents'] =
-			'<p><img class="img-thumbnail" alt="200x200" style="height: 200px;"'
-			.' src="'.$imgpath.'"></p><br /><p>'
+			'<p><a href="article.php?id='.$info['article_id'].'" target="_blank">'
+			.'<img class="img-thumbnail" alt="200x200" style="height: 200px;"'
+			.' src="'.$imgpath.'"></a></p><br /><p>'
 			.mb_substr(strip_tags($contents), 0, 100, 'utf-8')
 			.'</p>';
 	}

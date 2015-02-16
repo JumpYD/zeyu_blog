@@ -82,4 +82,19 @@
 		</div>
 	</div>
 </div>
+<script type="text/javascript">
+jQuery
+(
+ 	function($)
+	{
+		$(document).ready
+		(
+		 	function()
+			{
+				$('.navbar-wrapper').stickUp();
+			}
+		);
+	}
+);
+</script>
 <{include 'footer.tpl'}>

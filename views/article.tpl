@@ -82,19 +82,5 @@
 		</div>
 	</div>
 </div>
-<script type="text/javascript">
-jQuery
-(
- 	function($)
-	{
-		$(document).ready
-		(
-		 	function()
-			{
-				$('.navbar-wrapper').stickUp();
-			}
-		);
-	}
-);
-</script>
+<script src="../resource/zeyu_blog/js/article.js"></script>
 <{include 'footer.tpl'}>

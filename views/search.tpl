@@ -2,12 +2,6 @@
 <link href="../resource/bootstrap/css/site.css" rel="stylesheet">
 <script src="../resource/bootstrap/js/jquery.js"></script>
 <script src="../resource/zeyu_blog/js/search.js"></script>
-<style>
-.chosen_label
-{
-	cursor: pointer;
-}
-</style>
 
 <div id="myCarousel" class="carousel slide">
 	<div class="carousel-inner">
@@ -93,16 +87,4 @@
 		</div>
 	</div>
 </div>
-<script language="javascript" type="text/javascript">
-$(document).ready(function()
-	{
-		var chose_btn = document.getElementById('chose_btn');
-		var oLeft = chose_btn.offsetLeft;
-		var oTop = chose_btn.offsetTop;
-
-		$('#search_ul').css('left', oLeft);
-		$('#search_ul').css('top', oTop + chose_btn.offsetHeight);
-	}
-);
-</script>
 <{include 'footer.tpl'}>

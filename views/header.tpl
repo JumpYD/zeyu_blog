@@ -59,6 +59,9 @@
 						<a href="/html/earnings.php">龙泉财报</a>
 						</li>
 						<{/if}>
+						<li>
+						<a href="/html/viewcount.php">数据统计</a>
+						</li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 					<{if $is_root}>

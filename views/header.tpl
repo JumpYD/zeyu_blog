@@ -60,7 +60,7 @@
 						</li>
 						<{/if}>
 						<li>
-						<a href="/html/viewcount.php">数据统计</a>
+						<a href="/html/bloginfos.php">数据统计</a>
 						</li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">

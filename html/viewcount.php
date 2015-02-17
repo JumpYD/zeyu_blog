@@ -39,6 +39,27 @@ if ($pv_count == false)
 foreach ($pv_count as $pv_info)
 	$pv[] = $pv_info['total'];
 
+$sql = 'select count(*) as total from stats';
+$all_pv = MySqlOpt::select_query($sql);
+if ($all_pv == false)
+{
+	ZeyuBlogOpt::warning_opt('数据库访问失败', '/html');
+	return;
+}
+$all_pv = $all_pv[0]['total'];
+
+$sql = 'select count(*) as total from'
+	.' (select count(*) as total from stats group by remote_host) as A';
+$all_uv = MySqlOpt::select_query($sql);
+if ($all_uv == false)
+{
+	ZeyuBlogOpt::warning_opt('数据库访问失败', '/html');
+	return;
+}
+$all_uv = $all_uv[0]['total'];
+
+$smarty->assign('all_pv', $all_pv);
+$smarty->assign('all_uv', $all_uv);
 $smarty->assign('today_pv', $pv[13]);
 $smarty->assign('today_uv', $uv[13]);
 $smarty->assign('pv', json_encode($pv));

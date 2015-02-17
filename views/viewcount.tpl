@@ -10,6 +10,13 @@
 			<div class='span2'>
 				<input type="text" class="form-control" readonly="readonly" value="今日浏览用户数：<{$today_uv}>"/>
 			</div>
+			<div class='span2'> </div>
+			<div class='span2'>
+				<input type="text" class="form-control" readonly="readonly" value="总页面浏览量：<{$all_pv}>"/>
+			</div>
+			<div class='span2'>
+				<input type="text" class="form-control" readonly="readonly" value="总浏览用户数：<{$all_uv}>"/>
+			</div>
 	</div>
 </div>
 <script src="../resource/Chart.js-master/Chart.min.js"></script>

@@ -31,12 +31,12 @@
 					<input value="<{if $category!=''}><{$category}><{else}>all<{/if}>" type="text" class="form-control" id="category" name="category" style="width:235px;" readonly="readonly"/>
 					<span class="input-group-addon">插入时间（起始）</span>
 					<div class="input-group date form_datetime">
-						<input class="form-control" width="20px" type="text" id="start_time" name="start_time" value="<{if $start_time!=''}><{$start_time}><{else}>2014-01-01 00:00:00<{/if}>" readonly>
+						<input class="form-control" width="20px" type="text" id="start_time" name="start_time" value="<{if $start_time!=''}><{$start_time}><{else}>2014-01-01 00:00:00<{/if}>">
 						<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 					</div>
 					<span class="input-group-addon">插入时间（终止）</span>
 					<div class="input-group date form_datetime">
-						<input class="form-control" width="20px" id="end_time" name="end_time" type="text" value="<{if $start_time!=''}><{$end_time}><{/if}>" readonly>
+						<input class="form-control" width="20px" id="end_time" name="end_time" type="text" value="<{if $start_time!=''}><{$end_time}><{/if}>">
 						<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 					</div>
 				</div>
@@ -144,13 +144,10 @@
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 					<button type="button" class="btn btn-primary" onclick="insert_image()">添加或替换</button>
 				</div>
-			</div><!-- /.modal-content -->
+			</div>
 		</form>
-	</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-<!--
-<script src="../resource/bootstrap/js/ajaxfileupload.js" type="text/javascript" charset="utf-8"></script>
--->
+	</div>
+</div>
 <script type="text/javascript">
 if (document.getElementById('end_time').value == '')
 {
@@ -196,36 +193,6 @@ function change_category (category, id)
 function insert_image()
 {
 	$('#pic_form').submit();
-	//if ($('#file').val() == '')
-	//{
-	//	jAlert('请选择要上传的文件', '提示');
-	//	return false;
-	//}
-	//var params = {};
-	//if ($('#insert_id').val() != '')
-	//	params['image_id'] = $('#insert_id').val();
-	//params['image_category'] = $('#insert_category').val();
-	//params['opt_type'] = 'insert';
-	//jAlert(params);
-	//$.ajaxFileUpload
-	//(
-	//	{
-	//		url: '/html/pictures.php',
-	//		secureuri:false,
-	//		fileElementId:'file',
-	//		dataType:"json",
-	//		data:params,
-	//		type:'post',
-	//		error: function()
-	//		{
-	//			jAlert("保存失败", "提示");
-	//		},
-	//		success: function (data)
-	//		{
-	//			jAlert(data['msg'], "提示");
-	//		}
-	//	}
-	//);
 }
 </script>
 <{include 'footer.tpl'}>

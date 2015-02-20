@@ -20,8 +20,8 @@
 		<div class='span12'><br /><br /></div>
 		<canvas id="category_doughnut" width="300px" height="300px" class="span4"></canvas>
 		<div class="span1"></div>
-		<div class="span6" style="background-color:rgba(255, 255, 255, 0.5)">
-			<table class="stdtable" border="1" style="font-size:18;">
+		<div class="span6">
+			<table class="stdtable" border="1" style="background-color:rgba(255, 255, 255, 0.5); font-size:18;overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
 				<caption style='font-weight:bold;
 					font-family:"PT Serif","Georgia","Helvetica Neue",Arial,sans-serif;
 					background-color:#D2E1F0;
@@ -30,7 +30,7 @@
 					<tr style="background-color:#C5C5C5;">
 						<td width="2%">分类名称</td>
 						<td width="8%">最新文章</td>
-						<td width="2%">更新时间</td>
+						<td width="2%">创建时间</td>
 					</tr>
 					</thead>
 					<tbody>
@@ -50,6 +50,7 @@
 					</tbody>
 			</table>
 		</div>
+		<div class='span12'><br /><br /></div>
 	</div>
 </div>
 <script src="../resource/Chart.js-master/Chart.min.js"></script>

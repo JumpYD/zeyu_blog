@@ -10,7 +10,7 @@ class ZeyuBlogOpt
 		$font = '';
 		$lines = explode(PHP_EOL, $file);
 		$contents = '';
-		$i = 'a';
+		$code_id = 'a';
 		$codes = array();
 		for ($index=0; $index<count($lines); ++$index)
 		{
@@ -234,19 +234,19 @@ class ZeyuBlogOpt
 				if ($code_line > 30)
 					$code_line = 30;
 
-				$contents .= '<div id="editor_'.$i.'"'
+				$contents .= '<div id="editor_'.$code_id.'"'
 					.' style="position: relative;'
 					.' width: 765px;'
 					.' height: '.$code_line.'px">'
 					.trim($code)
 					.'</div><p>&nbsp;</p>';
 
-				$codes[] = array('id'=>'editor_'.$i++, 'mode'=>$mode);
+				$codes[] = array('id'=>'editor_'.$code_id++, 'mode'=>$mode);
 				continue;
 			}
 			else if (substr($line, 0, 4) === '<h1>')
 			{
-				$contents .= '<div class="page-header"><h1 id="'.$i++.'">'
+				$contents .= '<div class="page-header"><h1 id="'.$code_id++.'">'
 					.self::str_trans(substr($line, 4))
 					.'</h1></div>';
 			}

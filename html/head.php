@@ -4,7 +4,6 @@ $base_dir = dirname(__FILE__).'/../';
 
 require_once ($base_dir.'resource/smarty/libs/Smarty.class.php');
 require_once ($base_dir.'library/zeyublog.php');
-require_once ($base_dir.'stats/stats.php');
 
 $smarty = new Smarty;
 
@@ -15,37 +14,28 @@ $smarty->template_dir		=	$base_dir.'views';
 $smarty->left_delimiter		=	"<{"; 
 $smarty->right_delimiter	=	"}>";
 
+$conf = file_get_contents('/etc/zeyu203/zeyu_blog.conf');
+$conf = unserialize(base64_decode($conf));
+
 $is_root = false;
-if (isset($_COOKIE["LogInfo"])
-	&& $_COOKIE["LogInfo"] == 'admin519ca7b3591e6844af3c875cb61d0d64'
+if (isset($_COOKIE["LoginInfo"])
+	&& $_COOKIE["LoginInfo"] == $conf['admin']['logininfo']
 )
 {
-	setcookie('LogInfo', 'admin519ca7b3591e6844af3c875cb61d0d64', time()+1800);
+	setcookie('LoginInfo', $conf['admin']['logininfo'], time()+1800);
 	$smarty->assign('is_root', true);
 	$is_root = true;
 }
+if (!$is_root)
+	require_once ($base_dir.'stats/stats.php');
 
-if (!isset($_COOKIE['HISTORY']))
-{
-	setcookie('HISTORY', md5('ZEYUBLOG').time(), time()+180);
-
-	$sql = 'update flowcount set count=count+1'
-		.' where date="'.date('Y-m-d', time()).'"';
-	MySqlOpt::update_query($sql);
-}
-
-#$query =
-#	'select image_id,path from images'
-#	.' where category="background" and path!="images/background.jpg"';
-#$backgrounds = MySqlOpt::select_query($query);
-#$idx = rand(0, count($backgrounds)-1);
 if ($is_root)
 {
-	$background = 'images/17183518883b16614c2fe8.jpg';
+	$background = 'images/183755241795a6aac850b8.jpg';
 }
 else
 {
-	$background = 'images/d8b6da32f844f3d07af619b26fad1e91.jpg';
+	$background = 'images/17183518883b16614c2fe8.jpg';
 }
 $smarty->assign('background', $background);
 ?>

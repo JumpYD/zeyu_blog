@@ -1,6 +1,9 @@
 <?php
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 
+$conf = file_get_contents('/etc/zeyu203/zeyu_blog.conf');
+$conf = unserialize(base64_decode($conf));
+
 switch ($action)
 {
 case 'login':
@@ -17,13 +20,13 @@ function login_action ($input)
 
 	if (isset($input['username'])
 		&& isset($input['password'])
-		&& $input['username'] == 'zeyu'
-		&& md5($input['password']) == '980bf0dee3d81c40c1a17393c680a014'
+		&& $input['username'] == $conf['admin']['user']
+		&& md5($input['password']) == $conf['admin']['pwd']
 	)
 	{
 		$result['code'] = 0;
 		$result['msg'] = '登录成功';
-		setcookie('LogInfo', 'admin519ca7b3591e6844af3c875cb61d0d64', time()+1800);
+		setcookie('LoginInfo', $conf['admin']['logininfo'], time()+1800);
 	}
 
 	echo json_encode($result);

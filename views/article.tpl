@@ -18,7 +18,7 @@
 <br/>
 <br/>
 <div class="container_wrapper">
-	<div class="container bs-docs-container">
+	<div class="container bs-docs-container" style="margin-bottom:80px;">
 		<{if $contents!=''}>
 		<div class="row">
 			<{if $index!=''}>
@@ -69,7 +69,7 @@
 							<div id="tags">标签</div>
 						</div>
 						<{foreach item=tag from=$tags}>
-						<{$tag}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<a href="debin.php?category=0&tags=icon_tag_<{$tag['tag_id']}>"><{$tag['tag_name']}></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						<{/foreach}>
 						<{/if}>
 						<{/if}>

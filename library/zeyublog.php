@@ -461,33 +461,14 @@ class ZeyuBlogOpt
 
 	public static function get_tags ($article_id)
 	{
-		$sql = 'select * from article_tag_relation'
-			.' where article_id='.$article_id
-			.' order by inserttime desc';
-
-		$infos = MySqlOpt::select_query($sql);
-		if ($infos == null)
-			return null;
-
-		$tags = array();
-		foreach ($infos as $info)
+		$sql = 'select C.* from article as A, article_tag_relation as B, tags as C where A.article_id = B.article_id and B.tag_id = C.tag_id and A.article_id = 10182702';
+		$tag_infos = MySqlOpt::select_query($sql);
+		if ($tag_infos == false)
 		{
-			$tag_id = $info['tag_id'];
-			$sql = 'select tag_name from tags where tag_id='.$tag_id;
-			$tag_name = MySqlOpt::select_query($sql);
-			if ($tag_name == null)
-			{
-				LogOpt::set('exception', 'get tag error',
-					'tag_id', $tag_id,
-					MySqlOpt::errno(), MySqlOpt::error()
-				);
-
-				return false;
-			}
-			$tag_name = $tag_name[0]['tag_name'];
-			$tags[] = $tag_name;
+			ZeyuBlogOpt::warning_opt('数据库访问失败', '/html');
+			return;
 		}
-		return $tags;
+		return $tag_infos;
 	}
 }
 ?>

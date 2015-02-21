@@ -278,12 +278,12 @@
 						<ul>
 							<li>
 							<h2 style="line-height:30px">
-								<a href="article.php?id=10182614">博客简介</a>
+								<a href="article.php?id=10182614" target="_blank">博客简介</a>
 							</h2>
 							</li>
 							<li>
 							<h2 style="line-height:30px">
-								<a href="https://github.com/zeyu203">github</a>
+								<a href="https://github.com/zeyu203" target="_blank">github</a>
 							</h2>
 							</li>
 							<li>

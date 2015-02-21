@@ -16,6 +16,7 @@ default:
 
 function login_action ($input)
 {
+	global $conf;
 	$result = array('code'=>1, 'msg'=>'用户不存在');
 
 	if (isset($input['username'])

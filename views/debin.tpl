@@ -70,10 +70,6 @@
 		{
 			color:rgba(0, 124, 215, 0.63)
 		}
-		#customDoc .mod-cs-sidebar .cs-sidebar-link,#customDoc .mod-cs-sidebar .cs-sidebar-link span,#customDoc .mod-cs-sidebar a.cs-sidebar-hoverlink:hover,#customDoc .mod-cs-contentblock .cs-contentblock-detailcontent a,#customDoc .mod-cs-contentblock .cs-contentblock-detailcontenthover a:hover,#customDoc .mod-cs-contentblock .cs-contentblock-link,#customDoc .mod-cs-contentblock a.cs-contentblock-hoverlink:hover,#customDoc .mod-cs-footer a,#customDoc .mod-cs-footer span
-		{
-			color:rgb(84,156,245)
-		}
 		#customDoc .mod-cs-sidebar span.cs-sidebar-follow
 		{
 			border-color:rgb(84,156,245)
@@ -174,7 +170,7 @@
 				<div class="item-foot clearfix">
 					<span class=box-tag>
 						<{foreach item=tag from=$article_info['tags']}>
-						<span class=q-tag>#<{$tag}>
+						<span class=q-tag>#<{$tag['tag_name']}>
 						</span>&nbsp;&nbsp;
 						<{/foreach}>
 					</span>
@@ -218,34 +214,83 @@
 					<div class=friendlyLinks-linkList>
 						<ul class=friendlyLinks-linkListContainer>
 							<li>
-							<h2>
-								<a href="http://hi.baidu.com/zeyu203/item/309cddf84e6c2cbc30c19957" target=_blank class=cs-sidebar-link><strong>博主简介</strong></a>
-							</h2>
-							<p style="text-indent:0em;">博主简介</p>
-							<br />
+							<center>
+								<h1 style="font-size: 18px; color: rgb(63, 28, 143); margin: 20px;">
+									<strong>最热文章</strong>
+								</h1>
+							</center>
+							</li>
+						</ul>
+						<ul class=friendlyLinks-linkListContainer style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+							<{foreach item=infos from=$hot_articles}>
 							<li>
-							<h2>
-								<a href="http://hi.baidu.com/zeyu2032" target=_blank class=cs-sidebar-link><strong>龙渊阁</strong></a>
+							<h2 style="line-height:30px">
+								<a href="article.php?id=<{$infos['article_id']}>" target="_blank"><{$infos['title']}></a>
 							</h2>
-							<p style="text-indent:0em;">休闲娱乐</p>
-							<br />
-							<li  class=noPadding >
-							<h2>
-								<a href="http://blog.sina.com.cn/u/2703746727" target=_blank class=cs-sidebar-link><strong>龙渊阁记</strong></a>
+							</li>
+							<{/foreach}>
+						</ul>
+						<ul class=friendlyLinks-linkListContainer>
+							<li>
+							<center>
+								<h1 style="font-size: 18px; color: rgb(63, 28, 143); margin: 20px;">
+									<strong>最近更新</strong>
+								</h1>
+							</center>
+							</li>
+						</ul>
+						<ul class=friendlyLinks-linkListContainer style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+							<{foreach item=infos from=$new_articles}>
+							<li>
+							<h2 style="line-height:30px">
+								<a href="article.php?id=<{$infos['article_id']}>" target="_blank"><{$infos['title']}></a>
 							</h2>
-							<p style="text-indent:0em;">读书笔记索引</p>
-							<br />
-							<li  class=noPadding >
-							<h2>
-								<a href="http://user.qzone.qq.com/1053038465/infocenter" target=_blank class=cs-sidebar-link><strong>QQ空间 龙潭斋</strong></a>
+							</li>
+							<{/foreach}>
+						</ul>
+						<ul class=friendlyLinks-linkListContainer>
+							<li>
+							<center>
+								<h1 style="font-size: 18px; color: rgb(63, 28, 143); margin: 20px;">
+									<strong>标签</strong>
+								</h1>
+							</center>
+							</li>
+						</ul>
+						<ul class=friendlyLinks-linkListContainer style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+							<{foreach item=infos from=$rand_tags}>
+							<li>
+							<h2 style="line-height:30px">
+								<a href="debin.php?category=0&tags=icon_tag_<{$infos['tag_id']}>" target="_blank"><{$infos['tag_name']}></a>
 							</h2>
-							<p style="text-indent:0em;">QQ空间</p>
-							<br />
-							<li  class=noPadding >
-							<h2>
-								<a href="http://hi.baidu.com/zeyu203" target=_blank class=cs-sidebar-link><strong>百度空间 龙潭斋</strong></a>
+							</li>
+							<{/foreach}>
+						</ul>
+						<ul class=friendlyLinks-linkListContainer>
+							<li>
+							<center>
+								<h1 style="font-size: 18px; color: rgb(63, 28, 143); margin: 20px;">
+									<strong>关于博主</strong>
+								</h1>
+							</center>
+							</li>
+						</ul>
+						<ul>
+							<li>
+							<h2 style="line-height:30px">
+								<a href="article.php?id=10182614">博客简介</a>
 							</h2>
-							<p style="text-indent:0em;">百度空间</p>
+							</li>
+							<li>
+							<h2 style="line-height:30px">
+								<strong>QQ：1053038465</strong>
+							</h2>
+							</li>
+							<li>
+							<h2 style="line-height:30px">
+								<strong>邮箱：zeyu203@qq.com</strong>
+							</h2>
+							</li>
 						</ul>
 					</div>
 				</div>

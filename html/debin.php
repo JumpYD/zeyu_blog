@@ -379,7 +379,36 @@ function display($title, $category_count, $infos, $ismood=false)
 		$smarty->assign('list', $pagelist);
 	}
 
+	$sql = 'select title, article_id from article where category_id < 5'
+		.' order by updatetime desc limit 10';
+	$new_articles = MySqlOpt::select_query($sql);
+	if ($new_articles == false)
+	{
+		ZeyuBlogOpt::warning_opt('数据库访问失败', '/html');
+		return;
+	}
+
+	$sql = 'select title, article_id from article where category_id < 5'
+		.' order by access_count desc limit 10';
+	$hot_articles = MySqlOpt::select_query($sql);
+	if ($hot_articles == false)
+	{
+		ZeyuBlogOpt::warning_opt('数据库访问失败', '/html');
+		return;
+	}
+
+	$sql = 'select * from `tags` where tag_id >= (select floor( max(tag_id) * rand()) from `tags` ) order by tag_id limit 20';
+	$rand_tags = MySqlOpt::select_query($sql);
+	if ($rand_tags == false)
+	{
+		ZeyuBlogOpt::warning_opt('数据库访问失败', '/html');
+		return;
+	}
+
 	$smarty->assign('category', $title.' -- '.$category_count);
+	$smarty->assign('new_articles', $new_articles);
+	$smarty->assign('hot_articles', $hot_articles);
+	$smarty->assign('rand_tags', $rand_tags);
 	$smarty->assign('ismood', $ismood);
 	$smarty->assign('title', $title);
 	$smarty->assign('page', $query_info['page']);

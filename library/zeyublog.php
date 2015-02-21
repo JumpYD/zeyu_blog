@@ -461,13 +461,8 @@ class ZeyuBlogOpt
 
 	public static function get_tags ($article_id)
 	{
-		$sql = 'select C.* from article as A, article_tag_relation as B, tags as C where A.article_id = B.article_id and B.tag_id = C.tag_id and A.article_id = 10182702';
+		$sql = 'select C.* from article as A, article_tag_relation as B, tags as C where A.article_id = B.article_id and B.tag_id = C.tag_id and A.article_id = '.intval($article_id);
 		$tag_infos = MySqlOpt::select_query($sql);
-		if ($tag_infos == false)
-		{
-			ZeyuBlogOpt::warning_opt('数据库访问失败', '/html');
-			return;
-		}
 		return $tag_infos;
 	}
 }

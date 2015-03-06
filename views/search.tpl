@@ -33,7 +33,7 @@
 </div>
 <div class="container bs-docs-container" style="background-color:rgba(0,0,0,0)">
 	<div class="row">
-		<div class="span7" style="margin: 75px 0 0 0">
+		<div class="span7" style="margin: 50px 0 0 0">
 			<div class="alert">
 				<div style="scrollbar-face-color: #889b9f;  scrollbar-highlight-color: #c3d6da; overflow: auto;scrollbar-shadow-color: #3d5054; scrollbar-3dlight-color: #3d5054; scrollbar-arrow-color: #ffd6da;scrollbar-darkshadow-color: #85989c; height: 500px">
 					<table class="table table-hover" style="background-color:rgba(255, 255, 255, 0)" frame=void border=0 cellpadding=0 cellspacing=0 bordercolor=rgba(0,0,0,0)>
@@ -62,7 +62,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="span4" style="margin: 75px 0 0 0">
+		<div class="span4" style="margin: 50px 0 0 0">
 			<div class="alert">
 				<div style="scrollbar-face-color: #889b9f;  scrollbar-highlight-color: #c3d6da; overflow: auto;scrollbar-shadow-color: #3d5054; scrollbar-3dlight-color: #3d5054; scrollbar-arrow-color: #ffd6da;scrollbar-darkshadow-color: #85989c; height: 500px">
 					<table class="table table-hover" style="background-color:rgba(255, 255, 255, 0)" frame=void border=0 cellpadding=0 cellspacing=0 bordercolor=rgba(0,0,0,0)>

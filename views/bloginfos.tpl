@@ -43,7 +43,7 @@
 							<a href="article.php?id=<{$infos['article_id']}>" target="_blank"><{$infos['title']}></a>
 							</td>
 							<td>
-							<{$infos['updatetime']}>
+							<{$infos['inserttime']}>
 							</td>
 						</tr>
 					<{/foreach}>

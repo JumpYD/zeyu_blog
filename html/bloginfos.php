@@ -103,7 +103,7 @@ $category_data[] = array(
 	'highlight'	=> $colors[count($colors)-1]['light'],
 );
 
-$sql = 'select a.category_id, a.article_id, b.category, a.title, a.updatetime'
+$sql = 'select a.category_id, a.article_id, b.category, a.title, a.inserttime'
 	.' from article a, category b where not exists'
 	.' (select 1 from article where category_id=a.category_id and inserttime>a.inserttime)'
 	.' and a.category_id = b.category_id order by category_id';

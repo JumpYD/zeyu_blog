@@ -30,7 +30,7 @@
 		<{/if}>
 		<div id="navbar">
 			<header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">
-				<title>龍潭齋<{if $title!=''}>&nbsp;&nbsp;☆&nbsp;&nbsp;<{$title}><{/if}></title>
+				<title><{if $title==''}>龍潭齋<{/if}><{if $title!=''}><{$title}><{/if}></title>
 				<div class="container">
 					<nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
 						<ul class="nav navbar-nav">

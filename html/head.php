@@ -14,7 +14,7 @@ $smarty->template_dir		=	$base_dir.'views';
 $smarty->left_delimiter		=	"<{"; 
 $smarty->right_delimiter	=	"}>";
 
-$conf = file_get_contents('/etc/zeyu203/zeyu_blog.conf');
+$conf = file_get_contents('/etc/zeyu203/techlog.conf');
 $conf = unserialize(base64_decode($conf));
 
 $is_root = false;

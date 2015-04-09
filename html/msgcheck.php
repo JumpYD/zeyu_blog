@@ -1,7 +1,7 @@
 <?php
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 
-$conf = file_get_contents('/etc/zeyu203/zeyu_blog.conf');
+$conf = file_get_contents('/etc/zeyu203/techlog.conf');
 $conf = unserialize(base64_decode($conf));
 
 switch ($action)

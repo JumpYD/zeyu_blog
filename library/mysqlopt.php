@@ -9,7 +9,7 @@ class MySqlOpt
 	{
 		if (self::$db_client === null)
 		{
-			$conf = file_get_contents('/etc/zeyu203/zeyu_blog.conf');
+			$conf = file_get_contents('/etc/zeyu203/techlog.conf');
 			$conf = unserialize(base64_decode($conf));
 			$conf = $conf['database'];
 
@@ -20,6 +20,8 @@ class MySqlOpt
 					$conf['user'],
 					$conf['pwd']
 				);
+
+			self::$db_client->query('set names utf8');
 		}
 
 		if (self::$db_client === null)

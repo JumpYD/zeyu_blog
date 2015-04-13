@@ -1,9 +1,13 @@
 <?php
 
-$sql_host  = "localhost";
-$sql_login = "zeyu_blog";
-$sql_passe = "zeyu_best_blog";
-$sql_dbase = "techlog";
-$sql_table = "stats";
+$conf = file_get_contents('/etc/zeyu203/techlog.conf');
+$conf = unserialize(base64_decode($conf));
+$conf = $conf['database'];
+
+$sql_host  = $conf['host'];
+$sql_login = $conf['user'];
+$sql_passe = $conf['pwd'];
+$sql_dbase = $conf['db'];
+$sql_table = 'stats';
 
 ?>
